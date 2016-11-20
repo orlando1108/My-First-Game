@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="utf-8"?>
+<SourceFileCollection xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+  <Profile>Reach</Profile>
+  <Platform>DesktopGL</Platform>
+  <Config />
+  <SourceFiles>
+    <File>C:/Users/Erwan/Documents/Visual Studio 2015/Projects/Game1/Game1/Content/Content/asteroid.png</File>
+    <File>C:/Users/Erwan/Documents/Visual Studio 2015/Projects/Game1/Game1/Content/Content/Fonts/GAME-OVER.spritefont</File>
+    <File>C:/Users/Erwan/Documents/Visual Studio 2015/Projects/Game1/Game1/Content/Content/Fonts/SCORE.spritefont</File>
+    <File>C:/Users/Erwan/Documents/Visual Studio 2015/Projects/Game1/Game1/Content/Content/Songs/lazerShip.wav</File>
+    <File>C:/Users/Erwan/Documents/Visual Studio 2015/Projects/Game1/Game1/Content/Content/Songs/SoundExplosionShip.mp3</File>
+    <File>C:/Users/Erwan/Documents/Visual Studio 2015/Projects/Game1/Game1/Content/Content/Songs/explosionTEST2.mp3</File>
+    <File>C:/Users/Erwan/Documents/Visual Studio 2015/Projects/Game1/Game1/Content/Content/Songs/explosionTESTwave.wav</File>
+    <File>C:/Users/Erwan/Documents/Visual Studio 2015/Projects/Game1/Game1/Content/Content/Songs/demon_beat_mix.mp3</File>
+    <File>C:/Users/Erwan/Documents/Visual Studio 2015/Projects/Game1/Game1/Content/Content/Fonts/LEVEL.spritefont</File>
+    <File>C:/Users/Erwan/Documents/Visual Studio 2015/Projects/Game1/Game1/Content/Content/Fonts/HEALTH.spritefont</File>
+    <File>C:/Users/Erwan/Documents/Visual Studio 2015/Projects/Game1/Game1/Content/Content/Songs/GameMusic.mp3</File>
+    <File>C:/Users/Erwan/Documents/Visual Studio 2015/Projects/Game1/Game1/Content/Content/Songs/Redemption.mp3</File>
+  </SourceFiles>
+</SourceFileCollection>

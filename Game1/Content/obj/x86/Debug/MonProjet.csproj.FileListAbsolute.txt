@@ -1,0 +1,42 @@
+c:\users\erwan\documents\visual studio 2012\Projects\MonProjet\MonProjet\bin\DesktopGL\x86\Debug\OpenTK.dll.config
+c:\users\erwan\documents\visual studio 2012\Projects\MonProjet\MonProjet\bin\DesktopGL\x86\Debug\MonProjet.exe
+c:\users\erwan\documents\visual studio 2012\Projects\MonProjet\MonProjet\bin\DesktopGL\x86\Debug\MonProjet.pdb
+c:\users\erwan\documents\visual studio 2012\Projects\MonProjet\MonProjet\bin\DesktopGL\x86\Debug\MonoGame.Framework.dll
+c:\users\erwan\documents\visual studio 2012\Projects\MonProjet\MonProjet\bin\DesktopGL\x86\Debug\NVorbis.dll
+c:\users\erwan\documents\visual studio 2012\Projects\MonProjet\MonProjet\bin\DesktopGL\x86\Debug\OpenTK.dll
+c:\users\erwan\documents\visual studio 2012\Projects\MonProjet\MonProjet\obj\x86\Debug\MonProjet.exe
+c:\users\erwan\documents\visual studio 2012\Projects\MonProjet\MonProjet\obj\x86\Debug\MonProjet.pdb
+C:\Users\Erwan\documents\visual studio 2012\Projects\MonProjet\MonProjet\bin\DesktopGL\x86\Debug\Content\fire.png
+C:\Users\Erwan\Documents\Visual Studio 2012\Projects\MonProjet\MonProjet\bin\DesktopGL\x86\Debug\Content\space.jpg
+C:\Users\Erwan\Documents\Visual Studio 2012\Projects\MonProjet\MonProjet\bin\DesktopGL\x86\Debug\Content\asteroid.png
+C:\Users\Erwan\Documents\Visual Studio 2012\Projects\MonProjet\MonProjet\bin\DesktopGL\x86\Debug\Content\asteroid3.png
+C:\Users\Erwan\Documents\Visual Studio 2012\Projects\MonProjet\MonProjet\obj\x86\Debug\MonProjet.csprojResolveAssemblyReference.cache
+C:\Users\Erwan\documents\visual studio 2012\Projects\MonProjet\MonProjet\bin\DesktopGL\x86\Debug\Content\lazerShip.wav
+C:\Users\Erwan\documents\visual studio 2012\Projects\MonProjet\MonProjet\bin\DesktopGL\x86\Debug\Content\Scrollspace.jpg
+C:\Users\Erwan\documents\visual studio 2012\Projects\MonProjet\MonProjet\bin\DesktopGL\x86\Debug\Content\explosion.png
+C:\Users\Erwan\documents\visual studio 2012\Projects\MonProjet\MonProjet\bin\DesktopGL\x86\Debug\Content\explosion2.png
+C:\Users\Erwan\documents\visual studio 2012\Projects\MonProjet\MonProjet\bin\DesktopGL\x86\Debug\Content\explosionShip2.png
+C:\Users\Erwan\documents\visual studio 2012\Projects\MonProjet\MonProjet\bin\DesktopGL\x86\Debug\Content\ship2.jpg
+C:\Users\Erwan\documents\visual studio 2012\Projects\MonProjet\MonProjet\bin\DesktopGL\x86\Debug\Content\ship.jpg
+C:\Users\Erwan\documents\visual studio 2012\Projects\MonProjet\MonProjet\bin\DesktopGL\x86\Debug\Content\fire2.png
+G:\MonProjet\MonProjet\obj\x86\Debug\MonProjet.exe
+G:\MonProjet\MonProjet\obj\x86\Debug\MonProjet.pdb
+G:\MonProjet\MonProjet\bin\DesktopGL\x86\Debug\Content\asteroid.png
+G:\MonProjet\MonProjet\bin\DesktopGL\x86\Debug\Content\asteroid3.png
+G:\MonProjet\MonProjet\bin\DesktopGL\x86\Debug\Content\explosion.png
+G:\MonProjet\MonProjet\bin\DesktopGL\x86\Debug\Content\explosion2.png
+G:\MonProjet\MonProjet\bin\DesktopGL\x86\Debug\Content\explosionShip2.png
+G:\MonProjet\MonProjet\bin\DesktopGL\x86\Debug\Content\fire.png
+G:\MonProjet\MonProjet\bin\DesktopGL\x86\Debug\Content\fire2.png
+G:\MonProjet\MonProjet\bin\DesktopGL\x86\Debug\Content\lazerShip.wav
+G:\MonProjet\MonProjet\bin\DesktopGL\x86\Debug\Content\Scrollspace.jpg
+G:\MonProjet\MonProjet\bin\DesktopGL\x86\Debug\Content\ship2.jpg
+G:\MonProjet\MonProjet\bin\DesktopGL\x86\Debug\Content\space.jpg
+G:\MonProjet\MonProjet\bin\DesktopGL\x86\Debug\Content\ship.jpg
+G:\MonProjet\MonProjet\bin\DesktopGL\x86\Debug\OpenTK.dll.config
+G:\MonProjet\MonProjet\bin\DesktopGL\x86\Debug\MonProjet.exe
+G:\MonProjet\MonProjet\bin\DesktopGL\x86\Debug\MonProjet.pdb
+G:\MonProjet\MonProjet\bin\DesktopGL\x86\Debug\MonoGame.Framework.dll
+G:\MonProjet\MonProjet\bin\DesktopGL\x86\Debug\NVorbis.dll
+G:\MonProjet\MonProjet\bin\DesktopGL\x86\Debug\OpenTK.dll
+G:\MonProjet\MonProjet\obj\x86\Debug\MonProjet.csprojResolveAssemblyReference.cache
