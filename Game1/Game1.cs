@@ -178,14 +178,14 @@ public class Game1 : Game
                     levelMeter += 1;
                     timeToGenerateAsteroids -= 2;
                 }
-                //generation des robots toutes les 500 msec
-                if (asteroidsTimeSpent > timeToGenerateAsteroids)
+                //generation des asteroids toutes les 500 msec
+               /* if (asteroidsTimeSpent > timeToGenerateAsteroids)
                 {
                     LoadAsteroids(newAsteroidSpeed);
                     asteroidsTimeSpent = 0;
                 }
                 //Mise à jour des asteroids
-                UpdateAsteroids(gameTime);
+                UpdateAsteroids(gameTime);*/
 
                 //Mise à jour des tirs
                 UpdateShipFires();

@@ -162,12 +162,6 @@ namespace SpaceShooter
             
             if (_active == true)
             {
-                if (_boostActive)
-                    _boost.Draw(spriteBatch);
-
-                if (_fireActive)
-                    _fireEffect.Draw(spriteBatch);
-
                 if (_health > 3)
                 {
                     _textureShip.Draw(spriteBatch);
@@ -176,8 +170,12 @@ namespace SpaceShooter
                 {
                     _textureShip.Draw(spriteBatch);// add color 
                 }
-                
-                
+
+                if (_boostActive)
+                    _boost.Draw(spriteBatch);
+                if (_fireActive)
+                    _fireEffect.Draw(spriteBatch);
+
             }
             if(_active == false)
             {
