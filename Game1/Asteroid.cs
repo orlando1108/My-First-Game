@@ -64,8 +64,8 @@ namespace SpaceShooter
             base._position.X = aleaPositionX;
             base._active = true;
             this._finish = false;
-            this._explosion = new Animation(game, 3, 8, _speed,_position.X, 50); //lines then columns
-            this._textureAsteroid = new Animation(game, 8, 8, 90);
+            this._explosion = new Animation(game, 4, 4, _speed,_position.X, 50); //lines then columns
+            this._textureAsteroid = new Animation(game, 1, 24, 90);
             this._textureAsteroid.Active = true;
             this._textureAsteroid.RotationActive = true;
              //_reverseUpdate = true;

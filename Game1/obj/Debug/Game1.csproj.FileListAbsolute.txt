@@ -1,6 +1,5 @@
 C:\Users\Erwan\documents\visual studio 2015\Projects\Game1\Game1\bin\DesktopGL\AnyCPU\Debug\Content\backgroundINFOS.png
 C:\Users\Erwan\documents\visual studio 2015\Projects\Game1\Game1\bin\DesktopGL\AnyCPU\Debug\Content\BoostShip.png
-C:\Users\Erwan\documents\visual studio 2015\Projects\Game1\Game1\bin\DesktopGL\AnyCPU\Debug\Content\explosionAsteroid2.png
 C:\Users\Erwan\documents\visual studio 2015\Projects\Game1\Game1\bin\DesktopGL\AnyCPU\Debug\Content\explosionSHIP.png
 C:\Users\Erwan\documents\visual studio 2015\Projects\Game1\Game1\bin\DesktopGL\AnyCPU\Debug\Content\fire.png
 C:\Users\Erwan\documents\visual studio 2015\Projects\Game1\Game1\bin\DesktopGL\AnyCPU\Debug\Content\FireEffect.png
@@ -66,3 +65,7 @@ C:\Users\Erwan\Documents\Visual Studio 2015\Projects\Game1\Game1\bin\DesktopGL\A
 C:\Users\Erwan\Documents\Visual Studio 2015\Projects\Game1\Game1\bin\DesktopGL\AnyCPU\Debug\Content\AsteroidAnimation.png
 C:\Users\Erwan\Documents\Visual Studio 2015\Projects\Game1\Game1\bin\DesktopGL\AnyCPU\Debug\Content\AsteroidExplosion.png
 C:\Users\Erwan\documents\visual studio 2015\Projects\Game1\Game1\bin\DesktopGL\AnyCPU\Debug\Content\BoostEffect1.png
+C:\Users\Erwan\Documents\Visual Studio 2015\Projects\Game1\Game1\bin\DesktopGL\AnyCPU\Debug\Content\BossTexture.png
+C:\Users\Erwan\Documents\Visual Studio 2015\Projects\Game1\Game1\bin\DesktopGL\AnyCPU\Debug\Content\AsteroidAnimation5.png
+C:\Users\Erwan\Documents\Visual Studio 2015\Projects\Game1\Game1\bin\DesktopGL\AnyCPU\Debug\Content\AsteroidExplosion2.png
+C:\Users\Erwan\Documents\Visual Studio 2015\Projects\Game1\Game1\bin\DesktopGL\AnyCPU\Debug\Content\boss_FireTexture.png

@@ -15,11 +15,11 @@ namespace SpaceShooter
             set { _tirs = value; }
         }
         
-        public Tir(Game game) : base(game)
+        public Tir(Game game, int speed) : base(game)
         {
-            base._position = Position;
+            base._speed = new Vector2(0, speed);
             base._active = true;
-            base._speed = Speed;
+
         }
 
         public override void Initialize()
@@ -28,12 +28,12 @@ namespace SpaceShooter
             _tirs.Clear();
             
         }
-        public void LoadContent(ContentManager content, String textureName, Vaisseau v)
+        public void LoadContent(ContentManager content, String textureName, Rectangle cible)
         {
             base.LoadContent(content, textureName);
             
-                _position = new Vector2((v.Position.X + (v.TextureShip.Width / 2)) - _texture.Width / 2, v.Position.Y);
-                _speed = new Vector2(0, 15);
+                
+               
             
         }
      
@@ -45,7 +45,7 @@ namespace SpaceShooter
                   _texture.Width,
                   _texture.Height);
             
-                _position = new Vector2(_position.X, _position.Y - _speed.Y);
+                _position = new Vector2(_position.X, _position.Y + _speed.Y);
             
                 if (_active && _position.Y + _texture.Height <= 0)
                     _active = false;

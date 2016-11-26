@@ -22,7 +22,7 @@ public class Game1 : Game
     SpriteFont GameOver;
     SpriteFont Score;
     SpriteFont Level;
-    SpriteFont HealthPoints;
+   // SpriteFont HealthPoints;
    
     SoundEffect fire;
     Song explosionShip;
@@ -34,6 +34,7 @@ public class Game1 : Game
         
     long asteroidsTimeSpent;
     long tirsTimeSpent;
+    long bossFiresTimeSpent;
     int points;
     int level;
     int scoreMeter;
@@ -55,8 +56,9 @@ public class Game1 : Game
     Asteroid asteroid;
    //Asteroid asteroidForMissile;
     Vaisseau vaisseau;
+        Boss boss;
     Tir tir;
-    Tir missile;
+   // Tir missile;
         
     Thread scroller;
 
@@ -80,20 +82,22 @@ public class Game1 : Game
     /// </summary>
     protected override void Initialize()
     {
-        scrollBG1 = new Rectangle(0, 0, windowWidth, windowHeight);
-        scrollBG2 = new Rectangle(0, -windowHeight, windowWidth, windowHeight);
-        vaisseau = new Vaisseau(this);
-        vaisseau.Speed = new Vector2(10, 10);
-        newAsteroidSpeed = 2;
-        timeToGenerateAsteroids = 500;
-        scoreMeter = 20;
-        levelMeter = 1;
-        points = 0;
-        level = 0;
-        paused = false;
+    scrollBG1 = new Rectangle(0, 0, windowWidth, windowHeight);
+    scrollBG2 = new Rectangle(0, -windowHeight, windowWidth, windowHeight);
+    vaisseau = new Vaisseau(this);
+    vaisseau.Speed = new Vector2(10, 10);
+    boss = new Boss(this);
+    boss.Speed = new Vector2(10, 10);
+    newAsteroidSpeed = 2;
+    timeToGenerateAsteroids = 500;
+    scoreMeter = 20;
+    levelMeter = 1;
+    points = 0;
+    level = 0;
+    paused = false;
         
-        ListeAsteroids.Clear();
-        ListeTirs.Clear();
+    ListeAsteroids.Clear();
+    ListeTirs.Clear();
            
 
         base.Initialize();
@@ -106,8 +110,7 @@ public class Game1 : Game
     protected override void LoadContent()
     {
         spriteBatch = new SpriteBatch(GraphicsDevice);
-
-        
+            
         BGtexture = Content.Load<Texture2D>("Scrollspace.jpg");//fond de l'ecran
         this.fire = Content.Load<SoundEffect>("SoundLazerShip");
         this.explosionShip = Content.Load<Song>("explosionTEST2");
@@ -119,7 +122,10 @@ public class Game1 : Game
         //texture du vaisseau
         vaisseau.LoadContent(Content, "ShipTexture","explosionSHIP", "FireEffect", "BoostEffect1");
         vaisseau.Position = new Vector2((graphics.PreferredBackBufferWidth / 2) - (vaisseau.TextureShip.Width / (vaisseau.TextureShip.Cols*2)), (graphics.PreferredBackBufferHeight - vaisseau.TextureShip.Height * 2));
-        
+
+            boss.LoadContent(Content, "BossTexture", "explosionSHIP","boss_FireTexture", "SoundLazerShip" );
+            boss.Position = Vector2.Zero;
+
             GameOver = Content.Load<SpriteFont>("GAME-OVER");
             Score = Content.Load<SpriteFont>("SCORE");
             Level = Content.Load<SpriteFont>("LEVEL");
@@ -138,6 +144,7 @@ public class Game1 : Game
         BGtexture.Dispose();
         Health.Dispose();
         vaisseau.UnloadContent();
+        boss.UnloadContent();
         //missile.UnloadContent();
         foreach (Asteroid ast in ListeAsteroids)
         {
@@ -167,6 +174,7 @@ public class Game1 : Game
                 KeyboardState state = Keyboard.GetState();
                 asteroidsTimeSpent += gameTime.ElapsedGameTime.Milliseconds;
                 tirsTimeSpent += gameTime.ElapsedGameTime.Milliseconds;
+                bossFiresTimeSpent += gameTime.ElapsedGameTime.Milliseconds;
 
                 scroller = new Thread(UpdateBGScrolling);
                 scroller.Start();
@@ -179,7 +187,7 @@ public class Game1 : Game
                     timeToGenerateAsteroids -= 2;
                 }
                 //generation des asteroids toutes les 500 msec
-               /* if (asteroidsTimeSpent > timeToGenerateAsteroids)
+              /*  if (asteroidsTimeSpent > timeToGenerateAsteroids)
                 {
                     LoadAsteroids(newAsteroidSpeed);
                     asteroidsTimeSpent = 0;
@@ -198,30 +206,32 @@ public class Game1 : Game
                     MediaPlayer.IsRepeating = false;
                 }
 
+                if (boss.Active == true & boss.Health == 0)
+                {
+                    boss.Active = false;
+                    MediaPlayer.Play(explosionShip);
+                    MediaPlayer.Volume = 1.0f;
+                    MediaPlayer.IsRepeating = false;
+                }
+                
                 if (vaisseau.Explosion.Removeable == true)
                 {
                     Initialize();
                 }
 
                 vaisseau.Update(gameTime, state, windowHeight, windowWidth);
+                boss.Update(this, gameTime, windowHeight, windowWidth);
 
                 base.Update(gameTime);
 
-                // if (Keyboard.GetState().IsKeyDown(Keys.D0))
-                //{
-                //     LoadMissile();
-                // }
+                
                 /*  if (ListeAsteroids.Count > 1 || ListeAsteroids.Count <= 10)
                 {
                     Random rand = new Random();
                     //  asteroidForMissile = ListeAsteroids[rand.Next(2, 10)];
                     //  asteroidForMissile = ListeAsteroids[0];
-                }*/
-                //  if(asteroidForMissile.Active=true)
-                //  missile.Update(gameTime, asteroidForMissile);
-
-                //initialiser le jeu apres l'explosion
-
+                }
+               
                 /* if (health == 0)
                  {
                      vaisseau.Active = false;
@@ -246,17 +256,18 @@ public class Game1 : Game
         spriteBatch.Draw(BGtexture, scrollBG2, Color.White);
 
             vaisseau.Draw(spriteBatch);
+            boss.Draw(spriteBatch);
 
         foreach (Tir t in ListeTirs)
         {
             t.Draw(spriteBatch);
         }
 
-        for (int i = 0; i < ListeAsteroids.Count; i++)
+       /* for (int i = 0; i < ListeAsteroids.Count; i++)
         {
              ListeAsteroids[i].Draw(spriteBatch);
-
-        }
+             
+        }*/
 
         if(vaisseau.Active == false)
         {
@@ -269,7 +280,6 @@ public class Game1 : Game
             spriteBatch.DrawString(Score, "Score: " + points, new Vector2(windowWidth - 100, windowHeight - 30), Color.DarkBlue);
             spriteBatch.DrawString(Level, "Level: " + level, new Vector2(10, windowHeight - 30), Color.DarkMagenta);
           
-
             for (int i = 0; i!=vaisseau.Health; i++)
             {
                 spriteBatch.Draw(Health, new Vector2(100+pixelAlign, windowHeight - 35), Color.Beige);
@@ -326,9 +336,10 @@ public void UpdateShipFires()
 {
     if (Keyboard.GetState().IsKeyDown(Keys.Space) && tirsTimeSpent > 100)
     { 
-        tir = new Tir(this);
-        tir.LoadContent(Content, "fire", vaisseau);
-        ListeTirs.Add(tir);
+        tir = new Tir(this, -15);
+        tir.LoadContent(Content, "fire", vaisseau.Rec);
+                tir.Position = new Vector2((vaisseau.Rec.X + (vaisseau.Rec.Width / 2)) - tir.Texture.Width / 2, + vaisseau.Rec.Y);
+                ListeTirs.Add(tir);
         fire.CreateInstance().Play();
         tirsTimeSpent = 0;
     }
@@ -339,13 +350,22 @@ public void UpdateShipFires()
     foreach (Tir t in ListeTirs)
     {
         t.Update(gameTime);
+        
     }
+            for(int i = 0; i<ListeTirs.Count;i++)
+            {
+                if(ListeTirs[i].Active == false)
+                {
+                    ListeTirs.RemoveAt(i);
+                    i -= 1;
+                }
+            }
 }
 
 public void LoadAsteroids(int newSpeed)
 {
     asteroid = new Asteroid(this);
-    asteroid.LoadContent(Content, "AsteroidAnimation", "AsteroidAnimation","AsteroidExplosion",newSpeed);
+    asteroid.LoadContent(Content, "AsteroidAnimation5", "AsteroidAnimation5","AsteroidExplosion2",newSpeed);
     ListeAsteroids.Add(asteroid);
 
 }

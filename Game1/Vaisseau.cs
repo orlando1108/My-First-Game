@@ -136,9 +136,9 @@ namespace SpaceShooter
                  if (_fireActive == true)
                {
                    _fireEffect.Active = true;     
-                    // +5 and +15 to adjust position                                          
+                    // +1 and +14 to adjust position                                          
                    _fireEffect.FinalPosition = new Vector2(((_position.X + (_textureShip.Width / 2)) - (_fireEffect.Texture.Width / (_fireEffect.Cols*2)))+1,
-                                                            (_position.Y - _fireEffect.Height)+12);
+                                                            (_position.Y - _fireEffect.Height)+14);
                    _fireEffect.UpdateLimitLess_ToRight(gameTime);
                }
                 else
