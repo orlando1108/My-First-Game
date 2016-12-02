@@ -26,15 +26,10 @@ namespace SpaceShooter
         {
             base.Initialize();
             _tirs.Clear();
-            
         }
         public void LoadContent(ContentManager content, String textureName, Rectangle cible)
         {
             base.LoadContent(content, textureName);
-            
-                
-               
-            
         }
      
         public override void Update(GameTime gameTime)
@@ -56,6 +51,21 @@ namespace SpaceShooter
               destination.y = Math.Sin(a.Position.Y);
               
              }*/
+        }
+
+        public void Update_toDestination(GameTime gameTime)
+        {
+            _rec = new Rectangle(
+                 (int)_position.X,
+                 (int)_position.Y,
+                 _texture.Width,
+                 _texture.Height);
+
+            _position = new Vector2(_position.X, _position.Y + _speed.Y);
+         
+
+            if (_active && _position.Y + _texture.Height <= 0)
+                _active = false;
         }
 
 

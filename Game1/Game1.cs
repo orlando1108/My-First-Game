@@ -63,16 +63,19 @@ public class Game1 : Game
     Thread scroller;
 
     public Game1()
-    {
-        graphics = new GraphicsDeviceManager(this);
-        Content.RootDirectory = "Content";
-        graphics.PreferredBackBufferHeight = windowHeight;
-        graphics.PreferredBackBufferWidth = windowWidth;
-        ListeAsteroids = new List<Asteroid>();
-        ListeTirs = new List<Tir>();
-        // ListeExplosions = new List<Explosion>();
+{
+   
+    graphics = new GraphicsDeviceManager(this);
+          /*  IsFixedTimeStep = false;
+            graphics.SynchronizeWithVerticalRetrace = false;*/
+            Content.RootDirectory = "Content";
+    graphics.PreferredBackBufferHeight = windowHeight;
+    graphics.PreferredBackBufferWidth = windowWidth;
+    ListeAsteroids = new List<Asteroid>();
+    ListeTirs = new List<Tir>();
+    // ListeExplosions = new List<Explosion>();
             
-    }
+}
 
     /// <summary>
     /// Allows the game to perform any initialization it needs to before starting to run.
@@ -124,7 +127,8 @@ public class Game1 : Game
         vaisseau.Position = new Vector2((graphics.PreferredBackBufferWidth / 2) - (vaisseau.TextureShip.Width / (vaisseau.TextureShip.Cols*2)), (graphics.PreferredBackBufferHeight - vaisseau.TextureShip.Height * 2));
 
             boss.LoadContent(Content, "BossTexture", "explosionSHIP","boss_FireTexture", "SoundLazerShip" );
-            boss.Position = Vector2.Zero;
+          //  boss.Position = Vector2.Zero;
+            boss.Position = new Vector2((graphics.PreferredBackBufferWidth / 2) - (boss.Texture.Width / 2), 0);
 
             GameOver = Content.Load<SpriteFont>("GAME-OVER");
             Score = Content.Load<SpriteFont>("SCORE");
@@ -220,7 +224,7 @@ public class Game1 : Game
                 }
 
                 vaisseau.Update(gameTime, state, windowHeight, windowWidth);
-                boss.Update(this, gameTime, windowHeight, windowWidth);
+                boss.Update(this, gameTime, vaisseau.Position);
 
                 base.Update(gameTime);
 

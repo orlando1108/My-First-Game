@@ -43,23 +43,7 @@ namespace SpaceShooter
             get { return _fireSoundEffect; }
             set { _fireSoundEffect = value; }
         }
-
-        SoundEffect fire;
-
-        /*  private Animation _fireEffect;
-          public Animation FireEffect
-          {
-              get { return _fireEffect; }
-              set { _fireEffect = value; }
-          }*/
-
-        /* private Animation _boost;
-         public Animation Boost
-         {
-             get { return _boost; }
-             set { _boost = value; }
-         }*/
-
+        
         private Animation _textureBoss;
         public Animation TextureBoss
         {
@@ -73,13 +57,6 @@ namespace SpaceShooter
             get { return _fireActive; }
             set { _fireActive = value; }
         }
-
-       /* private bool _boostActive;
-        public bool BoostActive
-        {
-            get { return _boostActive; }
-            set { _boostActive = value; }
-        }*/
 
         private bool _moveLeftActive;
         public bool MoveLeftActive
@@ -103,7 +80,7 @@ namespace SpaceShooter
         }
 
         private bool _touchRightScreenBorders;
-        public bool TouchScreenBorders
+        public bool TouchRightScreenBorders
         {
             get { return _touchRightScreenBorders; }
             set { _touchRightScreenBorders = value; }
@@ -116,9 +93,41 @@ namespace SpaceShooter
             set { _touchLeftScreenBorders = value; }
 
         }
+       
+        private int _borderRight;
+        public int BorderRight
+        {
+            get { return _borderRight; }
+            set { _borderRight = value; }
+        }
 
+        private int _borderLeft;
+        public int BorderLeft
+        {
+            get { return _borderLeft; }
+            set { _borderLeft = value; }
+        }
+
+        private int _randomBorderRight;
+        public int RandomBorderRight
+        {
+            get { return _randomBorderRight; }
+            set { _randomBorderRight = value; }
+        }
+
+        private int _randomBorderLeft;
+        public int RandomBorderLeft
+        {
+            get { return _randomBorderLeft; }
+            set { _randomBorderLeft = value; }
+        }
+
+        int randomFiresTimeSpent = 100;
+        Random rand = new Random();
+        
         public Boss(Game game):base(game)
         {
+           
             _textureBoss = new Animation(game, 1, 1, 50);
             _explosion = new Animation(game, 9, 9, 50);
             _fire = new Tir(game, +15);
@@ -129,6 +138,7 @@ namespace SpaceShooter
             _touchRightScreenBorders = false;
             _touchLeftScreenBorders = true;
             _firesList = new List<Tir>();
+          
             //_textureBoss.CurrentFrame = (_textureBoss.TotalFrames / 2) - (int)0.5; // define initial position in the sprite sheet when the ship does't moving
             // _boost = new Animation(game, 1, 5, 50);                 //change spritesheet
             // _fireEffect = new Animation(game, 1, 4, 40);
@@ -138,7 +148,6 @@ namespace SpaceShooter
         }
         public override void Initialize()
         {
-
             base.Initialize();
         }
 
@@ -150,12 +159,17 @@ namespace SpaceShooter
            // Fire.LoadContent(content, textureFire, TextureBoss.Rec);
             FireSoundEffect = Content.Load<SoundEffect>(fireSoundEffect);
 
+            _borderRight = Game1.windowWidth - Texture.Width;
+            _borderLeft = 0;
+            _randomBorderLeft = rand.Next(BorderLeft, Game1.windowWidth / 2 - Texture.Width);
+            _randomBorderRight = rand.Next(Game1.windowWidth / 2+Texture.Width, BorderRight);
+
             //_textureShip.Moving = false;
             // _boost.LoadContent(content, textureBoost);
             // _fireEffect.LoadContent(content, textureFireEffect);
         }
 
-        public void Update(Game game, GameTime gameTime, int H, int W)
+        public void Update(Game game, GameTime gameTime, Vector2 cible)
         {
 
             firesTimeSpent += gameTime.ElapsedGameTime.Milliseconds;
@@ -170,10 +184,10 @@ namespace SpaceShooter
 
                 _textureBoss.FinalPosition = _position;
 
-                UpdateFires(game,gameTime);
+                UpdateFires(game,gameTime, cible);
                 
-                TouchedScreenBorders(H, W);
-                BossIsMoving(H, W);
+                TouchedScreenBorders();
+                //BossIsMoving(H, W);
 
 
                // Controls(state, H, W);
@@ -186,7 +200,7 @@ namespace SpaceShooter
                     _boost.UpdateLimitLess_ToRight(gameTime);
                 }
                 else
-                {
+                { 
                     _boost.Active = false;
                 }
 
@@ -278,24 +292,30 @@ namespace SpaceShooter
             }*/
         
         }
-
-        private void TouchedScreenBorders(int H, int W)
+        //method to indicate if boss has touched  borders of the screen
+        //add a random variable for the boss AI
+        private void TouchedScreenBorders()
         {
-            if (_position.X == W - _textureBoss.Width) {
+          
+            if (_position.X > _randomBorderRight)
+            {
                 _touchRightScreenBorders = true;
                 _touchLeftScreenBorders = false;
-            }
-            if(_position.X == 0){
-                _touchLeftScreenBorders = true;
-                _touchRightScreenBorders = false;
-            }
+                _randomBorderRight = rand.Next(Game1.windowWidth / 2, BorderRight) - Texture.Width; // substract texture width to ameliorate the random
                 
+            }
+        if (_position.X < _randomBorderLeft)
+        {
+            _touchLeftScreenBorders = true;
+            _touchRightScreenBorders = false;
+            _randomBorderLeft = rand.Next(BorderLeft, Game1.windowWidth / 2) + Texture.Width;// substract texture width to ameliorate the random
+            }
         }
 
-        public void UpdateFires(Game game, GameTime gameTime)
+        public void UpdateFires(Game game, GameTime gameTime, Vector2 cible)
         {
             
-            if (firesTimeSpent > 100)
+            if (firesTimeSpent > randomFiresTimeSpent)
             {
                 _fire = new Tir(game, +15);
                 _fire.LoadContent(Content, "fire", Rec);
@@ -303,6 +323,7 @@ namespace SpaceShooter
                 FiresList.Add(_fire);
                 FireSoundEffect.CreateInstance().Play();
                 firesTimeSpent = 0;
+                randomFiresTimeSpent = rand.Next(50, 200);
             }
             else
             {
@@ -310,7 +331,8 @@ namespace SpaceShooter
             }
             foreach (Tir t in FiresList)
             {
-                t.Update(gameTime);
+                AI_Fires(cible, t);
+                t.Update_toDestination(gameTime);
             }
             for (int i = 0; i < FiresList.Count; i++)
             {
@@ -320,6 +342,30 @@ namespace SpaceShooter
                     i -= 1;
                 }
             }
+        }
+
+        private void AI_Fires(Vector2 cible, Tir t)
+        {
+            if ( Rec.X < cible.X)
+            {
+                t.Position = new Vector2 (t.Position.X + 1, t.Position.Y);
+            }
+           if(Rec.X > cible.X)
+            {
+                t.Position = new Vector2(t.Position.X - 1, t.Position.Y);
+            }
+         /*Vector3 newVector = targetPoint - initialPoint;
+or
+
+Vector3 newVector = targetTransform.position - fromTransform.position;*/
+        }
+
+        private Vector2 HightAI_Fires(Vector2 cible, Tir t)
+        {
+            Vector2 destination = new Vector2();
+            destination = cible - t.Position;
+
+            return destination;
         }
     }
 }
