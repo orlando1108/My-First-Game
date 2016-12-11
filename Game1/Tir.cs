@@ -14,11 +14,22 @@ namespace SpaceShooter
             get { return _tirs; }
             set { _tirs = value; }
         }
-        
-        public Tir(Game game, int speed) : base(game)
+
+        private Vector2 _direction;
+        public Vector2 Direction
         {
-            base._speed = new Vector2(0, speed);
+            get { return _direction; }
+            set { _direction = value; }
+        }
+
+
+        private float speed;
+        
+        public Tir(Game game, float speed) : base(game)
+        {
+           base._speed = new Vector2(0, speed);
             base._active = true;
+            this.speed = speed;
 
         }
 
@@ -61,11 +72,10 @@ namespace SpaceShooter
                  _texture.Width,
                  _texture.Height);
 
-            _position = new Vector2(_position.X, _position.Y + _speed.Y);
-         
 
-            if (_active && _position.Y + _texture.Height <= 0)
-                _active = false;
+            _position += _direction*speed;
+           // if (_active && _position.Y + _texture.Height <= 0)
+         //       _active = false;
         }
 
 

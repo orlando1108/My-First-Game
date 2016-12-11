@@ -118,7 +118,7 @@ namespace SpaceShooter
                     _textureShip.Height);
                 
                 _textureShip.FinalPosition = _position;
-
+                
                 Controls(state, H, W);
                 ConditionsTo_UpdateShipMovements(gameTime);
 

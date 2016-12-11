@@ -130,7 +130,7 @@ namespace SpaceShooter
            
             _textureBoss = new Animation(game, 1, 1, 50);
             _explosion = new Animation(game, 9, 9, 50);
-            _fire = new Tir(game, +15);
+           // _fire = new Tir(game, +15);
             _textureBoss.Active = true;
             _active = true;
             _health = 10;
@@ -187,35 +187,8 @@ namespace SpaceShooter
                 UpdateFires(game,gameTime, cible);
                 
                 TouchedScreenBorders();
-                //BossIsMoving(H, W);
-
-
-               // Controls(state, H, W);
-                //ConditionsTo_UpdateShipMovements(gameTime);
-
-              /*  if (_boostActive == true)
-                {
-                    _boost.Active = true;
-                    _boost.FinalPosition = new Vector2((_position.X + (_textureShip.Width / 2)) - (_boost.Texture.Width / (_boost.Cols * 2)), _position.Y + (_textureShip.Height - 10));
-                    _boost.UpdateLimitLess_ToRight(gameTime);
-                }
-                else
-                { 
-                    _boost.Active = false;
-                }
-
-                if (_fireActive == true)
-                {
-                    _fireEffect.Active = true;
-                    // +1 and +14 to adjust position                                          
-                    _fireEffect.FinalPosition = new Vector2(((_position.X + (_textureShip.Width / 2)) - (_fireEffect.Texture.Width / (_fireEffect.Cols * 2))) + 1,
-                                                             (_position.Y - _fireEffect.Height) + 14);
-                    _fireEffect.UpdateLimitLess_ToRight(gameTime);
-                }
-                else
-                {
-                    _fireEffect.Active = false;
-                }*/
+                BossIsMoving();
+                
             }
 
             if (_active == false)
@@ -248,11 +221,7 @@ namespace SpaceShooter
                     _textureBoss.Draw(spriteBatch);// add color 
                 }
 
-               /* if (_boostActive)
-                    _boost.Draw(spriteBatch);
-                if (_fireActive)
-                    _fireEffect.Draw(spriteBatch);*/
-
+            
             }
             if (_active == false)
             {
@@ -261,7 +230,7 @@ namespace SpaceShooter
 
         }
 
-        private void BossIsMoving( int H, int W)
+        private void BossIsMoving()
         {
             if (_touchRightScreenBorders)
             {
@@ -317,13 +286,14 @@ namespace SpaceShooter
             
             if (firesTimeSpent > randomFiresTimeSpent)
             {
-                _fire = new Tir(game, +15);
-                _fire.LoadContent(Content, "fire", Rec);
+                _fire = new Tir(game, 5);
+                _fire.LoadContent(Content, "BossBullet", Rec);
                 _fire.Position = new Vector2((Rec.X + (Rec.Width / 2)) - Fire.Texture.Width / 2, (Rec.Y+Texture.Height)-Fire.Texture.Height);
+                _fire.Direction = TargetTracking(_fire.Position, cible);
                 FiresList.Add(_fire);
                 FireSoundEffect.CreateInstance().Play();
                 firesTimeSpent = 0;
-                randomFiresTimeSpent = rand.Next(50, 200);
+                randomFiresTimeSpent = rand.Next(500, 1000);
             }
             else
             {
@@ -331,8 +301,10 @@ namespace SpaceShooter
             }
             foreach (Tir t in FiresList)
             {
-                AI_Fires(cible, t);
+                /*Vector2 direction= TargetTracking(t.Position, cible);
+                t.Update_toDestination(gameTime,direction);*/
                 t.Update_toDestination(gameTime);
+
             }
             for (int i = 0; i < FiresList.Count; i++)
             {
@@ -344,20 +316,26 @@ namespace SpaceShooter
             }
         }
 
-        private void AI_Fires(Vector2 cible, Tir t)
+        // target tracking
+        private Vector2 TargetTracking(Vector2 start, Vector2 end )
         {
-            if ( Rec.X < cible.X)
-            {
-                t.Position = new Vector2 (t.Position.X + 1, t.Position.Y);
-            }
-           if(Rec.X > cible.X)
-            {
-                t.Position = new Vector2(t.Position.X - 1, t.Position.Y);
-            }
-         /*Vector3 newVector = targetPoint - initialPoint;
-or
+            
+            float distance = Vector2.Distance(start, end);
+            Vector2 direction = Vector2.Normalize(end - start);
 
-Vector3 newVector = targetTransform.position - fromTransform.position;*/
+            return direction;
+
+        //lander.engineOn = true;
+      /*  float angle_radian = MathHelper.ToRadians(lander.angle);
+            float force_x = (float)Math.Cos(angle_radian) * lander.speed;
+            float force_y = (float)Math.Sin(angle_radian) * lander.speed;
+            lander.velocity += new Vector2(force_x, force_y);
+
+
+            /*Vector3 newVector = targetPoint - initialPoint;
+   or
+
+   Vector3 newVector = targetTransform.position - fromTransform.position;*/
         }
 
         private Vector2 HightAI_Fires(Vector2 cible, Tir t)

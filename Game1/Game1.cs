@@ -7,6 +7,7 @@ using Microsoft.Xna.Framework.Audio;
 using System.Threading;
 using Microsoft.Xna.Framework.Media;
 using System;
+using System.Windows;
 
 namespace SpaceShooter
 {
@@ -180,10 +181,12 @@ public class Game1 : Game
                 tirsTimeSpent += gameTime.ElapsedGameTime.Milliseconds;
                 bossFiresTimeSpent += gameTime.ElapsedGameTime.Milliseconds;
 
-                scroller = new Thread(UpdateBGScrolling);
-                scroller.Start();
-                scroller.Join();
-                
+                /* scroller = new Thread(UpdateBGScrolling);
+                 scroller.Start();
+                 scroller.Join();*/
+                UpdateBGScrolling();
+
+
                 if (level == levelMeter)
                 {
                     newAsteroidSpeed += 1;
@@ -224,7 +227,7 @@ public class Game1 : Game
                 }
 
                 vaisseau.Update(gameTime, state, windowHeight, windowWidth);
-                boss.Update(this, gameTime, vaisseau.Position);
+                boss.Update(this, gameTime, vaisseau.Rec.Center.ToVector2());
 
                 base.Update(gameTime);
 
@@ -338,12 +341,12 @@ foreach (Asteroid a in ListeAsteroids)
 
 public void UpdateShipFires()
 {
-    if (Keyboard.GetState().IsKeyDown(Keys.Space) && tirsTimeSpent > 100)
+    if (Keyboard.GetState().IsKeyDown(Keys.Space) && tirsTimeSpent > 200)
     { 
         tir = new Tir(this, -15);
         tir.LoadContent(Content, "fire", vaisseau.Rec);
-                tir.Position = new Vector2((vaisseau.Rec.X + (vaisseau.Rec.Width / 2)) - tir.Texture.Width / 2, + vaisseau.Rec.Y);
-                ListeTirs.Add(tir);
+        tir.Position = new Vector2((vaisseau.Rec.X + (vaisseau.Rec.Width / 2)) - tir.Texture.Width / 2, + vaisseau.Rec.Y);
+        ListeTirs.Add(tir);
         fire.CreateInstance().Play();
         tirsTimeSpent = 0;
     }
