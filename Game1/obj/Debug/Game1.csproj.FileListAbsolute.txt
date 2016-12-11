@@ -70,3 +70,4 @@ C:\Users\Erwan\Documents\Visual Studio 2015\Projects\Game1\Game1\bin\DesktopGL\A
 C:\Users\Erwan\Documents\Visual Studio 2015\Projects\Game1\Game1\bin\DesktopGL\AnyCPU\Debug\Content\AsteroidExplosion2.png
 C:\Users\Erwan\Documents\Visual Studio 2015\Projects\Game1\Game1\bin\DesktopGL\AnyCPU\Debug\Content\boss_FireTexture.png
 C:\Users\Erwan\Documents\Visual Studio 2015\Projects\Game1\Game1\bin\DesktopGL\AnyCPU\Debug\Content\BossBullet.xnb
+C:\Users\Erwan\Documents\Visual Studio 2015\Projects\Game1\Game1\bin\DesktopGL\AnyCPU\Debug\Content\HealthBoss.png

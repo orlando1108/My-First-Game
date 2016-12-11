@@ -264,7 +264,7 @@ namespace SpaceShooter
 
         }
 
-        public void Draw_ToResize(SpriteBatch spriteBatch)
+      /*  public void Draw_ToResize(SpriteBatch spriteBatch)
         {
             Rectangle sourceRec;
             Vector2 origin;
@@ -293,7 +293,7 @@ namespace SpaceShooter
 
             }
 
-        }
+        }*/
 
     }
 }

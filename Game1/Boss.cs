@@ -33,8 +33,8 @@ namespace SpaceShooter
         private List<Tir> _firesList;
         public List<Tir> FiresList
         {
-            get { return _firesList     ; }
-            set { _firesList      = value; }
+            get { return _firesList; }
+            set { _firesList = value; }
         }
 
         private SoundEffect _fireSoundEffect;
@@ -43,13 +43,21 @@ namespace SpaceShooter
             get { return _fireSoundEffect; }
             set { _fireSoundEffect = value; }
         }
-        
+
         private Animation _textureBoss;
         public Animation TextureBoss
         {
             get { return _textureBoss; }
             set { _textureBoss = value; }
         }
+
+        private Texture2D _healthTexture;
+        public Texture2D HealthTexture
+        {
+            get { return _healthTexture; }
+            set { _healthTexture = value; }
+        }
+
 
         private bool _fireActive;
         public bool FireActive
@@ -93,7 +101,7 @@ namespace SpaceShooter
             set { _touchLeftScreenBorders = value; }
 
         }
-       
+
         private int _borderRight;
         public int BorderRight
         {
@@ -124,13 +132,13 @@ namespace SpaceShooter
 
         int randomFiresTimeSpent = 100;
         Random rand = new Random();
-        
-        public Boss(Game game):base(game)
+
+        public Boss(Game game) : base(game)
         {
-           
+
             _textureBoss = new Animation(game, 1, 1, 50);
             _explosion = new Animation(game, 9, 9, 50);
-           // _fire = new Tir(game, +15);
+            // _fire = new Tir(game, +15);
             _textureBoss.Active = true;
             _active = true;
             _health = 10;
@@ -138,7 +146,7 @@ namespace SpaceShooter
             _touchRightScreenBorders = false;
             _touchLeftScreenBorders = true;
             _firesList = new List<Tir>();
-          
+
             //_textureBoss.CurrentFrame = (_textureBoss.TotalFrames / 2) - (int)0.5; // define initial position in the sprite sheet when the ship does't moving
             // _boost = new Animation(game, 1, 5, 50);                 //change spritesheet
             // _fireEffect = new Animation(game, 1, 4, 40);
@@ -151,25 +159,25 @@ namespace SpaceShooter
             base.Initialize();
         }
 
-        public void LoadContent(ContentManager content, string textureBoss, string textureExplosion, string textureFire, string fireSoundEffect)
+        public void LoadContent(ContentManager content, string textureBoss, string textureExplosion, string textureFire, string healthTexture, string fireSoundEffect)
         {
             TextureBoss.LoadContent(content, textureBoss);
             Texture = _textureBoss.Texture; // define the parent object texture for  collision method with parameter(sprite)
             Explosion.LoadContent(content, textureExplosion);
-           // Fire.LoadContent(content, textureFire, TextureBoss.Rec);
+            HealthTexture = Content.Load<Texture2D>(healthTexture);
             FireSoundEffect = Content.Load<SoundEffect>(fireSoundEffect);
 
             _borderRight = Game1.windowWidth - Texture.Width;
             _borderLeft = 0;
             _randomBorderLeft = rand.Next(BorderLeft, Game1.windowWidth / 2 - Texture.Width);
-            _randomBorderRight = rand.Next(Game1.windowWidth / 2+Texture.Width, BorderRight);
+            _randomBorderRight = rand.Next(Game1.windowWidth / 2 + Texture.Width, BorderRight);
 
             //_textureShip.Moving = false;
             // _boost.LoadContent(content, textureBoost);
             // _fireEffect.LoadContent(content, textureFireEffect);
         }
 
-        public void Update(Game game, GameTime gameTime, Vector2 cible)
+        public void Update(Game game, GameTime gameTime, Vaisseau ship)
         {
 
             firesTimeSpent += gameTime.ElapsedGameTime.Milliseconds;
@@ -184,11 +192,15 @@ namespace SpaceShooter
 
                 _textureBoss.FinalPosition = _position;
 
-                UpdateFires(game,gameTime, cible);
-                
+                if(ship.Active == true)
+                {
+                    UpdateFires(game, gameTime, ship);
+                }
+               
+
                 TouchedScreenBorders();
                 BossIsMoving();
-                
+
             }
 
             if (_active == false)
@@ -207,6 +219,8 @@ namespace SpaceShooter
 
             if (_active == true)
             {
+                int pixelAlign = 25;
+
                 foreach (Tir t in FiresList)
                 {
                     t.Draw(spriteBatch);
@@ -221,7 +235,12 @@ namespace SpaceShooter
                     _textureBoss.Draw(spriteBatch);// add color 
                 }
 
-            
+                for (int i = 0; i != _health; i++)
+                {
+                    spriteBatch.Draw(HealthTexture, new Vector2(5, pixelAlign), Color.Beige);
+                    pixelAlign += 40;
+                }
+
             }
             if (_active == false)
             {
@@ -234,76 +253,77 @@ namespace SpaceShooter
         {
             if (_touchRightScreenBorders)
             {
-               /* if (_position.X >= 0)*/
-                    _position.X -= _speed.X;
-               // _moveLeftActive = true;
-               // _textureShip.Moving = true;
+                /* if (_position.X >= 0)*/
+                _position.X -= _speed.X;
+                // _moveLeftActive = true;
+                // _textureShip.Moving = true;
 
             }
-         /*   else
-            {
-              //  _moveLeftActive = false;
-              //  _textureShip.MoveToPoint = true;
-            }*/
+            /*   else
+               {
+                 //  _moveLeftActive = false;
+                 //  _textureShip.MoveToPoint = true;
+               }*/
 
-          
-                if (_touchLeftScreenBorders)
-                {
-                    _position.X += _speed.X;
-                  // _moveRightActive = true;
-                 //   _textureShip.Moving = true;
-                }
-           
-           /* else
+
+            if (_touchLeftScreenBorders)
             {
-               // _moveRightActive = false;
-              //  _textureShip.MoveToPoint = true;
-            }*/
-        
+                _position.X += _speed.X;
+                // _moveRightActive = true;
+                //   _textureShip.Moving = true;
+            }
+
+            /* else
+             {
+                // _moveRightActive = false;
+               //  _textureShip.MoveToPoint = true;
+             }*/
+
         }
         //method to indicate if boss has touched  borders of the screen
         //add a random variable for the boss AI
         private void TouchedScreenBorders()
         {
-          
+
             if (_position.X > _randomBorderRight)
             {
                 _touchRightScreenBorders = true;
                 _touchLeftScreenBorders = false;
                 _randomBorderRight = rand.Next(Game1.windowWidth / 2, BorderRight); // substract texture width to ameliorate the random
-                
+
             }
-        if (_position.X < _randomBorderLeft)
-        {
-            _touchLeftScreenBorders = true;
-            _touchRightScreenBorders = false;
-            _randomBorderLeft = rand.Next(BorderLeft, Game1.windowWidth / 2);// add texture width to ameliorate the random
+            if (_position.X < _randomBorderLeft)
+            {
+                _touchLeftScreenBorders = true;
+                _touchRightScreenBorders = false;
+                _randomBorderLeft = rand.Next(BorderLeft, Game1.windowWidth / 2);// add texture width to ameliorate the random
             }
         }
 
-        public void UpdateFires(Game game, GameTime gameTime, Vector2 cible)
+        public void UpdateFires(Game game, GameTime gameTime, Vaisseau ship)
         {
-            
             if (firesTimeSpent > randomFiresTimeSpent)
             {
                 _fire = new Tir(game, 15);
                 _fire.LoadContent(Content, "BossBullet", Rec);
-                _fire.Position = new Vector2((Rec.X + (Rec.Width / 2)) - Fire.Texture.Width / 2, (Rec.Y+Texture.Height)-Fire.Texture.Height);
-                _fire.Direction = TargetTracking(_fire.Position, cible);
+                _fire.Position = new Vector2((Rec.X + (Rec.Width / 2)) - Fire.Texture.Width / 2, (Rec.Y + Texture.Height) - Fire.Texture.Height);
+                _fire.Direction = TargetTracking(_fire.Position, ship.Rec.Center.ToVector2());
                 FiresList.Add(_fire);
                 FireSoundEffect.CreateInstance().Play();
                 firesTimeSpent = 0;
                 randomFiresTimeSpent = rand.Next(500, 900);
             }
-            else
-            {
-                _fireActive = false;
-            }
+
             foreach (Tir t in FiresList)
             {
-                /*Vector2 direction= TargetTracking(t.Position, cible);
+                /*Vector2 direction= TargetTracking(t.Position, cible);                       method for one target tracking
                 t.Update_toDestination(gameTime,direction);*/
                 t.Update_toDestination(gameTime);
+                if (t.Collision(ship))
+                {
+                    t.Active = false;
+                    ship.Health -= 1;
+                }
 
             }
             for (int i = 0; i < FiresList.Count; i++)
@@ -315,7 +335,7 @@ namespace SpaceShooter
                 }
             }
         }
-
+    
         // target tracking
         private Vector2 TargetTracking(Vector2 start, Vector2 end )
         {
