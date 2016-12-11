@@ -270,14 +270,14 @@ namespace SpaceShooter
             {
                 _touchRightScreenBorders = true;
                 _touchLeftScreenBorders = false;
-                _randomBorderRight = rand.Next(Game1.windowWidth / 2, BorderRight) - Texture.Width; // substract texture width to ameliorate the random
+                _randomBorderRight = rand.Next(Game1.windowWidth / 2, BorderRight); // substract texture width to ameliorate the random
                 
             }
         if (_position.X < _randomBorderLeft)
         {
             _touchLeftScreenBorders = true;
             _touchRightScreenBorders = false;
-            _randomBorderLeft = rand.Next(BorderLeft, Game1.windowWidth / 2) + Texture.Width;// substract texture width to ameliorate the random
+            _randomBorderLeft = rand.Next(BorderLeft, Game1.windowWidth / 2);// add texture width to ameliorate the random
             }
         }
 
@@ -286,14 +286,14 @@ namespace SpaceShooter
             
             if (firesTimeSpent > randomFiresTimeSpent)
             {
-                _fire = new Tir(game, 5);
+                _fire = new Tir(game, 15);
                 _fire.LoadContent(Content, "BossBullet", Rec);
                 _fire.Position = new Vector2((Rec.X + (Rec.Width / 2)) - Fire.Texture.Width / 2, (Rec.Y+Texture.Height)-Fire.Texture.Height);
                 _fire.Direction = TargetTracking(_fire.Position, cible);
                 FiresList.Add(_fire);
                 FireSoundEffect.CreateInstance().Play();
                 firesTimeSpent = 0;
-                randomFiresTimeSpent = rand.Next(500, 1000);
+                randomFiresTimeSpent = rand.Next(500, 900);
             }
             else
             {
