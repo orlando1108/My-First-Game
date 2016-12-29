@@ -43,29 +43,11 @@
 /processorParam:Quality=Best
 /build:Songs/lazerShip.wav
 
-#begin Songs/SoundExplosionShip.mp3
-/importer:Mp3Importer
-/processor:SongProcessor
-/processorParam:Quality=Best
-/build:Songs/SoundExplosionShip.mp3
-
 #begin Songs/explosionTEST2.mp3
 /importer:Mp3Importer
 /processor:SongProcessor
 /processorParam:Quality=Best
 /build:Songs/explosionTEST2.mp3
-
-#begin Songs/explosionTESTwave.wav
-/importer:WavImporter
-/processor:SoundEffectProcessor
-/processorParam:Quality=Best
-/build:Songs/explosionTESTwave.wav
-
-#begin Songs/demon_beat_mix.mp3
-/importer:Mp3Importer
-/processor:SongProcessor
-/processorParam:Quality=Best
-/build:Songs/demon_beat_mix.mp3
 
 #begin Fonts/LEVEL.spritefont
 /importer:FontDescriptionImporter
@@ -102,4 +84,16 @@
 /processorParam:MakeSquare=False
 /processorParam:TextureFormat=Color
 /build:PNG/enemy_bullet.png
+
+#begin missileTest.png
+/importer:TextureImporter
+/processor:TextureProcessor
+/processorParam:ColorKeyColor=255,0,255,255
+/processorParam:ColorKeyEnabled=True
+/processorParam:GenerateMipmaps=False
+/processorParam:PremultiplyAlpha=True
+/processorParam:ResizeToPowerOfTwo=False
+/processorParam:MakeSquare=False
+/processorParam:TextureFormat=Color
+/build:missileTest.png
 

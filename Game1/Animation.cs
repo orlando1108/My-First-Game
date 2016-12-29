@@ -74,7 +74,15 @@ namespace SpaceShooter
             get { return _moveToPoint; }
             set { _moveToPoint = value; }
         }
-        
+
+        private Rectangle _sourceRec;
+        public Rectangle SourceRec
+        {
+            get { return _sourceRec; }
+            set { _sourceRec = value; }
+        }
+
+
         public Animation(Game game, int ligs, int cols, Vector2 Speed, float Position, int speedPerFrames) : base(game)
         {
             this._position.X = Position;
@@ -238,7 +246,7 @@ namespace SpaceShooter
 
         public override void Draw(SpriteBatch spriteBatch)
         {
-            Rectangle sourceRec;
+            
             if(_moving == true)
             {
                 if (_active == true)
@@ -248,17 +256,17 @@ namespace SpaceShooter
                     
                         row = (int)((float)_currentFrame / Cols);
                         column = _currentFrame % Cols;
-                        sourceRec = new Rectangle(_width * column, _height * row, _width, _height);
+                        _sourceRec = new Rectangle(_width * column, _height * row, _width, _height);
                         Rectangle destinationRec = new Rectangle((int)_finalPosition.X, (int)_finalPosition.Y, _width, _height);
-                        spriteBatch.Draw(Texture, destinationRec, sourceRec, Color.White);
+                        spriteBatch.Draw(Texture, destinationRec, _sourceRec, Color.White);
                 }
             }
             if(_moving == false)
             {
                 // to display one of all sprites of the texture 
-                sourceRec = new Rectangle((_texture.Width/2)-(_width/2), 0, _width, _height); // change this according to the sprite sheet size 
+                _sourceRec = new Rectangle((_texture.Width/2)-(_width/2), 0, _width, _height); // change this according to the sprite sheet size 
                 Rectangle destinationRec = new Rectangle((int)_finalPosition.X, (int)_finalPosition.Y, _width, _height);
-                spriteBatch.Draw(Texture, destinationRec, sourceRec, Color.White);
+                spriteBatch.Draw(Texture, destinationRec, _sourceRec, Color.White);
 
             }
 

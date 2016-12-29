@@ -116,43 +116,34 @@
       <Link>MonoGame.Framework.dll.config</Link>
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
-    <None Include="Content\BossBullet.xnb">
+    <None Include="Content\Sounds-Musics\explosionTEST2.ogg">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
-    <None Include="Content\explosionTEST2.ogg">
+    <None Include="Content\Sounds-Musics\GameMusic.ogg">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
-    <None Include="Content\explosionTEST2.xnb">
+    <None Include="Content\Sounds-Musics\Redemption.ogg">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
-    <None Include="Content\explosionTESTwave.xnb">
+    <None Include="Content\Sprites\BossBullet.xnb">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
-    <None Include="Content\GAME-OVER.xnb">
+    <None Include="Content\Sounds-Musics\explosionTEST2.xnb">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
-    <None Include="Content\HEALTH2.xnb">
+    <None Include="Content\SpriteFonts\GAME-OVER.xnb">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
-    <None Include="Content\LEVEL.xnb">
+    <None Include="Content\SpriteFonts\LEVEL.xnb">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
-    <None Include="Content\Redemption.ogg">
+    <None Include="Content\Sounds-Musics\Redemption.xnb">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
-    <None Include="Content\Redemption.xnb">
+    <None Include="Content\Sounds-Musics\SoundLazerShip.xnb">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
-    <None Include="Content\SoundExplosionShip.ogg">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </None>
-    <None Include="Content\SoundExplosionShip.xnb">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </None>
-    <None Include="Content\SoundLazerShip.xnb">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </None>
-    <None Include="Content\SCORE.xnb">
+    <None Include="Content\SpriteFonts\SCORE.xnb">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
   </ItemGroup>
@@ -163,7 +154,7 @@
     <Content Include="Content\Asteroid2.png">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
-    <Content Include="Content\AsteroidAnimation.png">
+    <Content Include="Content\SpriteSheets\AsteroidAnimation.png">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
     <Content Include="Content\AsteroidAnimation1.png">
@@ -172,52 +163,52 @@
     <Content Include="Content\AsteroidAnimation2.png">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
-    <Content Include="Content\AsteroidAnimation5.png">
+    <Content Include="Content\SpriteSheets\AsteroidAnimation5.png">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
-    <Content Include="Content\AsteroidExplosion.png">
+    <Content Include="Content\SpriteSheets\ShipTexture.png">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
-    <Content Include="Content\backgroundINFOS.png">
+    <Content Include="Content\SpriteSheets\test.png">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
-    <Content Include="Content\BoostEffect1.png">
+    <Content Include="Content\Sprites\backgroundINFOS.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Content\SpriteSheets\BoostEffect1.png">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
     <Content Include="Content\BoostShip.png">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
-    <Content Include="Content\AsteroidExplosion2.png">
+    <Content Include="Content\SpriteSheets\AsteroidExplosion2.png">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
-    <Content Include="Content\BossTexture.png">
+    <Content Include="Content\Sprites\BossTexture.png">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
-    <Content Include="Content\explosionSHIP.png">
+    <Content Include="Content\SpriteSheets\explosionSHIP.png">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
-    <Content Include="Content\fire.png">
+    <Content Include="Content\Sprites\fire.png">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
-    <Content Include="Content\boss_FireTexture.png">
+    <Content Include="Content\SpriteSheets\FireEffect.png">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
-    <Content Include="Content\FireEffect.png">
+    <Content Include="Content\Sprites\GameOver.png">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
-    <Content Include="Content\ExplosionTest.png">
+    <Content Include="Content\Sprites\health.png">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
-    <Content Include="Content\health.png">
+    <Content Include="Content\Sprites\HealthBoss.png">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
-    <Content Include="Content\HealthBoss.png">
+    <Content Include="Content\Sprites\missile1.png">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
-    <Content Include="Content\Scrollspace.jpg">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Include="Content\ShipTexture.png">
+    <Content Include="Content\Sprites\Scrollspace.jpg">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
   </ItemGroup>
