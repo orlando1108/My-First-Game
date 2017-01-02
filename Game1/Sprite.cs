@@ -90,12 +90,12 @@ namespace SpaceShooter
             get { return _rec; }
             set { _rec = value; }
         }
-        protected Rectangle _recDestination;
+       /* protected Rectangle _recDestination;
         public Rectangle Destination
         {
             get { return _recDestination; }
             set { _recDestination = value; }
-        }
+        }*/
 
         #region Constructeurs
 
@@ -121,11 +121,11 @@ namespace SpaceShooter
         public virtual void LoadContent(ContentManager Content, string textureName)
         {
             _texture = Content.Load<Texture2D>(textureName);
-            /*_rec = new Rectangle(
+            _rec = new Rectangle(
                  (int)_position.X,
                  (int)_position.Y,
-                _texture.Width,
-                _texture.Height);*/
+                _width,
+                _height);
         }
 
         public virtual void UnloadContent()
@@ -138,11 +138,11 @@ namespace SpaceShooter
         public virtual void Update(GameTime gameTime)
         {
 
-            _recDestination = new Rectangle(
+          /*  _recDestination = new Rectangle(
              (int)_position.X,
              (int)_position.Y,
-             _texture.Width,
-             _texture.Height);
+             _width,
+             _height);*/
 
         }
 
@@ -152,23 +152,31 @@ namespace SpaceShooter
                 spriteBatch.Draw(_texture, _position, Color.White);
         }
 
-        public bool Collision(Sprite cible, Rectangle textureSource = new Rectangle())
+        public bool Collision(Sprite cible, Rectangle cible_RecSource = new Rectangle(), Rectangle source_RecSource = new Rectangle())
         {
-            bool intersect = _rec.Intersects(cible.Rec) && intersectPixels(cible, textureSource);
+            bool intersect = _rec.Intersects(cible.Rec) && intersectPixels(cible, cible_RecSource, source_RecSource);
             Collided = intersect;
             cible.Collided = intersect;
             return intersect;
         }
 
-        private bool intersectPixels(Sprite cible, Rectangle textureSource = new Rectangle()) //sprite cible
+        private bool intersectPixels(Sprite cible, Rectangle cible_RecSource = new Rectangle(), Rectangle source_RecSource = new Rectangle()) //sprite cible
         {
             var sourceColors = new Color[_texture.Width * _texture.Height];
-            _texture.GetData(sourceColors);
-
-            var cibleColors = new Color[cible.Rec.Width * cible.Rec.Height];
-            if (textureSource.Width > 0)
+            if (source_RecSource.Width > 0)
             {
-                cible.Texture.GetData(0, textureSource, cibleColors, 0, cible.Rec.Width * cible.Rec.Height);
+                _texture.GetData(0, source_RecSource, sourceColors, 0, cible.Rec.Width * cible.Rec.Height);
+            }
+            else
+            {
+                _texture.GetData(sourceColors);
+            }
+           
+
+            var cibleColors = new Color[cible.Texture.Width * cible.Texture.Height];
+            if (cible_RecSource.Width > 0)
+            {
+                cible.Texture.GetData(0, cible_RecSource, cibleColors, 0, cible.Rec.Width * cible.Rec.Height);
             }
             else
             {

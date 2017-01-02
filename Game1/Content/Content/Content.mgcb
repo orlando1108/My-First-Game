@@ -97,3 +97,15 @@
 /processorParam:TextureFormat=Color
 /build:missileTest.png
 
+#begin Songs/menuMusic.mp3
+/importer:Mp3Importer
+/processor:SongProcessor
+/processorParam:Quality=Best
+/build:Songs/menuMusic.mp3
+
+#begin Fonts/GAME-TITLE.spritefont
+/importer:FontDescriptionImporter
+/processor:FontDescriptionProcessor
+/processorParam:TextureFormat=Compressed
+/build:Fonts/GAME-TITLE.spritefont
+

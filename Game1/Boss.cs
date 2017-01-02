@@ -106,7 +106,7 @@ namespace SpaceShooter
         long missileTimeSpent;
 
 
-        int randomFiresTimeSpent = 100;
+        int randomFiresTimeSpent = 500;
         int randomMissileTimeSpent = 300;
         Random rand = new Random();
 
@@ -166,19 +166,20 @@ namespace SpaceShooter
                 _textureBoss.Width,
                 _textureBoss.Height);
 
-                _textureBoss.FinalPosition = _position;
+                _textureBoss.Position = _position;
 
                 if (ship.Active == true)
                 {
                     UpdateFires(game, gameTime, ship);
                     UpdateMissile(game, gameTime, ship);
                 }
-
+                if (_health == 0)
+                    _active = false;
 
 
                 if (Collision(ship, ship.TextureShip.SourceRec))
                 {
-                    _health = 0;
+                    ship.Health = 0;
                 }
 
                 TouchedScreenBorders();
@@ -190,7 +191,7 @@ namespace SpaceShooter
             {
                 _explosion.Active = true;
                 _explosion.UpdateOnceToRight(gameTime);
-                _explosion.FinalPosition = _position;
+                _explosion.Position = _position;
                 _fireActive = false;
             }
 
@@ -301,7 +302,7 @@ namespace SpaceShooter
                 FiresList.Add(_fire);
                 FireSoundEffect.CreateInstance().Play();
                 firesTimeSpent = 0;
-                randomFiresTimeSpent = rand.Next(500, 900);
+                randomFiresTimeSpent = rand.Next(500, 800);
             }
 
             foreach (Tir t in FiresList)

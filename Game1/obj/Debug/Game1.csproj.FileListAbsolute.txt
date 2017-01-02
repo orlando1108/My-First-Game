@@ -68,3 +68,13 @@ C:\Users\Erwan\Documents\Visual Studio 2015\Projects\Game1\Game1\bin\DesktopGL\A
 C:\Users\Erwan\documents\visual studio 2015\Projects\Game1\Game1\bin\DesktopGL\AnyCPU\Debug\Content\Sprites\missile1.png
 C:\Users\Erwan\documents\visual studio 2015\Projects\Game1\Game1\bin\DesktopGL\AnyCPU\Debug\Content\SpriteSheets\test.png
 C:\Users\Erwan\documents\visual studio 2015\Projects\Game1\Game1\bin\DesktopGL\AnyCPU\Debug\Content\Sprites\GameOver.png
+C:\Users\Erwan\documents\visual studio 2015\Projects\Game1\Game1\bin\DesktopGL\AnyCPU\Debug\Content\Sounds-Musics\menuMusic.ogg
+C:\Users\Erwan\documents\visual studio 2015\Projects\Game1\Game1\bin\DesktopGL\AnyCPU\Debug\Content\Sounds-Musics\menuMusic.xnb
+C:\Users\Erwan\documents\visual studio 2015\Projects\Game1\Game1\bin\DesktopGL\AnyCPU\Debug\Content\SpriteFonts\GAME-TITLE.xnb
+C:\Users\Erwan\documents\visual studio 2015\Projects\Game1\Game1\bin\DesktopGL\AnyCPU\Debug\Content\PauseMenu-Items\Panel.png
+C:\Users\Erwan\documents\visual studio 2015\Projects\Game1\Game1\bin\DesktopGL\AnyCPU\Debug\Content\PauseMenu-Items\Resume.png
+C:\Users\Erwan\documents\visual studio 2015\Projects\Game1\Game1\bin\DesktopGL\AnyCPU\Debug\Content\MainMenu-Items\Play.png
+C:\Users\Erwan\documents\visual studio 2015\Projects\Game1\Game1\bin\DesktopGL\AnyCPU\Debug\Content\MainMenu-Items\BackGround-StartMenu.png
+C:\Users\Erwan\documents\visual studio 2015\Projects\Game1\Game1\bin\DesktopGL\AnyCPU\Debug\Content\MainMenu-Items\Settings.png
+C:\Users\Erwan\documents\visual studio 2015\Projects\Game1\Game1\bin\DesktopGL\AnyCPU\Debug\Content\MainMenu-Items\Your Ship.png
+C:\Users\Erwan\documents\visual studio 2015\Projects\Game1\Game1\bin\DesktopGL\AnyCPU\Debug\Content\PauseMenu-Items\Main Menu.png

@@ -20,7 +20,7 @@ namespace SpaceShooter
         SpriteBatch spriteBatch;
         GameTime gameTime = new GameTime();
 
-       // SpriteFont GameOver;
+        // SpriteFont GameOver;
         SpriteFont Score;
         SpriteFont Level;
         // SpriteFont HealthPoints;
@@ -28,6 +28,7 @@ namespace SpaceShooter
         SoundEffect fire;
         Song explosionShip;
         Song gameMusic;
+        
 
         public const int windowHeight = 800;
         public const int windowWidth = 1000;
@@ -42,30 +43,36 @@ namespace SpaceShooter
         int levelMeter;
         int newAsteroidSpeed;
         int timeToGenerateAsteroids;
-        
+        float transparency = 0;
+        bool gameMusicStarted = false;
+       
 
-        public Vector2 BGposition;
-        public Texture2D BGtexture;
-        public Texture2D Health;
-        public Texture2D BGinfos;
-        private Texture2D gameOver_Texture;
-        public List<Texture2D> Healths;
-        public Rectangle scrollBG1;
-        public Rectangle scrollBG2;
 
+    Texture2D BGtexture;
+        Texture2D Health;
+        Texture2D BGinfos;
+        Texture2D gameOver_Texture;
+        Rectangle scrollBG1;
+        Rectangle scrollBG2;
+
+       // List<Texture2D> Healths;
         List<Asteroid> ListeAsteroids;
         List<Tir> ListeTirs;
         Asteroid asteroid;
         Vaisseau vaisseau;
         Boss boss;
         Tir tir;
+        MainMenu startMenu;
+        PauseMenu pauseMenu;
         KeyboardState oldState;
         public enum GameStates
         {
+            Loading,
             Playing,
             Paused,
         }
-        private GameStates _gameState;
+        public static GameStates _gameState { get; set; }
+        
         //Thread scroller;
 
         public Game1()
@@ -79,10 +86,9 @@ namespace SpaceShooter
             graphics.PreferredBackBufferWidth = windowWidth;
             ListeAsteroids = new List<Asteroid>();
             ListeTirs = new List<Tir>();
-            _gameState = GameStates.Playing;
-
-
-
+            _gameState = GameStates.Loading;
+            pauseMenu = new PauseMenu(this);
+            startMenu = new MainMenu(this);
         }
 
         /// <summary>
@@ -105,11 +111,12 @@ namespace SpaceShooter
             levelMeter = 1;
             points = 0;
             level = 0;
+            transparency = 0;
             //paused = false;
 
             ListeAsteroids.Clear();
             ListeTirs.Clear();
-
+            IsMouseVisible = true;
 
             base.Initialize();
         }
@@ -126,23 +133,23 @@ namespace SpaceShooter
             this.explosionShip = Content.Load<Song>("Sounds-Musics/explosionTEST2");
             this.gameMusic = Content.Load<Song>("Sounds-Musics/Redemption");
 
-            MediaPlayer.Play(gameMusic);
-            MediaPlayer.IsRepeating = true;
+            
 
             //texture du vaisseau
             vaisseau.LoadContent(Content, "SpriteSheets/ShipTexture", "SpriteSheets/explosionSHIP", "SpriteSheets/FireEffect", "SpriteSheets/BoostEffect1");
-            vaisseau.Position = new Vector2((graphics.PreferredBackBufferWidth / 2) - (vaisseau.TextureShip.Width / (vaisseau.TextureShip.Cols * 2)),
-                                            (graphics.PreferredBackBufferHeight - vaisseau.TextureShip.Height * 2));
+           
             boss.LoadContent(Content, "Sprites/BossTexture", "SpriteSheets/explosionSHIP", "Sprites/HealthBoss", "Sounds-Musics/SoundLazerShip", "Sprites/test3-bis");
-            
 
-           // GameOver = Content.Load<SpriteFont>("SpriteFonts/GAME-OVER");
+
+            // GameOver = Content.Load<SpriteFont>("SpriteFonts/GAME-OVER");
             Score = Content.Load<SpriteFont>("SpriteFonts/SCORE");
             Level = Content.Load<SpriteFont>("SpriteFonts/LEVEL");
             Health = Content.Load<Texture2D>("Sprites/health");
             BGinfos = Content.Load<Texture2D>("Sprites/backgroundINFOS");
             gameOver_Texture = Content.Load<Texture2D>("Sprites/GameOver");
             // HealthPoints = Content.Load<SpriteFont>("HEALTH2");
+            pauseMenu.LoadContent(Content, "Sounds-Musics/menuMusic");
+            startMenu.LoadContent(Content, "Sounds-Musics/menuMusic");
 
             base.LoadContent();
         }
@@ -152,11 +159,13 @@ namespace SpaceShooter
         /// </summary>
         protected override void UnloadContent()
         {
+            // add unload method for all menu objects
             BGtexture.Dispose();
             Health.Dispose();
             gameOver_Texture.Dispose();
             vaisseau.UnloadContent();
             boss.UnloadContent();
+            
             //missile.UnloadContent();
             foreach (Asteroid ast in ListeAsteroids)
             {
@@ -168,8 +177,7 @@ namespace SpaceShooter
             }
 
             base.UnloadContent();
-
-        }
+       }
 
         /// <summary>
         /// Allows the game to run logic such as updating the world,
@@ -178,69 +186,97 @@ namespace SpaceShooter
         /// <param name="gameTime">Provides a snapshot of timing values.</param>
         protected override void Update(GameTime gameTime)
         {
+            if(_gameState == GameStates.Loading)
+            {
+                startMenu.Update(gameTime);
+            }
             if (_gameState == GameStates.Playing)
             {
-                KeyboardState state = Keyboard.GetState();
-                asteroidsTimeSpent += gameTime.ElapsedGameTime.Milliseconds;
                 tirsTimeSpent += gameTime.ElapsedGameTime.Milliseconds;
-                bossFiresTimeSpent += gameTime.ElapsedGameTime.Milliseconds;
-
-                /* scroller = new Thread(UpdateBGScrolling);
-                 scroller.Start();
-                 scroller.Join();*/
-                PauseGame(gameTime);
                 UpdateBGScrolling();
-
-                if (level == levelMeter)
+                PauseGame(gameTime);
+                
+                if (!gameMusicStarted)
                 {
-                    newAsteroidSpeed += 1;
-                    levelMeter += 1;
-                    timeToGenerateAsteroids -= 2;
+                    MediaPlayer.Play(gameMusic);
+                    MediaPlayer.IsRepeating = true;
+                    gameMusicStarted = true;
                 }
-                //generation des asteroids toutes les 500 msec
-                /*  if (asteroidsTimeSpent > timeToGenerateAsteroids)
-                  {
-                      LoadAsteroids(newAsteroidSpeed);
-                      asteroidsTimeSpent = 0;
-                  }
-                  //Mise à jour des asteroids
-                  UpdateAsteroids(gameTime);*/
 
-                //Mise à jour des tirs
-                UpdateShipFires();
-                if (vaisseau.Active == true & vaisseau.Health == 0)
+                if (level < 5)
+                {
+                    asteroidsTimeSpent += gameTime.ElapsedGameTime.Milliseconds;
+
+                    /* scroller = new Thread(UpdateBGScrolling);
+                     scroller.Start();
+                     scroller.Join();*/
+
+
+                    if (level == levelMeter)
+                    {
+                        newAsteroidSpeed += 2;
+                        levelMeter += 1;
+                        timeToGenerateAsteroids -= 5;
+                    }
+                    //generation des asteroids toutes les 500 msec
+                    if (asteroidsTimeSpent > timeToGenerateAsteroids)
+                    {
+                        LoadAsteroids(newAsteroidSpeed);
+                        asteroidsTimeSpent = 0;
+                    }
+                    //Mise à jour des asteroids
+                    UpdateAsteroids(gameTime);
+
+                    //Mise à jour des tirs
+                   
+
+                    // TODO: ameliorer ca, mettre active = false dans les classes respectives
+
+                }
+                else
+                {
+                    bossFiresTimeSpent += gameTime.ElapsedGameTime.Milliseconds;
+                    if (boss.Active == true && boss.Health == 0)
+                    {
+                        boss.Active = false;
+                        MediaPlayer.Play(explosionShip);
+                        MediaPlayer.Volume = 1.0f;
+                        MediaPlayer.IsRepeating = false;
+                    }
+                    boss.Update(this, gameTime, vaisseau);
+                }
+
+                if (vaisseau.Active == true && vaisseau.Health == 0)
                 {
                     vaisseau.Active = false;
                     MediaPlayer.Play(explosionShip);
                     MediaPlayer.Volume = 1.0f;
                     MediaPlayer.IsRepeating = false;
-                }
 
-                if (boss.Active == true & boss.Health == 0)
+                }
+                else if (vaisseau.Active == false)
                 {
-                    boss.Active = false;
-                    MediaPlayer.Play(explosionShip);
-                    MediaPlayer.Volume = 1.0f;
-                    MediaPlayer.IsRepeating = false;
+                    transparency += 0.005f;
                 }
 
                 if (vaisseau.Explosion.Removeable == true || boss.Explosion.Removeable == true)
                 {
                     Initialize();
                 }
-                vaisseau.Update(gameTime, state, windowHeight, windowWidth);
-                boss.Update(this, gameTime, vaisseau);
-
-
-                base.Update(gameTime);
-
-
-
+                UpdateShipFires();
+                vaisseau.Update(gameTime, windowHeight, windowWidth);
             }
+
+
             if (_gameState == GameStates.Paused)
             {
-                ResumeGame(gameTime);
+                gameMusicStarted = false;
+                // ResumeGame(gameTime);
+
+                pauseMenu.Update(gameTime);
             }
+
+            base.Update(gameTime);
         }
 
         /// <summary>
@@ -249,47 +285,70 @@ namespace SpaceShooter
         /// <param name="gameTime">Provides a snapshot of timing values.</param>
         protected override void Draw(GameTime gameTime)
         {
-            //if(_gameState == GameStates.Playing)
-            //  {
-            int pixelAlign = 25;
-            graphics.GraphicsDevice.Clear(Color.AliceBlue);
-            spriteBatch.Begin();
-            spriteBatch.Draw(BGtexture, scrollBG1, Color.White);
-            spriteBatch.Draw(BGtexture, scrollBG2, Color.White);
-
-            vaisseau.Draw(spriteBatch);
-            boss.Draw(spriteBatch);
-
-            foreach (Tir t in ListeTirs)
+            if(_gameState == GameStates.Loading)
             {
-                t.Draw(spriteBatch);
+                graphics.GraphicsDevice.Clear(Color.DarkCyan);
+                spriteBatch.Begin();
+                startMenu.Draw(spriteBatch);
+                spriteBatch.End();
             }
-
-            /* for (int i = 0; i < ListeAsteroids.Count; i++)
-             {
-                  ListeAsteroids[i].Draw(spriteBatch);
-
-             }*/
-
-            if (vaisseau.Active == false)
+            if (_gameState == GameStates.Playing)
             {
-                //spriteBatch.DrawString(GameOver, "GAME OVER", new Vector2((windowWidth / 2) - (GameOver.Texture.Width / 2), windowHeight / 2), Color.White);
-                spriteBatch.Draw(gameOver_Texture, new Rectangle(0,0,windowWidth,windowHeight-40), Color.White);
+                int pixelAlign = 25;
+                graphics.GraphicsDevice.Clear(Color.AliceBlue);
+
+                spriteBatch.Begin();
+                spriteBatch.Draw(BGtexture, scrollBG1, Color.White);
+                spriteBatch.Draw(BGtexture, scrollBG2, Color.White);
+
+                vaisseau.Draw(spriteBatch);
+                foreach (Tir t in ListeTirs)
+                {
+                    t.Draw(spriteBatch);
+                }
+
+                if (level < 5)
+                {
+                    for (int i = 0; i < ListeAsteroids.Count; i++)
+                    {
+                        ListeAsteroids[i].Draw(spriteBatch);
+
+                    }
+                }
+                else
+                {
+                    boss.Draw(spriteBatch);
+                }
+
+                if (vaisseau.Active == false)
+                {
+
+                    //spriteBatch.DrawString(GameOver, "GAME OVER", new Vector2((windowWidth / 2) - (GameOver.Texture.Width / 2), windowHeight / 2), Color.White);
+                    spriteBatch.Draw(gameOver_Texture, new Rectangle(0, 0, windowWidth, windowHeight - 40), Color.White * transparency);
+                }
+
+                spriteBatch.Draw(BGinfos, new Vector2(0, windowHeight - 40), Color.White);
+                spriteBatch.DrawString(Score, "Score: " + points, new Vector2(windowWidth - 100, windowHeight - 30), Color.DarkBlue);
+                spriteBatch.DrawString(Level, "Level: " + level, new Vector2(10, windowHeight - 30), Color.DarkMagenta);
+
+                for (int i = 0; i != vaisseau.Health; i++)
+                {
+                    spriteBatch.Draw(Health, new Vector2(100 + pixelAlign, windowHeight - 35), Color.Beige);
+                    pixelAlign += 25;
+                }
+
+                spriteBatch.End();
+                base.Draw(gameTime);
             }
-
-            spriteBatch.Draw(BGinfos, new Vector2(0, windowHeight - 40), Color.White);
-            spriteBatch.DrawString(Score, "Score: " + points, new Vector2(windowWidth - 100, windowHeight - 30), Color.DarkBlue);
-            spriteBatch.DrawString(Level, "Level: " + level, new Vector2(10, windowHeight - 30), Color.DarkMagenta);
-
-            for (int i = 0; i != vaisseau.Health; i++)
+            if(_gameState == GameStates.Paused)
             {
-                spriteBatch.Draw(Health, new Vector2(100 + pixelAlign, windowHeight - 35), Color.Beige);
-                pixelAlign += 25;
+                //graphics.GraphicsDevice.Clear(Color.DarkCyan);
+                spriteBatch.Begin();
+                
+                pauseMenu.Draw(spriteBatch);
+                spriteBatch.End();
             }
-            spriteBatch.End();
             base.Draw(gameTime);
-            //  }
-
         }
 
         public void UpdateAsteroids(GameTime gameTime)
@@ -298,7 +357,7 @@ namespace SpaceShooter
             {
                 foreach (Asteroid a in ListeAsteroids)
                 {
-                    if (vaisseau.Active == true && a.Active == true && a.Collision(vaisseau))
+                    if (vaisseau.Active == true && a.Active == true && a.Collision(vaisseau, vaisseau.TextureShip.SourceRec, a.TextureAsteroid.SourceRec))
                     {
                         a.Active = false;
                         vaisseau.Health -= 1;
@@ -307,7 +366,7 @@ namespace SpaceShooter
                     {
                         for (int i = 0; i < ListeTirs.Count; i++)
                         {
-                            if (ListeTirs[i].Collision(a))
+                            if (ListeTirs[i].Collision(a, a.TextureAsteroid.SourceRec))
                             {
                                 a.Active = false;
                                 points += 1;
@@ -335,7 +394,7 @@ namespace SpaceShooter
 
         public void UpdateShipFires()
         {
-            if (Keyboard.GetState().IsKeyDown(Keys.Space) && tirsTimeSpent > 300)
+            if (Keyboard.GetState().IsKeyDown(Keys.Space) && tirsTimeSpent > 200)
             {
                 tir = new Tir(this, -15);
                 tir.LoadContent(Content, "Sprites/fire");
@@ -373,7 +432,6 @@ namespace SpaceShooter
             asteroid = new Asteroid(this);
             asteroid.LoadContent(Content, "SpriteSheets/AsteroidAnimation5", "SpriteSheets/AsteroidAnimation5", "SpriteSheets/AsteroidExplosion2", newSpeed);
             ListeAsteroids.Add(asteroid);
-
         }
 
         public void UpdateBGScrolling()
@@ -382,17 +440,12 @@ namespace SpaceShooter
                 scrollBG1.Y = -windowHeight;
             if (scrollBG2.Y == windowHeight)
                 scrollBG2.Y = -windowHeight;
-
             scrollBG1.Y += 1;
             scrollBG2.Y += 1;
         }
 
-        /*  public delegate void OnKeyDownEventHandler(object sender, EventArgs e);
-          public event OnKeyDownEventHandler Changed;*/
-
-
         public void PauseGame(GameTime gameTime)
-        { // state.GetPressedKeys() += new OnKeyDownEventHandler(MainWindow_KeyDown);
+        {
             //GamePad.GetState(PlayerIndex.Two).Buttons.Back == ButtonState.Pressed
             KeyboardState state = Keyboard.GetState();
             if (!state.IsKeyDown(Keys.P))
@@ -407,32 +460,14 @@ namespace SpaceShooter
             if (oldState != state && state.IsKeyDown(Keys.P))
             {
                 _gameState = GameStates.Paused;
+                MediaPlayer.Stop();
+                gameMusicStarted = false;
                 oldState = state;
+                pauseMenu.oldState = state;
             }
-           
+
         }
 
-        public void ResumeGame(GameTime gameTime)
-        { // state.GetPressedKeys() += new OnKeyDownEventHandler(MainWindow_KeyDown);
-            //GamePad.GetState(PlayerIndex.Two).Buttons.Back == ButtonState.Pressed
-            KeyboardState state = Keyboard.GetState();
-            if (!state.IsKeyDown(Keys.P))
-            {
-                oldState = state;
-            }
-            
-            
-            if (GamePad.GetState(PlayerIndex.One).Buttons.Back ==
-                ButtonState.Pressed || state.IsKeyDown(Keys.Escape))
-                Exit();
-
-            if (oldState != state &&  state.IsKeyDown(Keys.P))
-            {
-                _gameState = GameStates.Playing;
-                oldState = state;
-                
-            }
-        }
         /*TODO pierre:
          *regenerer la vie du vaisseau en fonction du level
          * rajouter de la vie aux asteroids.

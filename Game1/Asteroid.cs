@@ -127,13 +127,13 @@ namespace SpaceShooter
                 _textureAsteroid.Width,
                 _textureAsteroid.Height);
                 _position = new Vector2(_position.X, _position.Y + _speed.Y);
-                _textureAsteroid.FinalPosition = _position;
+                _textureAsteroid.Position = _position;
                 _textureAsteroid.UpdateLimitLess_ToRight(gameTime);
             }
         else
         {
             _explosion.Active = true;
-            _explosion.FinalPosition = _position;
+            _explosion.Position = _position;
             _explosion.UpdateOnceToRight(gameTime);
                
         }

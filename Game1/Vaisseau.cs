@@ -6,7 +6,7 @@ using System;
 
 namespace SpaceShooter
 {
-    class Vaisseau :Sprite
+    class Vaisseau : Sprite
     {
         private Animation _explosion;
         public Animation Explosion
@@ -35,7 +35,7 @@ namespace SpaceShooter
             get { return _textureShip; }
             set { _textureShip = value; }
         }
-        
+
         private bool _fireActive;
         public bool FireActive
         {
@@ -62,15 +62,15 @@ namespace SpaceShooter
             get { return _moveRightActive; }
             set { _moveRightActive = value; }
         }
-        
+
         private int _health;
         public int Health
         {
             get { return _health; }
             set { _health = value; }
         }
-        
-        public Vaisseau (Game game):base(game)
+
+        public Vaisseau(Game game) : base(game)
         {
             _textureShip = new Animation(game, 1, 7, 50);
             _explosion = new Animation(game, 9, 9, 50);
@@ -81,51 +81,53 @@ namespace SpaceShooter
             _active = true;
             _health = 10;
             _boostActive = false;
-             
-             _fireEffect.Active = false;
-             _fireActive = false;
+            _fireEffect.Active = false;
+            _fireActive = false;
+            _textureShip.Active = true;
+            _textureShip.Moving = false;
 
         }
         public override void Initialize()
         {
-           
+
             base.Initialize();
         }
 
         public void LoadContent(ContentManager content, String textureVaisseau, String textureExplosion, String textureFireEffect, String textureBoost)
         {
             _textureShip.LoadContent(content, textureVaisseau);
+            _position = new Vector2((Game1.windowWidth / 2) - (_textureShip.Width / (_textureShip.Cols * 2)),
+                                           (Game1.windowHeight - _textureShip.Height * 2));
             _texture = _textureShip.Texture; // define the parent object texture for  collision method with parameter(sprite)
 
-            _textureShip.Active = true;
-            _textureShip.Moving = false;
+            
             _explosion.LoadContent(content, textureExplosion);
             _boost.LoadContent(content, textureBoost);
-            _fireEffect.LoadContent(content,textureFireEffect);
+            _fireEffect.LoadContent(content, textureFireEffect);
 
 
         }
 
-        public  void Update(GameTime gameTime,KeyboardState state, int H, int W )
+        public void Update(GameTime gameTime, int H, int W)
         {
-           
-        if (_active == true)
-        {                       // rectangle update 
-                    _rec = new Rectangle(
-                    (int)_position.X,
-                    (int)_position.Y,
-                    _textureShip.Width,     
-                    _textureShip.Height);
-                
-                _textureShip.FinalPosition = _position;
-                
-                Controls(state, H, W);
+
+            if (_active == true)
+            {                       // rectangle update 
+                _rec = new Rectangle(
+                (int)_position.X,
+                (int)_position.Y,
+                _textureShip.Width,
+                _textureShip.Height);
+
+                _textureShip.Position = _position;
+
+                Controls(H, W);
                 ConditionsTo_UpdateShipMovements(gameTime);
 
                 if (_boostActive == true)
                 {
                     _boost.Active = true;
-                    _boost.FinalPosition = new Vector2((_position.X + (_textureShip.Width / 2)) - (_boost.Texture.Width /(_boost.Cols*2)), _position.Y + (_textureShip.Height - 10));
+                    _boost.Position = new Vector2((_position.X + (_textureShip.Width / 2)) - (_boost.Texture.Width / (_boost.Cols * 2)), _position.Y + (_textureShip.Height - 10));
                     _boost.UpdateLimitLess_ToRight(gameTime);
                 }
                 else
@@ -133,33 +135,35 @@ namespace SpaceShooter
                     _boost.Active = false;
                 }
 
-                 if (_fireActive == true)
-               {
-                   _fireEffect.Active = true;     
+                if (_fireActive == true)
+                {
+                    _fireEffect.Active = true;
                     // +1 and +14 to adjust position                                          
-                   _fireEffect.FinalPosition = new Vector2(((_position.X + (_textureShip.Width / 2)) - (_fireEffect.Texture.Width / (_fireEffect.Cols*2)))+1,
-                                                            (_position.Y - _fireEffect.Height)+14);
-                   _fireEffect.UpdateLimitLess_ToRight(gameTime);
-               }
+                    _fireEffect.Position = new Vector2(((_position.X + (_textureShip.Width / 2)) - (_fireEffect.Texture.Width / (_fireEffect.Cols * 2))) + 1,
+                                                             (_position.Y - _fireEffect.Height) + 14);
+                    _fireEffect.UpdateLimitLess_ToRight(gameTime);
+                }
                 else
                 {
                     _fireEffect.Active = false;
                 }
+                if (_health == 0)
+                    _active = false;
             }
 
-            if(_active == false)
-        {
-            _explosion.Active = true;
-            _explosion.UpdateOnceToRight(gameTime);
-            _explosion.FinalPosition = _position;
-            
+            if (_active == false)
+            {
+                _explosion.Active = true;
+                _explosion.UpdateOnceToRight(gameTime);
+                _explosion.Position = _position;
+
+            }
+
         }
-            
-        }
-       
+
         public override void Draw(SpriteBatch spriteBatch)
         {
-            
+
             if (_active == true)
             {
                 if (_health > 3)
@@ -177,15 +181,16 @@ namespace SpaceShooter
                     _fireEffect.Draw(spriteBatch);
 
             }
-            if(_active == false)
+            if (_active == false)
             {
                 _explosion.Draw(spriteBatch);
             }
 
         }
 
-        public void Controls(KeyboardState state, int H, int W)
+        public void Controls(int H, int W)
         {
+            KeyboardState state = Keyboard.GetState();
             if (state.IsKeyDown(Keys.Left) || state.IsKeyDown(Keys.Q))
             {
                 if (_position.X >= 0)
@@ -193,12 +198,13 @@ namespace SpaceShooter
                 _moveLeftActive = true;
                 _textureShip.Moving = true;
 
-            }else
+            }
+            else
             {
                 _moveLeftActive = false;
                 _textureShip.MoveToPoint = true;
             }
-            
+
             if (state.IsKeyDown(Keys.Right) || state.IsKeyDown(Keys.D))
             {
                 if (_position.X < (W - _textureShip.Width))
@@ -208,7 +214,7 @@ namespace SpaceShooter
                     _textureShip.Moving = true;
                 }
             }
-             else
+            else
             {
                 _moveRightActive = false;
                 _textureShip.MoveToPoint = true;
@@ -227,10 +233,10 @@ namespace SpaceShooter
             }
             if (state.IsKeyDown(Keys.Down) || state.IsKeyDown(Keys.S))
             {
-                if (_position.Y < (H - (_textureShip.Height+40)))// + 40 to prevent the draw of the ship over the bottom information zone 
+                if (_position.Y < (H - (_textureShip.Height + 40)))// + 40 to prevent the draw of the ship over the bottom information zone 
                     _position.Y += _speed.Y;
             }
-            if(state.IsKeyDown(Keys.Left) && state.IsKeyDown(Keys.Right))
+            if (state.IsKeyDown(Keys.Left) && state.IsKeyDown(Keys.Right))
             {
                 _moveLeftActive = false;
                 _moveRightActive = false;
@@ -240,8 +246,9 @@ namespace SpaceShooter
             if (state.IsKeyDown(Keys.Space))
             {
                 _fireActive = true;
-                
-            }else
+
+            }
+            else
             {
                 _fireActive = false;
             }
@@ -270,6 +277,6 @@ namespace SpaceShooter
             }
 
         }
-            
+
     }
 }
