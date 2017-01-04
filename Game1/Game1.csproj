@@ -42,6 +42,8 @@
     <Compile Include="Animation.cs" />
     <Compile Include="Asteroid.cs" />
     <Compile Include="Boss.cs" />
+    <Compile Include="Button.cs" />
+    <Compile Include="EquipmentMenu.cs" />
     <Compile Include="Game1.cs" />
     <Compile Include="PauseMenu.cs" />
     <Compile Include="Program.cs" />
@@ -132,6 +134,9 @@
     <None Include="Content\Sounds-Musics\Redemption.ogg">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
+    <None Include="Content\Sounds-Musics\SoundButton_MouseHover.xnb">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
     <None Include="Content\SpriteFonts\GAME-TITLE.xnb">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
@@ -162,6 +167,9 @@
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
     <Content Include="Content\Asteroid2.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Content\MainMenu-Items\Quit.png">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
     <Content Include="Content\MainMenu-Items\Settings.png">

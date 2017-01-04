@@ -1,4 +1,5 @@
 ﻿using Microsoft.Xna.Framework;
+using Microsoft.Xna.Framework.Audio;
 using Microsoft.Xna.Framework.Content;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
@@ -11,15 +12,15 @@ namespace SpaceShooter
 {
     class PauseMenu
     {
-        private Animation _button_Resume;
-        public Animation Button_Resume
+        private Button _button_Resume;
+        public Button Button_Resume
         {
             get { return _button_Resume; }
             set { _button_Resume = value; }
         }
 
-        private Animation _button_MainMenu;
-        public Animation Button_MainMenu
+        private Button _button_MainMenu;
+        public Button Button_MainMenu
         {
             get { return _button_MainMenu; }
             set { _button_MainMenu = value; }
@@ -33,20 +34,22 @@ namespace SpaceShooter
             set { _menuMusic = value; }
         }
 
-        public KeyboardState oldState;
+        public bool pauseKey_OldState;
         private Texture2D panel;
-        bool MusicStarted = false;
-        Vector2 center = new Vector2(Game1.windowWidth / 2, Game1.windowHeight / 2);
+        private bool MusicStarted = false;
+        
+
+        Vector2 center;
        
 
         public PauseMenu(Game game)
         {
-            _button_Resume = new Animation(game, 1, 2, 1);
-            _button_MainMenu = new Animation(game, 1, 2, 1);
-            
-            _button_Resume.Active = true;
-            _button_MainMenu.Active = true;
-           // _buttonResume.Moving = false;
+            center = new Vector2(Game1.windowWidth / 2, Game1.windowHeight / 2);
+            _button_Resume = new Button(game);
+            _button_MainMenu = new Button(game);
+            pauseKey_OldState = false;
+
+            // _buttonResume.Moving = false;
         }
 
         public void Initialize()
@@ -60,14 +63,16 @@ namespace SpaceShooter
             panel = content.Load<Texture2D>("PauseMenu-Items/Panel");
             _button_Resume.LoadContent(content, "PauseMenu-Items/Resume");
             _button_MainMenu.LoadContent(content, "PauseMenu-Items/Main Menu");
-
-            _button_Resume.Position = new Vector2(center.X - (_button_Resume.Width+5), center.Y - 30);
-            _button_MainMenu.Position = new Vector2(center.X + 5, _button_Resume.Position.Y);
+            
+            _button_Resume.Texture.Position = new Vector2(center.X - (_button_Resume.Texture.Width + 5), center.Y - 30);
+            _button_MainMenu.Texture.Position = new Vector2(center.X + 5, _button_Resume.Texture.Position.Y);
             _menuMusic = content.Load<Song>(menuMusicName);
         }
 
         public void Update(GameTime gameTime)
         {
+            KeyboardState state = Keyboard.GetState();
+
             if (!MusicStarted)
             {
                 MediaPlayer.Play(_menuMusic);
@@ -76,109 +81,59 @@ namespace SpaceShooter
                 MusicStarted = true;
             }
 
-            Button_Resume_Update(gameTime);
-            Button_MainMenu_Update(gameTime);
-            ResumeGame();
-            //bool oldContains = false;
+            _button_Resume.Update(gameTime);
+            _button_MainMenu.Update(gameTime);
             
+           if(_button_Resume.Clicked == true)
+            {
+                MediaPlayer.Stop();
+                MusicStarted = false;
+                pauseKey_OldState = true;
+                Game1.pauseKey_OldState = true;
+                _button_Resume.Clicked = false;
+                Game1._gameState = Game1.GameStates.Playing;
+            }
+           if(_button_MainMenu.Clicked == true)
+            {
+                MainMenu.MusicStarted = true;
+                _button_MainMenu.Clicked = false;
+                MusicStarted = false;
+                Game1._gameState = Game1.GameStates.Loading;
+            }
+            ResumeGame_ByKeyPress(state);
+
         }
 
         public void Draw(SpriteBatch spriteBatch)
         {
             
             spriteBatch.Draw(panel, new Rectangle((int)center.X - 250, (int)center.Y - 250, 500, 500), Color.White);
-            _button_Resume.Draw(spriteBatch);
             _button_MainMenu.Draw(spriteBatch);
+            _button_Resume.Draw(spriteBatch);
+           
         }
 
 
-        private void ResumeGame()
+        private void ResumeGame_ByKeyPress(KeyboardState state)
         {
             //GamePad.GetState(PlayerIndex.Two).Buttons.Back == ButtonState.Pressed
-            KeyboardState state = Keyboard.GetState();
+            
             
             if (!state.IsKeyDown(Keys.P))
             {
-                oldState = state;
+                pauseKey_OldState = false;
             }
             /*if (GamePad.GetState(PlayerIndex.One).Buttons.Back ==
                 ButtonState.Pressed || state.IsKeyDown(Keys.Escape))
                 Exit();*/
 
-            if (oldState != state && state.IsKeyDown(Keys.P))
+            if (pauseKey_OldState == false && state.IsKeyDown(Keys.P))
             {
                 Game1._gameState = Game1.GameStates.Playing;
                 MediaPlayer.Stop();
                 MusicStarted = false;
-                oldState = state;
+                pauseKey_OldState = true;
                 
-            }
-        }
-
-        private void Button_Resume_Update(GameTime gameTime)
-        {
-            MouseState state = Mouse.GetState();
-            MouseState oldState = Mouse.GetState();
-            if (_button_Resume.Rec.Contains(state.X, state.Y))
-            {
-                _button_Resume.Moving = true;
-                // oldContains = true;
-                if (state.LeftButton == ButtonState.Released && oldState.LeftButton == ButtonState.Released)
-                {
-                    _button_Resume.UpdateOnceToRight(gameTime);
-                    oldState = state;
-                }
-                if (state.LeftButton == ButtonState.Pressed)
-                {
-                    _button_Resume.UpdateOnceToLeft(gameTime);
-                    oldState = state;
-                    MediaPlayer.Stop();
-                    MusicStarted = false;
-                    Game1._gameState = Game1.GameStates.Playing;
-                }
-                /* if(state.LeftButton == ButtonState.Released && oldState.LeftButton == ButtonState.Pressed)
-                 { 
-                     _buttonResume.UpdateOnceToRight(gameTime);
-                     oldState = state;
-                 }*/
-            }
-            if (!_button_Resume.Rec.Contains(state.X, state.Y))
-            {
-                _button_Resume.UpdateOnceToLeft(gameTime);
-                // _buttonResume.Moving = false;
-            }
-        }
-
-        private void Button_MainMenu_Update(GameTime gameTime)
-        {
-            MouseState state = Mouse.GetState();
-            MouseState oldState = Mouse.GetState();
-            if (_button_MainMenu.Rec.Contains(state.X, state.Y))
-            {
-                _button_MainMenu.Moving = true;
-                // oldContains = true;
-                if (state.LeftButton == ButtonState.Released && oldState.LeftButton == ButtonState.Released)
-                {
-                    _button_MainMenu.UpdateOnceToRight(gameTime);
-                    oldState = state;
-                }
-                if (state.LeftButton == ButtonState.Pressed)
-                {
-                    _button_MainMenu.UpdateOnceToLeft(gameTime);
-                    oldState = state;
-                    MainMenu.MusicStarted = true;
-                    Game1._gameState = Game1.GameStates.Loading;
-                }
-                /* if(state.LeftButton == ButtonState.Released && oldState.LeftButton == ButtonState.Pressed)
-                 { 
-                     _buttonResume.UpdateOnceToRight(gameTime);
-                     oldState = state;
-                 }*/
-            }
-            if (!_button_MainMenu.Rec.Contains(state.X, state.Y))
-            {
-                _button_MainMenu.UpdateOnceToLeft(gameTime);
-                // _buttonResume.Moving = false;
             }
         }
     }

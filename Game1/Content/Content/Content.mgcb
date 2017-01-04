@@ -109,3 +109,9 @@
 /processorParam:TextureFormat=Compressed
 /build:Fonts/GAME-TITLE.spritefont
 
+#begin Songs/SoundButton_MouseHover.wav
+/importer:WavImporter
+/processor:SoundEffectProcessor
+/processorParam:Quality=Best
+/build:Songs/SoundButton_MouseHover.wav
+

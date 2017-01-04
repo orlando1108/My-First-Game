@@ -45,10 +45,10 @@ namespace SpaceShooter
         int timeToGenerateAsteroids;
         float transparency = 0;
         bool gameMusicStarted = false;
-       
+        int test = 0;
 
 
-    Texture2D BGtexture;
+        Texture2D BGtexture;
         Texture2D Health;
         Texture2D BGinfos;
         Texture2D gameOver_Texture;
@@ -62,9 +62,9 @@ namespace SpaceShooter
         Vaisseau vaisseau;
         Boss boss;
         Tir tir;
-        MainMenu startMenu;
+        MainMenu mainMenu;
         PauseMenu pauseMenu;
-        KeyboardState oldState;
+        public static bool pauseKey_OldState;
         public enum GameStates
         {
             Loading,
@@ -88,7 +88,8 @@ namespace SpaceShooter
             ListeTirs = new List<Tir>();
             _gameState = GameStates.Loading;
             pauseMenu = new PauseMenu(this);
-            startMenu = new MainMenu(this);
+            mainMenu = new MainMenu(this);
+            pauseKey_OldState = false;
         }
 
         /// <summary>
@@ -149,7 +150,7 @@ namespace SpaceShooter
             gameOver_Texture = Content.Load<Texture2D>("Sprites/GameOver");
             // HealthPoints = Content.Load<SpriteFont>("HEALTH2");
             pauseMenu.LoadContent(Content, "Sounds-Musics/menuMusic");
-            startMenu.LoadContent(Content, "Sounds-Musics/menuMusic");
+            mainMenu.LoadContent(Content, "Sounds-Musics/menuMusic");
 
             base.LoadContent();
         }
@@ -186,15 +187,18 @@ namespace SpaceShooter
         /// <param name="gameTime">Provides a snapshot of timing values.</param>
         protected override void Update(GameTime gameTime)
         {
-            if(_gameState == GameStates.Loading)
+            KeyboardState state = Keyboard.GetState();
+            if (_gameState == GameStates.Loading)
             {
-                startMenu.Update(gameTime);
+                mainMenu.Update(gameTime);
+                ExitGame(state);
             }
             if (_gameState == GameStates.Playing)
             {
                 tirsTimeSpent += gameTime.ElapsedGameTime.Milliseconds;
                 UpdateBGScrolling();
-                PauseGame(gameTime);
+                PauseGame_ByKeyPress(gameTime, state);
+                
                 
                 if (!gameMusicStarted)
                 {
@@ -203,7 +207,7 @@ namespace SpaceShooter
                     gameMusicStarted = true;
                 }
 
-                if (level < 5)
+                if (level < 1)
                 {
                     asteroidsTimeSpent += gameTime.ElapsedGameTime.Milliseconds;
 
@@ -289,7 +293,7 @@ namespace SpaceShooter
             {
                 graphics.GraphicsDevice.Clear(Color.DarkCyan);
                 spriteBatch.Begin();
-                startMenu.Draw(spriteBatch);
+                mainMenu.Draw(spriteBatch);
                 spriteBatch.End();
             }
             if (_gameState == GameStates.Playing)
@@ -307,7 +311,7 @@ namespace SpaceShooter
                     t.Draw(spriteBatch);
                 }
 
-                if (level < 5)
+                if (level < 1)
                 {
                     for (int i = 0; i < ListeAsteroids.Count; i++)
                     {
@@ -444,28 +448,32 @@ namespace SpaceShooter
             scrollBG2.Y += 1;
         }
 
-        public void PauseGame(GameTime gameTime)
+        public void PauseGame_ByKeyPress(GameTime gameTime, KeyboardState state)
         {
+            
             //GamePad.GetState(PlayerIndex.Two).Buttons.Back == ButtonState.Pressed
-            KeyboardState state = Keyboard.GetState();
+          
             if (!state.IsKeyDown(Keys.P))
             {
-                oldState = state;
+                pauseKey_OldState = false;
             }
-
-            if (GamePad.GetState(PlayerIndex.One).Buttons.Back ==
-                ButtonState.Pressed || state.IsKeyDown(Keys.Escape))
-                Exit();
-
-            if (oldState != state && state.IsKeyDown(Keys.P))
+            if (pauseKey_OldState == false && state.IsKeyDown(Keys.P))
             {
-                _gameState = GameStates.Paused;
+                test += 1;
                 MediaPlayer.Stop();
                 gameMusicStarted = false;
-                oldState = state;
-                pauseMenu.oldState = state;
+                pauseKey_OldState = true;
+                pauseMenu.pauseKey_OldState = true;
+                _gameState = GameStates.Paused;
             }
 
+        }
+
+        private void ExitGame(KeyboardState state)
+        {
+            if (GamePad.GetState(PlayerIndex.One).Buttons.Back == ButtonState.Pressed ||
+                state.IsKeyDown(Keys.Escape) || mainMenu.Button_Quit.Clicked == true)
+                Exit();
         }
 
         /*TODO pierre:
