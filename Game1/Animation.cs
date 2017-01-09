@@ -77,6 +77,14 @@ namespace SpaceShooter
             set { _sourceRec = value; }
         }
 
+        private Rectangle _box;
+        public Rectangle Box
+        {
+            get { return _box; }
+            set { _box = value; }
+        }
+
+
 
         public Animation(Game game, int ligs, int cols, Vector2 Speed, float Position, int speedPerFrames) : base(game)
         {
@@ -109,16 +117,18 @@ namespace SpaceShooter
     
         }
 
-        public override void LoadContent(ContentManager Content, string texture)
+        public override  void LoadContent(ContentManager Content, string texture)
         {
             base.LoadContent(Content, texture);
             Width = _texture.Width/Cols;
             Height = _texture.Height/Ligs;
-          /*  _rec = new Rectangle(
-                (int)_position.X,
-                (int)_position.Y,
-               Width,
-               Height);*/
+
+           // _box = new Rectangle((int)_position.X - boxSize, (int)_position.Y - boxSize, _width + (boxSize*2), _height + (boxSize*2));
+            /*  _rec = new Rectangle(
+                  (int)_position.X,
+                  (int)_position.Y,
+                 Width,
+                 Height);*/
 
         }
 
@@ -245,7 +255,7 @@ namespace SpaceShooter
             }
         }
 
-        public override void Draw(SpriteBatch spriteBatch)
+        public void Draw(SpriteBatch spriteBatch, float scale = 1)
         {
             _rec = new Rectangle(
                 (int)_position.X,
@@ -263,8 +273,15 @@ namespace SpaceShooter
                         row = (int)((float)_currentFrame / Cols);
                         column = _currentFrame % Cols;
                         _sourceRec = new Rectangle(_width * column, _height * row, _width, _height);
-                        Rectangle destinationRec = new Rectangle((int)Position.X, (int)Position.Y, _width, _height);
+                    Rectangle destinationRec = new Rectangle((int)Position.X, (int)Position.Y, _width, _height);
+                       if(scale != 1)
+                    {
+                        spriteBatch.Draw(Texture, new Vector2(_position.X+_width,_position.Y+_height), _sourceRec, Color.White, 0, new Vector2(_position.X + _width, _position.Y + _height), scale, SpriteEffects.None, 0);
+                    }else
+                    {
                         spriteBatch.Draw(Texture, destinationRec, _sourceRec, Color.White);
+                    }
+                        
                 }
             }
             if(_moving == false)

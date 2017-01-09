@@ -16,7 +16,7 @@ namespace SpaceShooter
     /// </summary>
     public class Game1 : Game
     {
-        GraphicsDeviceManager graphics;
+        public static GraphicsDeviceManager graphics;
         SpriteBatch spriteBatch;
         GameTime gameTime = new GameTime();
 
@@ -31,7 +31,7 @@ namespace SpaceShooter
         
 
         public const int windowHeight = 800;
-        public const int windowWidth = 1000;
+        public const int windowWidth = 1200;
 
 
         long asteroidsTimeSpent;
@@ -291,7 +291,7 @@ namespace SpaceShooter
         {
             if(_gameState == GameStates.Loading)
             {
-                graphics.GraphicsDevice.Clear(Color.DarkCyan);
+                //graphics.GraphicsDevice.Clear(Color.DarkCyan);
                 spriteBatch.Begin();
                 mainMenu.Draw(spriteBatch);
                 spriteBatch.End();
@@ -299,7 +299,7 @@ namespace SpaceShooter
             if (_gameState == GameStates.Playing)
             {
                 int pixelAlign = 25;
-                graphics.GraphicsDevice.Clear(Color.AliceBlue);
+                //graphics.GraphicsDevice.Clear(Color.AliceBlue);
 
                 spriteBatch.Begin();
                 spriteBatch.Draw(BGtexture, scrollBG1, Color.White);

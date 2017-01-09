@@ -62,7 +62,7 @@ namespace SpaceShooter
         {
             panel = content.Load<Texture2D>("PauseMenu-Items/Panel");
             _button_Resume.LoadContent(content, "PauseMenu-Items/Resume");
-            _button_MainMenu.LoadContent(content, "PauseMenu-Items/Main Menu");
+            _button_MainMenu.LoadContent(content, "PauseMenu-Items/MainMenu");
             
             _button_Resume.Texture.Position = new Vector2(center.X - (_button_Resume.Texture.Width + 5), center.Y - 30);
             _button_MainMenu.Texture.Position = new Vector2(center.X + 5, _button_Resume.Texture.Position.Y);

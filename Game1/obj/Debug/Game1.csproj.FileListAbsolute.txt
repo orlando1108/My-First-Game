@@ -76,7 +76,14 @@ C:\Users\Erwan\documents\visual studio 2015\Projects\Game1\Game1\bin\DesktopGL\A
 C:\Users\Erwan\documents\visual studio 2015\Projects\Game1\Game1\bin\DesktopGL\AnyCPU\Debug\Content\MainMenu-Items\Play.png
 C:\Users\Erwan\documents\visual studio 2015\Projects\Game1\Game1\bin\DesktopGL\AnyCPU\Debug\Content\MainMenu-Items\BackGround-StartMenu.png
 C:\Users\Erwan\documents\visual studio 2015\Projects\Game1\Game1\bin\DesktopGL\AnyCPU\Debug\Content\MainMenu-Items\Settings.png
-C:\Users\Erwan\documents\visual studio 2015\Projects\Game1\Game1\bin\DesktopGL\AnyCPU\Debug\Content\MainMenu-Items\Your Ship.png
-C:\Users\Erwan\documents\visual studio 2015\Projects\Game1\Game1\bin\DesktopGL\AnyCPU\Debug\Content\PauseMenu-Items\Main Menu.png
 C:\Users\Erwan\documents\visual studio 2015\Projects\Game1\Game1\bin\DesktopGL\AnyCPU\Debug\Content\Sounds-Musics\SoundButton_MouseHover.xnb
 C:\Users\Erwan\documents\visual studio 2015\Projects\Game1\Game1\bin\DesktopGL\AnyCPU\Debug\Content\MainMenu-Items\Quit.png
+C:\Users\Erwan\documents\visual studio 2015\Projects\Game1\Game1\bin\DesktopGL\AnyCPU\Debug\Content\EquipmentMenu-Items\YellowShip.png
+C:\Users\Erwan\documents\visual studio 2015\Projects\Game1\Game1\bin\DesktopGL\AnyCPU\Debug\Content\EquipmentMenu-Items\Equipment-Background.png
+C:\Users\Erwan\documents\visual studio 2015\Projects\Game1\Game1\bin\DesktopGL\AnyCPU\Debug\Content\EquipmentMenu-Items\GreenShip.png
+C:\Users\Erwan\documents\visual studio 2015\Projects\Game1\Game1\bin\DesktopGL\AnyCPU\Debug\Content\EquipmentMenu-Items\PurpleShip.png
+C:\Users\Erwan\documents\visual studio 2015\Projects\Game1\Game1\bin\DesktopGL\AnyCPU\Debug\Content\EquipmentMenu-Items\BlueShip.png
+C:\Users\Erwan\documents\visual studio 2015\Projects\Game1\Game1\bin\DesktopGL\AnyCPU\Debug\Content\MainMenu-Items\Equipments.png
+C:\Users\Erwan\documents\visual studio 2015\Projects\Game1\Game1\bin\DesktopGL\AnyCPU\Debug\Content\PauseMenu-Items\MainMenu.png
+C:\Users\Erwan\documents\visual studio 2015\Projects\Game1\Game1\bin\DesktopGL\AnyCPU\Debug\Content\EquipmentMenu-Items\ShipSelector2.png
+C:\Users\Erwan\documents\visual studio 2015\Projects\Game1\Game1\bin\DesktopGL\AnyCPU\Debug\Content\SettingsMenu-Items\Background-Settings.png

@@ -43,7 +43,6 @@ namespace SpaceShooter
         {
             _texture = new Animation(game, 1, 2, 1);
             _texture.Active = true;
-            _texture.Moving = true;
             _clicked = false;
         }
         
@@ -63,8 +62,8 @@ namespace SpaceShooter
                 button_Soundeffect = content.Load<SoundEffect>("Sounds-Musics/SoundButton_MouseHover");
             }
             _soundEffectInstance = button_Soundeffect.CreateInstance();
-            state = Mouse.GetState();
-            oldState = state;
+            /*state = Mouse.GetState();
+            oldState = state;*/
         }
 
         public void Update(GameTime gameTime)
@@ -72,7 +71,6 @@ namespace SpaceShooter
             oldState = state;
             state = Mouse.GetState();
             bool Contains = _texture.Rec.Contains(state.X, state.Y);
-
             if (!Contains)
             {
                 soundEffectStarted = false;

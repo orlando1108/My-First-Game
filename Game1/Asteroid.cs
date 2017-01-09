@@ -10,8 +10,7 @@ namespace SpaceShooter
 {
     class Asteroid : Sprite
     {
-        private int windowHeight = 800;
-        private int windowWidth = 1000;
+        
         Random rand = new Random();
         private int aleaTexture;
         private int aleaVitesse;
@@ -94,7 +93,7 @@ namespace SpaceShooter
             _textureAsteroid.Active = true;
             _textureAsteroid.Moving = true;
             
-            aleaPositionX = rand.Next(windowWidth - _textureAsteroid.Width);
+            aleaPositionX = rand.Next(Game1.windowWidth - _textureAsteroid.Width);
             _position = new Vector2(aleaPositionX, -_textureAsteroid.Height);
           
             
@@ -116,7 +115,7 @@ namespace SpaceShooter
         {
             if (_active == true)
             {
-                if (_position.Y > windowHeight)
+                if (_position.Y > Game1.windowHeight)
                 {
                     _active = false;
                 }
@@ -126,6 +125,7 @@ namespace SpaceShooter
                 (int)_position.Y,
                 _textureAsteroid.Width,
                 _textureAsteroid.Height);
+
                 _position = new Vector2(_position.X, _position.Y + _speed.Y);
                 _textureAsteroid.Position = _position;
                 _textureAsteroid.UpdateLimitLess_ToRight(gameTime);

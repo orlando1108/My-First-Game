@@ -43,11 +43,12 @@
     <Compile Include="Asteroid.cs" />
     <Compile Include="Boss.cs" />
     <Compile Include="Button.cs" />
-    <Compile Include="EquipmentMenu.cs" />
+    <Compile Include="EquipmentsMenu.cs" />
     <Compile Include="Game1.cs" />
     <Compile Include="PauseMenu.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="SettingsMenu.cs" />
     <Compile Include="Sprite.cs" />
     <Compile Include="MainMenu.cs" />
     <Compile Include="Tir.cs" />
@@ -169,16 +170,34 @@
     <Content Include="Content\Asteroid2.png">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
+    <Content Include="Content\EquipmentMenu-Items\BlueShip.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Content\EquipmentMenu-Items\Equipment-Background.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Content\EquipmentMenu-Items\GreenShip.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Content\EquipmentMenu-Items\PurpleShip.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Content\EquipmentMenu-Items\ShipSelector2.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Content\EquipmentMenu-Items\YellowShip.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Content\MainMenu-Items\Equipments.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
     <Content Include="Content\MainMenu-Items\Quit.png">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
     <Content Include="Content\MainMenu-Items\Settings.png">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
-    <Content Include="Content\MainMenu-Items\Your Ship.png">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Include="Content\PauseMenu-Items\Main Menu.png">
+    <Content Include="Content\PauseMenu-Items\MainMenu.png">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
     <Content Include="Content\PauseMenu-Items\Panel.png">
@@ -188,6 +207,9 @@
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
     <Content Include="Content\MainMenu-Items\Play.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Content\SettingsMenu-Items\Background-Settings.png">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
     <Content Include="Content\SpriteSheets\AsteroidAnimation.png">

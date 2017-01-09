@@ -1,6 +1,7 @@
 ﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Content;
 using Microsoft.Xna.Framework.Graphics;
+using Microsoft.Xna.Framework.Input;
 using System;
 
 
@@ -19,6 +20,9 @@ namespace SpaceShooter
         protected int _width;
         protected int _height;
         protected Rectangle _rec;
+        protected bool _collided;
+        private bool _clicked;
+        private Vector2 _direction;
 
         protected Vector2 _origin;
         public Vector2 Origin
@@ -43,59 +47,64 @@ namespace SpaceShooter
             get { return _texture; }
             set { _texture = value; }
         }
-
         public Vector2 Speed
         {
             get { return _speed; }
             set { _speed = value; }
         }
-
         public int Width
         {
             get { return _width; }
             set { _width = value; }
         }
-
         public int Height
         {
             get { return _height; }
             set { _height = value; }
         }
-
         public bool Active
         {
             get { return _active; }
             set { _active = value; }
         }
-
-        protected bool _collided;
         public bool Collided
         {
             get { return _collided; }
             set { _collided = value; }
         }
-
         public Game Game
         {
             get { return e_game; }
         }
-
         public ContentManager Content
         {
             get { return e_game.Content; }
         }
-
         public Rectangle Rec
         {
             get { return _rec; }
             set { _rec = value; }
         }
-       /* protected Rectangle _recDestination;
-        public Rectangle Destination
+        public bool Clicked
         {
-            get { return _recDestination; }
-            set { _recDestination = value; }
-        }*/
+            get { return _clicked; }
+            set { _clicked = value; }
+        }
+        
+        public Vector2 Direction
+        {
+            get { return _direction; }
+            set { _direction = value; }
+        }
+        private bool _selected;
+        public bool Selected
+        {
+            get { return _selected; }
+            set { _selected = value; }
+        }
+
+        MouseState state;
+        MouseState oldState;
 
         #region Constructeurs
 
@@ -105,10 +114,9 @@ namespace SpaceShooter
 
         }
 
-        public Sprite(Game game, Vector2 position)
-            : this(game)
+        public Sprite(Game game, Vector2 position) : this(game)
         {
-            this._position = position;
+            _position = position;
         }
         #endregion
 
@@ -121,6 +129,7 @@ namespace SpaceShooter
         public virtual void LoadContent(ContentManager Content, string textureName)
         {
             _texture = Content.Load<Texture2D>(textureName);
+
             _rec = new Rectangle(
                  (int)_position.X,
                  (int)_position.Y,
@@ -138,11 +147,15 @@ namespace SpaceShooter
         public virtual void Update(GameTime gameTime)
         {
 
-          /*  _recDestination = new Rectangle(
+          /*  _rec = new Rectangle(
              (int)_position.X,
              (int)_position.Y,
-             _width,
-             _height);*/
+             _texture.Width,
+             _texture.Height);
+
+            /* add position update*/
+
+
 
         }
 
@@ -206,6 +219,59 @@ namespace SpaceShooter
                 }
             }
             return false;
+        }
+
+        public void ClickControls()
+        {
+            /*if (!Contains)
+            {
+                soundEffectStarted = false;
+            }
+            if (Contains)
+            {
+                if (!soundEffectStarted)
+                {
+                    _soundEffectInstance.Play();
+                    soundEffectStarted = true;
+                }*/
+            oldState = state;
+            state = Mouse.GetState();
+
+            // oldContains = true;
+            if (state.LeftButton == ButtonState.Released && oldState.LeftButton == ButtonState.Released)
+                {
+                    oldState = state;
+                }
+                else
+                if (oldState.LeftButton == ButtonState.Released && state.LeftButton == ButtonState.Pressed)
+                {
+                    oldState = state;
+                }
+                else
+                if (oldState.LeftButton == ButtonState.Pressed && state.LeftButton == ButtonState.Pressed)
+                {
+                    oldState = state;
+                }
+                else
+                if (oldState.LeftButton == ButtonState.Pressed && state.LeftButton == ButtonState.Released)
+                {
+                    _clicked = true;
+                    oldState = state;
+                }
+
+
+            /*}
+            else
+            {
+                //_texture.UpdateOnceToLeft(gameTime);
+            }*/
+        }
+
+        public Vector2 MoveToPoint(Vector2 start, Vector2 end)
+        {
+            float distance = Vector2.Distance(start, end);
+            Vector2 direction = Vector2.Normalize(end - start);
+            return direction;
         }
 
 
