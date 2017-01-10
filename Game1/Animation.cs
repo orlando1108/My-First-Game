@@ -148,7 +148,6 @@ namespace SpaceShooter
                 else
                 {
                     _finalFrameActive = true;
-                    
                     _removeable = true;
                 }
             }
@@ -231,7 +230,6 @@ namespace SpaceShooter
                     _currentFrame++;
                     if (_currentFrame == _totalFrames)
                         _currentFrame = 0;
-                        
                 }
                 base.Update(gameTime);
             }
@@ -249,7 +247,6 @@ namespace SpaceShooter
                     _currentFrame--;
                     if (_currentFrame == _totalFrames)
                         _currentFrame = 0;
-                    
                 }
                 base.Update(gameTime);
             }
@@ -294,37 +291,5 @@ namespace SpaceShooter
             }
 
         }
-
-      /*  public void Draw_ToResize(SpriteBatch spriteBatch)
-        {
-            Rectangle sourceRec;
-            Vector2 origin;
-            if (_moving == true)
-            {
-                if (_active == true)
-                {
-                    int row;
-                    int column;
-
-                    row = (int)((float)_currentFrame / Cols);
-                    column = _currentFrame % Cols;
-                    sourceRec = new Rectangle(_width * column, _height * row, _width, _height);
-                    origin = new Vector2(_finalPosition.X + (_width/2), FinalPosition.Y + (_height/2));
-                    Rectangle destinationRec = new Rectangle((int)_finalPosition.X, (int)_finalPosition.Y, _width, _height);
-                   // spriteBatch.Draw(Texture, destinationRec, sourceRec, Color.White);
-                    spriteBatch.Draw(Texture, _finalPosition, sourceRec, Color.White, 0f, origin, 0.5f, SpriteEffects.None, 0f);
-                }
-            }
-            if (_moving == false)
-            {
-                // to display one of all sprites of the texture 
-                sourceRec = new Rectangle((_texture.Width / 2) - (_width / 2), 0, _width, _height); // change this according to the sprite sheet size 
-                Rectangle destinationRec = new Rectangle((int)_finalPosition.X, (int)_finalPosition.Y, _width, _height);
-                spriteBatch.Draw(Texture, destinationRec, sourceRec, Color.White);
-
-            }
-
-        }*/
-
     }
 }

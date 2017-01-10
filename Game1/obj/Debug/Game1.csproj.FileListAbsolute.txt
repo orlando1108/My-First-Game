@@ -87,3 +87,7 @@ C:\Users\Erwan\documents\visual studio 2015\Projects\Game1\Game1\bin\DesktopGL\A
 C:\Users\Erwan\documents\visual studio 2015\Projects\Game1\Game1\bin\DesktopGL\AnyCPU\Debug\Content\PauseMenu-Items\MainMenu.png
 C:\Users\Erwan\documents\visual studio 2015\Projects\Game1\Game1\bin\DesktopGL\AnyCPU\Debug\Content\EquipmentMenu-Items\ShipSelector2.png
 C:\Users\Erwan\documents\visual studio 2015\Projects\Game1\Game1\bin\DesktopGL\AnyCPU\Debug\Content\SettingsMenu-Items\Background-Settings.png
+C:\Users\Erwan\documents\visual studio 2015\Projects\Game1\Game1\bin\DesktopGL\AnyCPU\Debug\Content\SettingsMenu-Items\Moins.png
+C:\Users\Erwan\documents\visual studio 2015\Projects\Game1\Game1\bin\DesktopGL\AnyCPU\Debug\Content\SettingsMenu-Items\Plus.png
+C:\Users\Erwan\documents\visual studio 2015\Projects\Game1\Game1\bin\DesktopGL\AnyCPU\Debug\Content\SettingsMenu-Items\VolumeBar.png
+C:\Users\Erwan\documents\visual studio 2015\Projects\Game1\Game1\bin\DesktopGL\AnyCPU\Debug\Content\SettingsMenu-Items\Music.png

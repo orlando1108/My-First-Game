@@ -24,11 +24,17 @@ namespace SpaceShooter
             get { return _button_MainMenu; }
             set { _button_MainMenu = value; }
         }
-        private Button _button_Volume;
-        public Button Button_Volume
+        private Button _button_VolumePlus;
+        public Button Button_VolumePlus
         {
-            get { return _button_Volume; }
-            set { _button_Volume = value; }
+            get { return _button_VolumePlus; }
+            set { _button_VolumePlus = value; }
+        }
+        private Button _button_VolumeMoins;
+        public Button Button_VolumeMoins
+        {
+            get { return _button_VolumeMoins; }
+            set { _button_VolumeMoins = value; }
         }
         private Button _button_Difficulty;
         public Button Button_Difficulty
@@ -49,6 +55,14 @@ namespace SpaceShooter
             set { _difficultyBar = value; }
         }
 
+        private Texture2D _soundTexture;
+        public Texture2D SoundTexture
+        {
+            get { return _soundTexture; }
+            set { _soundTexture = value; }
+        }
+
+
 
         Vector2 center;
 
@@ -57,10 +71,13 @@ namespace SpaceShooter
             center = new Vector2(Game1.windowWidth / 2, Game1.windowHeight / 2);
            
             _button_MainMenu = new Button(game);
-            _button_Volume = new Button(game);
+            _button_VolumePlus = new Button(game);
+            _button_VolumeMoins = new Button(game);
             _button_Difficulty = new Button(game);
-            _volumeBar = new Animation(game, 1, 2, 1);
+            _volumeBar = new Animation(game, 2, 4, 1);
             _difficultyBar = new Animation(game, 1, 2, 1);
+
+            
 
             _volumeBar.Active = true;
             _difficultyBar.Active = true;
@@ -79,14 +96,19 @@ namespace SpaceShooter
              _button_Resume.LoadContent(content, "PauseMenu-Items/Resume");*/
             _backGround = content.Load<Texture2D>("SettingsMenu-Items/Background-Settings");
             _button_MainMenu.LoadContent(content, "PauseMenu-Items/MainMenu");
-            _button_Volume.LoadContent(content, "jjjjjj");
-            _button_Difficulty.LoadContent(content, "kfkfkf");
-            _difficultyBar.LoadContent(content, "kkgkgk");
-            _volumeBar.LoadContent(content, "kkkfkf");
+            _button_VolumePlus.LoadContent(content, "SettingsMenu-Items/Plus");
+            _volumeBar.LoadContent(content, "SettingsMenu-Items/VolumeBar");
+            _button_VolumeMoins.LoadContent(content, "SettingsMenu-Items/Moins");
 
-            _button_Volume.Texture.Position = new Vector2(center.X - (_button_Volume.Texture.Width +10), center.Y - 100);
-            _volumeBar.Position = new Vector2(center.X + 10, _button_Volume.Texture.Position.Y);
-            _button_Difficulty.Texture.Position = new Vector2(_button_Volume.Texture.Position.X, _button_Volume.Texture.Position.Y + 150);
+            _soundTexture = content.Load<Texture2D>("SettingsMenu-Items/Music");
+           /* _button_Difficulty.LoadContent(content, "kfkfkf");
+            _difficultyBar.LoadContent(content, "kkgkgk");*/
+           
+
+            _button_VolumeMoins.Texture.Position = new Vector2(center.X - (_button_VolumePlus.Texture.Width +10), center.Y - 100);
+            _volumeBar.Position = new Vector2(center.X + 10, _button_VolumeMoins.Texture.Position.Y);
+            _button_VolumePlus.Texture.Position = new Vector2(_volumeBar.Position.X + _volumeBar.Width + 10, _button_VolumeMoins.Texture.Position.Y);
+            _button_Difficulty.Texture.Position = new Vector2(_button_VolumeMoins.Texture.Position.X, _button_VolumeMoins.Texture.Position.Y + 150);
             _difficultyBar.Position = new Vector2(_volumeBar.Position.X, _volumeBar.Position.Y + 150);
             _button_MainMenu.Texture.Position = new Vector2(10, Game1.windowHeight - (_button_MainMenu.Texture.Height + 10));
             /*_button_Resume.Texture.Position = new Vector2(center.X - (_button_Resume.Texture.Width + 5), center.Y - 30);
@@ -106,16 +128,40 @@ namespace SpaceShooter
                 MusicStarted = true;
             }
            */
-            _button_Volume.Update(gameTime);
-            _button_Difficulty.Update(gameTime);
-            if (_button_Volume.Clicked)
+            _button_VolumePlus.Update(gameTime);
+            _button_VolumeMoins.Update(gameTime);
+           // _button_Difficulty.Update(gameTime);
+            if (_button_VolumePlus.Clicked)
             {
-                _volumeBar.Update(gameTime);
+                _volumeBar.UpdateOnceToRight(gameTime);
+                _button_VolumePlus.Clicked = false;
+                //one frame by one frame to right
             }
-            if (_button_Difficulty.Clicked)
+            if (_button_VolumeMoins.Clicked)
+            {
+                _volumeBar.UpdateOnceToLeft(gameTime);
+                _button_VolumeMoins.Clicked = false;
+            }
+
+            if (_volumeBar.CurrentFrame == _volumeBar.TotalFrames-1)
+            {
+                _button_VolumePlus.Texture.Active = false;
+            }else
+            {
+                _button_VolumePlus.Texture.Active = true;
+            }
+
+            if(_volumeBar.CurrentFrame == 0)
+            {
+                _button_VolumeMoins.Texture.Active = false;
+            }else
+            {
+                _button_VolumeMoins.Texture.Active = true;
+            }
+           /* if (_button_Difficulty.Clicked)
             {
                 _difficultyBar.Update(gameTime);
-            }
+            }*/
             
             _button_MainMenu.Update(gameTime);
 
@@ -135,10 +181,13 @@ namespace SpaceShooter
         {
             // spriteBatch.Draw(panel, new Rectangle((int)center.X - 250, (int)center.Y - 250, 500, 500), Color.White);
             spriteBatch.Draw(_backGround, new Rectangle(0, 0, Game1.windowWidth, Game1.windowHeight), Color.White);
-            _button_Volume.Draw(spriteBatch);
-            _button_Difficulty.Draw(spriteBatch);
+            spriteBatch.Draw(SoundTexture, new Rectangle((int)_button_VolumeMoins.Texture.Position.X - (SoundTexture.Width + 5), (int)_button_VolumeMoins.Texture.Position.Y+7,_soundTexture.Width-25,_soundTexture.Height-15),Color.White);
+            _button_VolumePlus.Draw(spriteBatch);
             _volumeBar.Draw(spriteBatch);
-            _difficultyBar.Draw(spriteBatch);
+            _button_VolumeMoins.Draw(spriteBatch);
+          //  _button_Difficulty.Draw(spriteBatch);
+           
+          //  _difficultyBar.Draw(spriteBatch);
             _button_MainMenu.Draw(spriteBatch);
 
            // _button_Resume.Draw(spriteBatch);
