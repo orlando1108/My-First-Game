@@ -93,7 +93,7 @@ namespace SpaceShooter
             _textureAsteroid.Active = true;
             _textureAsteroid.Moving = true;
             
-            aleaPositionX = rand.Next(Game1.windowWidth - _textureAsteroid.Width);
+            aleaPositionX = rand.Next(Settings._WindowWidth - _textureAsteroid.Width);
             _position = new Vector2(aleaPositionX, -_textureAsteroid.Height);
           
             
@@ -115,7 +115,7 @@ namespace SpaceShooter
         {
             if (_active == true)
             {
-                if (_position.Y > Game1.windowHeight)
+                if (_position.Y > Settings._WindowHeight)
                 {
                     _active = false;
                 }

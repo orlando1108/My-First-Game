@@ -1,8 +1,11 @@
 ﻿using Microsoft.Xna.Framework;
+using Microsoft.Xna.Framework.Audio;
 using Microsoft.Xna.Framework.Content;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
+using Microsoft.Xna.Framework.Media;
 using System;
+using System.Collections.Generic;
 
 namespace SpaceShooter
 {
@@ -34,6 +37,40 @@ namespace SpaceShooter
         {
             get { return _textureShip; }
             set { _textureShip = value; }
+        }
+        private Tir _fire;
+        public Tir Fire
+        {
+            get { return _fire; }
+            set { _fire = value; }
+        }
+
+        private List<Tir> _firesList;
+        public List<Tir> FiresList
+        {
+            get { return _firesList; }
+            set { _firesList = value; }
+        }
+
+        private SoundEffect _fireSoundEffect;
+        public SoundEffect FireSoundEffect
+        {
+            get { return _fireSoundEffect; }
+            set { _fireSoundEffect = value; }
+        }
+
+        private Song _explosionSound;
+        public Song ExplosionSound
+        {
+            get { return _explosionSound; }
+            set { _explosionSound = value; }
+        }
+        
+        private Media _media;
+        public Media Media
+        {
+            get { return _media; }
+            set { _media = value; }
         }
 
         private bool _fireActive;
@@ -70,12 +107,17 @@ namespace SpaceShooter
             set { _health = value; }
         }
 
-        public Vaisseau(Game game) : base(game)
+        long firesTimeSpent;
+
+        public Vaisseau(Game game, Media media) : base(game)
         {
             _textureShip = new Animation(game, 1, 7, 50);
             _explosion = new Animation(game, 9, 9, 50);
             _boost = new Animation(game, 1, 5, 50);                 //change spritesheet
             _fireEffect = new Animation(game, 1, 4, 40);
+            _fire = new Tir(game, -15);
+            _media = media;
+            _firesList = new List<Tir>();
             _textureShip.Active = true;
             _textureShip.CurrentFrame = (_textureShip.TotalFrames / 2) - (int)0.5; // define initial position in the sprite sheet when the ship isn't moving
             _active = true;
@@ -89,18 +131,34 @@ namespace SpaceShooter
         }
         public override void Initialize()
         {
-
+            if(_firesList.Count > 0)
+            {
+                _firesList.Clear();
+            }
+            _speed = new Vector2(10, 10);
             base.Initialize();
         }
 
-        public void LoadContent(ContentManager content, String textureVaisseau, String textureExplosion, String textureFireEffect, String textureBoost)
+        public override void UnloadContent()
         {
-            _textureShip.LoadContent(content, textureVaisseau);
-            _position = new Vector2((Game1.windowWidth / 2) - (_textureShip.Width / (_textureShip.Cols * 2)),
-                                           (Game1.windowHeight - _textureShip.Height * 2));
-            _texture = _textureShip.Texture; // define the parent object texture for  collision method with parameter(sprite)
+            _textureShip.UnloadContent();
+            foreach (Tir t in _firesList)
+            {
+                t.UnloadContent();
+            }
 
-            
+            base.UnloadContent();
+        }
+
+        public void LoadContent(ContentManager content, String textureVaisseau, String textureExplosion, String textureFireEffect, String fireSoundEffect, String explosionSound, String textureBoost)
+        {
+           
+            _fireSoundEffect = Content.Load<SoundEffect>(fireSoundEffect);
+            _explosionSound = content.Load<Song>(explosionSound);
+            _textureShip.LoadContent(content, textureVaisseau);
+            _position = new Vector2((Settings._WindowWidth / 2) - (_textureShip.Width / (_textureShip.Cols * 2)),
+                                    (Settings._WindowHeight - _textureShip.Height * 2));
+            _texture = _textureShip.Texture;
             _explosion.LoadContent(content, textureExplosion);
             _boost.LoadContent(content, textureBoost);
             _fireEffect.LoadContent(content, textureFireEffect);
@@ -108,8 +166,9 @@ namespace SpaceShooter
 
         }
 
-        public void Update(GameTime gameTime, int H, int W)
+        public void Update(GameTime gameTime, Game game, Boss boss)
         {
+            firesTimeSpent += gameTime.ElapsedGameTime.Milliseconds;
 
             if (_active == true)
             {                       // rectangle update 
@@ -118,11 +177,10 @@ namespace SpaceShooter
                 (int)_position.Y,
                 _textureShip.Width,
                 _textureShip.Height);
-
                 _textureShip.Position = _position;
-
-                Controls(H, W);
+                Controls();
                 ConditionsTo_UpdateShipMovements(gameTime);
+                UpdateFires(game, boss);
 
                 if (_boostActive == true)
                 {
@@ -148,17 +206,19 @@ namespace SpaceShooter
                     _fireEffect.Active = false;
                 }
                 if (_health == 0)
+                {
                     _active = false;
+                }
             }
 
             if (_active == false)
             {
+                _media.PlayMusic(_explosionSound);
                 _explosion.Active = true;
                 _explosion.UpdateOnceToRight(gameTime);
                 _explosion.Position = _position;
-
+                _fireActive = false;
             }
-
         }
 
         public override void Draw(SpriteBatch spriteBatch)
@@ -174,7 +234,10 @@ namespace SpaceShooter
                 {
                     _textureShip.Draw(spriteBatch);// add color 
                 }
-
+                foreach (Tir t in _firesList)
+                {
+                    t.Draw(spriteBatch);
+                }
                 if (_boostActive)
                     _boost.Draw(spriteBatch);
                 if (_fireActive)
@@ -188,7 +251,7 @@ namespace SpaceShooter
 
         }
 
-        public void Controls(int H, int W)
+        public void Controls()
         {
             KeyboardState state = Keyboard.GetState();
             if (state.IsKeyDown(Keys.Left) || state.IsKeyDown(Keys.Q))
@@ -207,7 +270,7 @@ namespace SpaceShooter
 
             if (state.IsKeyDown(Keys.Right) || state.IsKeyDown(Keys.D))
             {
-                if (_position.X < (W - _textureShip.Width))
+                if (_position.X < (Settings._WindowWidth - _textureShip.Width))
                 {
                     _position.X += _speed.X;
                     _moveRightActive = true;
@@ -233,7 +296,7 @@ namespace SpaceShooter
             }
             if (state.IsKeyDown(Keys.Down) || state.IsKeyDown(Keys.S))
             {
-                if (_position.Y < (H - (_textureShip.Height + 40)))// + 40 to prevent the draw of the ship over the bottom information zone 
+                if (_position.Y < (Settings._WindowHeight - (_textureShip.Height + 40)))// + 40 to prevent the draw of the ship over the bottom information zone 
                     _position.Y += _speed.Y;
             }
             if (state.IsKeyDown(Keys.Left) && state.IsKeyDown(Keys.Right))
@@ -276,6 +339,40 @@ namespace SpaceShooter
                 }
             }
 
+        }
+
+        private void UpdateFires(Game game, Boss boss)
+        {
+            if (Keyboard.GetState().IsKeyDown(Keys.Space) && firesTimeSpent > 200)
+            {
+                _fire = new Tir(game, -15);
+                _fire.LoadContent(Content, "Sprites/fire");
+                _fire.Position = new Vector2((_rec.X + (_rec.Width / 2)) - _fire.Texture.Width / 2, +_rec.Y);
+                _firesList.Add(_fire);
+                _media.PlaySound(_fireSoundEffect);
+                firesTimeSpent = 0;
+            }
+            else
+            {
+                _fireActive = false;
+            }
+            foreach (Tir t in _firesList)
+            {
+                if (boss.Active && t.Collision(boss))
+                {
+                    t.Active = false;
+                    boss.Health -= 1;
+                }
+                t.Update();
+            }
+            for (int i = 0; i < _firesList.Count; i++)
+            {
+                if (_firesList[i].Active == false)
+                {
+                    _firesList.RemoveAt(i);
+                    i -= 1;
+                }
+            }
         }
 
     }

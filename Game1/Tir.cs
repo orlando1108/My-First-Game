@@ -15,14 +15,7 @@ namespace SpaceShooter
             get { return _tirs; }
             set { _tirs = value; }
         }
-
-        private Vector2 _direction;
-        public Vector2 Direction
-        {
-            get { return _direction; }
-            set { _direction = value; }
-        }
-
+        
         private float _angle { get; set; }
         public float _angleSpeed { get; set; }
         public float speed { get; set; }
@@ -45,7 +38,7 @@ namespace SpaceShooter
             base.LoadContent(content, textureName);
         }*/
      
-        public override void Update(GameTime gameTime)
+        public override void Update()
         {
             _rec = new Rectangle(
                   (int)_position.X,
@@ -60,7 +53,7 @@ namespace SpaceShooter
         }
 
 
-        public void Update_toDestination(GameTime gameTime)
+        public void Update_toDestination()
         {
             _rec = new Rectangle(
                  (int)_position.X,
@@ -71,8 +64,7 @@ namespace SpaceShooter
             _position += _direction*speed;
             
            
-           // if (_active && _position.Y + _texture.Height <= 0)
-         //       _active = false;
+           
         }
 
         public void DrawTir_WithAngle(SpriteBatch spriteBatch)

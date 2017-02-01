@@ -45,9 +45,12 @@
     <Compile Include="Button.cs" />
     <Compile Include="EquipmentsMenu.cs" />
     <Compile Include="Game1.cs" />
+    <Compile Include="GraphicSettingsObjects\GraphicMusicManager.cs" />
+    <Compile Include="Media.cs" />
     <Compile Include="PauseMenu.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Settings.cs" />
     <Compile Include="SettingsMenu.cs" />
     <Compile Include="Sprite.cs" />
     <Compile Include="MainMenu.cs" />
@@ -120,16 +123,22 @@
       <Link>MonoGame.Framework.dll.config</Link>
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
-    <None Include="Content\Sounds-Musics\explosionTEST2.ogg">
+    <None Include="Content\Sounds-Musics\Explosion.ogg">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
-    <None Include="Content\Sounds-Musics\GameMusic.ogg">
+    <None Include="Content\Sounds-Musics\Explosion.xnb">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
     <None Include="Content\Sounds-Musics\menuMusic.ogg">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
     <None Include="Content\Sounds-Musics\menuMusic.xnb">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Include="Content\Sounds-Musics\pauseMenuMusic.ogg">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Include="Content\Sounds-Musics\pauseMenuMusic.xnb">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
     <None Include="Content\Sounds-Musics\Redemption.ogg">
@@ -142,9 +151,6 @@
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
     <None Include="Content\Sprites\BossBullet.xnb">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </None>
-    <None Include="Content\Sounds-Musics\explosionTEST2.xnb">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
     <None Include="Content\SpriteFonts\GAME-OVER.xnb">
@@ -212,16 +218,31 @@
     <Content Include="Content\SettingsMenu-Items\Background-Settings.png">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
-    <Content Include="Content\SettingsMenu-Items\Moins.png">
+    <Content Include="Content\SettingsMenu-Items\SoundMoins.png">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
-    <Content Include="Content\SettingsMenu-Items\Music.png">
+    <Content Include="Content\SettingsMenu-Items\MusicTexture.png">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
-    <Content Include="Content\SettingsMenu-Items\Plus.png">
+    <Content Include="Content\SettingsMenu-Items\OnOff.png">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
-    <Content Include="Content\SettingsMenu-Items\VolumeBar.png">
+    <Content Include="Content\SettingsMenu-Items\SoundPlus.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Content\SettingsMenu-Items\SoundTexture.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Content\SettingsMenu-Items\SoundVolumeBar.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Content\SettingsMenu-Items\MusicVolumeContainer.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Content\SettingsMenu-Items\MusicVolumeBar.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Content\SettingsMenu-Items\MusicVolumeSelector.png">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
     <Content Include="Content\SpriteSheets\AsteroidAnimation.png">

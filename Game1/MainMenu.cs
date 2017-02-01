@@ -42,15 +42,7 @@ namespace SpaceShooter
             set { _button_Quit = value; }
         }
         
-        private Song _menuMusic;
-        public Song MenuMusic
-        {
-            get
-            {
-                return _menuMusic;
-            }
-            set { _menuMusic = value; }
-        }
+      
         private SpriteFont gameTitle;
         private string text_GameTitle;
         private Texture2D backGround;
@@ -66,17 +58,20 @@ namespace SpaceShooter
         MainMenuStates _mainMenuState { get; set; }
         EquipmentsMenu equipmentMenu;
         SettingsMenu settingsMenu;
+      
         
-        public MainMenu(Game game)
+        public MainMenu(Game game, Media media)
         {
-            center = new Vector2(Game1.windowWidth / 2, Game1.windowHeight / 2);
+            center = new Vector2(Settings._WindowWidth / 2, Settings._WindowHeight / 2);
+           
             _button_Play = new Button(game);
             _button_Equipments = new Button(game);
             _button_Settings = new Button(game);
             _button_Quit = new Button(game);
             equipmentMenu = new EquipmentsMenu(game);
-            settingsMenu = new SettingsMenu(game);
-
+            settingsMenu = new SettingsMenu(game, media);
+           
+        ;
 
             _mainMenuState = MainMenuStates.MainMenu;
             text_GameTitle = "             GALACTOR\nThe best video game of all time !\n     Et ouais ma gueule !!!";
@@ -87,14 +82,14 @@ namespace SpaceShooter
         {
         }
 
-        public void LoadContent(ContentManager content, String menuMusicName)
+        public void LoadContent(ContentManager content)
         {
             backGround = content.Load<Texture2D>("MainMenu-Items/BackGround-StartMenu");
             _button_Play.LoadContent(content, "MainMenu-Items/Play");
             _button_Settings.LoadContent(content, "MainMenu-Items/Settings");
             _button_Equipments.LoadContent(content, "MainMenu-Items/Equipments");
             _button_Quit.LoadContent(content, "MainMenu-Items/Quit");
-            _menuMusic = content.Load<Song>(menuMusicName);
+            //_menuMusic = content.Load<Song>(menuMusicName);
             gameTitle = content.Load<SpriteFont>("SpriteFonts/GAME-TITLE");
             equipmentMenu.LoadContent(content);
             settingsMenu.LoadContent(content);
@@ -108,17 +103,11 @@ namespace SpaceShooter
 
         }
 
-        public void Update(GameTime gameTime)
+        public void Update(GameTime gameTime, Settings settings)
         {
             if (_mainMenuState == MainMenuStates.MainMenu)
             {
-                if (!MusicStarted)
-                {
-                    MediaPlayer.Play(_menuMusic);
-                    MediaPlayer.Volume = 0.5f;
-                    MediaPlayer.IsRepeating = true;
-                    MusicStarted = true;
-                }
+                
 
                 _button_Play.Update(gameTime);
                 _button_Settings.Update(gameTime);
@@ -152,7 +141,7 @@ namespace SpaceShooter
             }
             if(_mainMenuState == MainMenuStates.Settings)
             {
-                settingsMenu.Update(gameTime);
+                settingsMenu.Update(gameTime, settings);
                 if (settingsMenu.Button_MainMenu.Clicked)
                 {
                     _mainMenuState = MainMenuStates.MainMenu;
@@ -167,8 +156,8 @@ namespace SpaceShooter
         {
             if (_mainMenuState == MainMenuStates.MainMenu)
             {
-                spriteBatch.Draw(backGround, new Rectangle(0, 0, Game1.windowWidth, Game1.windowHeight), Color.White);
-                spriteBatch.DrawString(gameTitle, text_GameTitle, new Vector2(Game1.windowWidth / 2 - 250, 50), Color.DarkSeaGreen);
+                spriteBatch.Draw(backGround, new Rectangle(0, 0, Settings._WindowWidth, Settings._WindowHeight), Color.White);
+                spriteBatch.DrawString(gameTitle, text_GameTitle, new Vector2(Settings._WindowWidth / 2 - 250, 50), Color.DarkSeaGreen);
 
                 _button_Equipments.Draw(spriteBatch);
                 _button_Settings.Draw(spriteBatch);

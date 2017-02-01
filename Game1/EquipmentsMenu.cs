@@ -68,7 +68,7 @@ namespace SpaceShooter
 
         List<Animation> shipList;
         MouseState cursorState;
-        Rectangle shipBox;
+       
         private Vector2 center;
         private Vector2 itemDestination;
         // private SpriteFont EquipmentMenuTitle;
@@ -79,7 +79,7 @@ namespace SpaceShooter
         public EquipmentsMenu(Game game)
         {
             // graphics = new GraphicsDeviceManager(game);
-            center = new Vector2(Game1.windowWidth / 2, Game1.windowHeight / 2);
+            center = new Vector2(Settings._WindowWidth / 2, Settings._WindowHeight / 2);
             _blueShip = new Animation(game, 1, 20, 70);
             _yellowShip = new Animation(game, 1, 20, 70);
             _goldShip = new Animation(game, 1, 20, 70);
@@ -117,7 +117,7 @@ namespace SpaceShooter
             _yellowShip.Position = new Vector2(_blueShip.Position.X + (_yellowShip.Width + 170), _blueShip.Position.Y);
             _goldShip.Position = new Vector2(_yellowShip.Position.X + (_goldShip.Width + 310), _blueShip.Position.Y);
             _purpleShip.Position = new Vector2(_goldShip.Position.X + (_purpleShip.Width + 200), _blueShip.Position.Y);
-            _shipSelector.Position = new Vector2(Game1.windowWidth / 2 - (_shipSelector.Texture.Width / 2), Game1.windowHeight / 2);
+            _shipSelector.Position = new Vector2(Settings._WindowWidth / 2 - (_shipSelector.Texture.Width / 2), Settings._WindowHeight / 2);
             //after position value !!!!!
 
 
@@ -126,7 +126,7 @@ namespace SpaceShooter
             _goldShip.Box = new Rectangle((int)_goldShip.Position.X - 10, (int)_goldShip.Position.Y - 10, _goldShip.Width + 20, _goldShip.Height + 20);
             _purpleShip.Box = new Rectangle((int)_purpleShip.Position.X - 10, (int)_purpleShip.Position.Y - 10, _purpleShip.Width + 20, _purpleShip.Height + 20);
 
-            _button_MainMenu.Texture.Position = new Vector2(10, Game1.windowHeight - (_button_MainMenu.Texture.Height + 10));
+            _button_MainMenu.Texture.Position = new Vector2(10, Settings._WindowHeight - (_button_MainMenu.Texture.Height + 10));
 
             shipList.Add(_blueShip);
             shipList.Add(_yellowShip);
@@ -138,7 +138,7 @@ namespace SpaceShooter
                                                    _shipSelector.Texture.Width, _shipSelector.Texture.Height);
             foreach (Animation ship in shipList)
             {
-                ship.Direction = ship.MoveToPoint(ship.Position,
+                ship.Direction = ship.Direction_FromPointToPoint(ship.Position,
                                       new Vector2(_shipSelector.Rec.Center.ToVector2().X - (ship.Width / 2), _shipSelector.Rec.Center.ToVector2().Y - (ship.Height / 2))); /*new Vector2(_shipSelector.Rec.Center.ToVector2().X, _shipSelector.Rec.Center.ToVector2().Y));-(_shipSelector.Texture.Height/2)));*/
             }
 
@@ -189,9 +189,9 @@ namespace SpaceShooter
                 if (ship.Clicked)
                 {
                     ship.Selected = true;
-                    _shipSelector.Update(gameTime);
+                    _shipSelector.Update();
                     itemDestination = new Vector2(_shipSelector.Rec.Center.ToVector2().X - (ship.Width / 2), _shipSelector.Rec.Center.ToVector2().Y - 80);
-                    ship.Direction = ship.MoveToPoint(ship.Position, itemDestination);
+                    ship.Direction = ship.Direction_FromPointToPoint(ship.Position, itemDestination);
                   
                     ship.Speed = new Vector2(6, 6);
                     ship.Clicked = false;
@@ -210,7 +210,7 @@ namespace SpaceShooter
         public void Draw(SpriteBatch spriteBatch)
         {
             // Game1.graphics.GraphicsDevice.Clear(Color.DarkBlue);
-            spriteBatch.Draw(_backGround, new Rectangle(0, 0, Game1.windowWidth, Game1.windowHeight), Color.White);
+            spriteBatch.Draw(_backGround, new Rectangle(0, 0, Settings._WindowWidth, Settings._WindowHeight), Color.White);
             _blueShip.Draw(spriteBatch);
             _yellowShip.Draw(spriteBatch);
             _goldShip.Draw(spriteBatch);

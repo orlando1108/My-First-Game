@@ -43,12 +43,6 @@
 /processorParam:Quality=Best
 /build:Songs/lazerShip.wav
 
-#begin Songs/explosionTEST2.mp3
-/importer:Mp3Importer
-/processor:SongProcessor
-/processorParam:Quality=Best
-/build:Songs/explosionTEST2.mp3
-
 #begin Fonts/LEVEL.spritefont
 /importer:FontDescriptionImporter
 /processor:FontDescriptionProcessor
@@ -114,4 +108,52 @@
 /processor:SoundEffectProcessor
 /processorParam:Quality=Best
 /build:Songs/SoundButton_MouseHover.wav
+
+#begin casseBrique/ball.png
+/importer:TextureImporter
+/processor:TextureProcessor
+/processorParam:ColorKeyColor=255,0,255,255
+/processorParam:ColorKeyEnabled=True
+/processorParam:GenerateMipmaps=False
+/processorParam:PremultiplyAlpha=True
+/processorParam:ResizeToPowerOfTwo=False
+/processorParam:MakeSquare=False
+/processorParam:TextureFormat=Color
+/build:casseBrique/ball.png
+
+#begin casseBrique/BAR.png
+/importer:TextureImporter
+/processor:TextureProcessor
+/processorParam:ColorKeyColor=255,0,255,255
+/processorParam:ColorKeyEnabled=True
+/processorParam:GenerateMipmaps=False
+/processorParam:PremultiplyAlpha=True
+/processorParam:ResizeToPowerOfTwo=False
+/processorParam:MakeSquare=False
+/processorParam:TextureFormat=Color
+/build:casseBrique/BAR.png
+
+#begin casseBrique/BRIQUE.png
+/importer:TextureImporter
+/processor:TextureProcessor
+/processorParam:ColorKeyColor=255,0,255,255
+/processorParam:ColorKeyEnabled=True
+/processorParam:GenerateMipmaps=False
+/processorParam:PremultiplyAlpha=True
+/processorParam:ResizeToPowerOfTwo=False
+/processorParam:MakeSquare=False
+/processorParam:TextureFormat=Color
+/build:casseBrique/BRIQUE.png
+
+#begin Songs/pauseMenuMusic.mp3
+/importer:Mp3Importer
+/processor:SongProcessor
+/processorParam:Quality=Best
+/build:Songs/pauseMenuMusic.mp3
+
+#begin Songs/Explosion.mp3
+/importer:Mp3Importer
+/processor:SongProcessor
+/processorParam:Quality=Best
+/build:Songs/Explosion.mp3
 

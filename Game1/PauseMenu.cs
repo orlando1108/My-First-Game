@@ -26,17 +26,17 @@ namespace SpaceShooter
             set { _button_MainMenu = value; }
         }
 
-        private Song _menuMusic;
+        /*private Song _menuMusic;
         public Song MenuMusic
         {
             get {
                 return _menuMusic; }
             set { _menuMusic = value; }
-        }
+        }*/
 
         public bool pauseKey_OldState;
         private Texture2D panel;
-        private bool MusicStarted = false;
+        
         
 
         Vector2 center;
@@ -44,7 +44,7 @@ namespace SpaceShooter
 
         public PauseMenu(Game game)
         {
-            center = new Vector2(Game1.windowWidth / 2, Game1.windowHeight / 2);
+            center = new Vector2(Settings._WindowWidth / 2, Settings._WindowHeight / 2);
             _button_Resume = new Button(game);
             _button_MainMenu = new Button(game);
             pauseKey_OldState = false;
@@ -58,7 +58,7 @@ namespace SpaceShooter
 
         }
 
-        public void LoadContent(ContentManager content, String menuMusicName)
+        public void LoadContent(ContentManager content)
         {
             panel = content.Load<Texture2D>("PauseMenu-Items/Panel");
             _button_Resume.LoadContent(content, "PauseMenu-Items/Resume");
@@ -66,38 +66,33 @@ namespace SpaceShooter
             
             _button_Resume.Texture.Position = new Vector2(center.X - (_button_Resume.Texture.Width + 5), center.Y - 30);
             _button_MainMenu.Texture.Position = new Vector2(center.X + 5, _button_Resume.Texture.Position.Y);
-            _menuMusic = content.Load<Song>(menuMusicName);
+        
         }
 
         public void Update(GameTime gameTime)
         {
             KeyboardState state = Keyboard.GetState();
 
-            if (!MusicStarted)
-            {
-                MediaPlayer.Play(_menuMusic);
-                MediaPlayer.Volume = 0.5f;
-                MediaPlayer.IsRepeating = true;
-                MusicStarted = true;
-            }
+           
 
             _button_Resume.Update(gameTime);
             _button_MainMenu.Update(gameTime);
             
            if(_button_Resume.Clicked == true)
             {
-                MediaPlayer.Stop();
-                MusicStarted = false;
+                //MediaPlayer.Stop();
+                //MusicStarted = false;
                 pauseKey_OldState = true;
                 Game1.pauseKey_OldState = true;
-                _button_Resume.Clicked = false;
                 Game1._gameState = Game1.GameStates.Playing;
+                _button_Resume.Clicked = false;
+                
             }
            if(_button_MainMenu.Clicked == true)
             {
-                MainMenu.MusicStarted = true;
+               // MainMenu.MusicStarted = true;
                 _button_MainMenu.Clicked = false;
-                MusicStarted = false;
+               // MusicStarted = false;
                 Game1._gameState = Game1.GameStates.Loading;
             }
             ResumeGame_ByKeyPress(state);
@@ -130,8 +125,6 @@ namespace SpaceShooter
             if (pauseKey_OldState == false && state.IsKeyDown(Keys.P))
             {
                 Game1._gameState = Game1.GameStates.Playing;
-                MediaPlayer.Stop();
-                MusicStarted = false;
                 pauseKey_OldState = true;
                 
             }

@@ -22,7 +22,7 @@ namespace SpaceShooter
         protected Rectangle _rec;
         protected bool _collided;
         private bool _clicked;
-        private Vector2 _direction;
+        protected Vector2 _direction;
 
         protected Vector2 _origin;
         public Vector2 Origin
@@ -117,6 +117,7 @@ namespace SpaceShooter
         public Sprite(Game game, Vector2 position) : this(game)
         {
             _position = position;
+            
         }
         #endregion
 
@@ -129,12 +130,14 @@ namespace SpaceShooter
         public virtual void LoadContent(ContentManager Content, string textureName)
         {
             _texture = Content.Load<Texture2D>(textureName);
+            _width = _texture.Width;
+            _height = _texture.Height;
 
             _rec = new Rectangle(
                  (int)_position.X,
                  (int)_position.Y,
-                _width,
-                _height);
+                _texture.Width,
+                _texture.Height);
         }
 
         public virtual void UnloadContent()
@@ -144,16 +147,16 @@ namespace SpaceShooter
 
         }
 
-        public virtual void Update(GameTime gameTime)
+        public virtual void Update()
         {
 
-          /*  _rec = new Rectangle(
+            _rec = new Rectangle(
              (int)_position.X,
              (int)_position.Y,
              _texture.Width,
              _texture.Height);
 
-            /* add position update*/
+             //add position update*/
 
 
 
@@ -267,7 +270,7 @@ namespace SpaceShooter
             }*/
         }
 
-        public Vector2 MoveToPoint(Vector2 start, Vector2 end)
+        public Vector2 Direction_FromPointToPoint(Vector2 start, Vector2 end)
         {
             float distance = Vector2.Distance(start, end);
             Vector2 direction = Vector2.Normalize(end - start);

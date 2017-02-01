@@ -231,7 +231,7 @@ namespace SpaceShooter
                     if (_currentFrame == _totalFrames)
                         _currentFrame = 0;
                 }
-                base.Update(gameTime);
+                base.Update();
             }
         }
 
@@ -248,7 +248,7 @@ namespace SpaceShooter
                     if (_currentFrame == _totalFrames)
                         _currentFrame = 0;
                 }
-                base.Update(gameTime);
+                base.Update();
             }
         }
 
@@ -273,10 +273,10 @@ namespace SpaceShooter
                     Rectangle destinationRec = new Rectangle((int)Position.X, (int)Position.Y, _width, _height);
                        if(scale != 1)
                     {
-                        spriteBatch.Draw(Texture, new Vector2(_position.X+_width,_position.Y+_height), _sourceRec, Color.White, 0, new Vector2(_position.X + _width, _position.Y + _height), scale, SpriteEffects.None, 0);
+                        spriteBatch.Draw(_texture, new Vector2(_position.X+_width,_position.Y+_height), _sourceRec, Color.White, 0, new Vector2(_position.X + _width, _position.Y + _height), scale, SpriteEffects.None, 0);
                     }else
                     {
-                        spriteBatch.Draw(Texture, destinationRec, _sourceRec, Color.White);
+                        spriteBatch.Draw(_texture, destinationRec, _sourceRec, Color.White);
                     }
                         
                 }
