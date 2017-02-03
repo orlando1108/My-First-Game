@@ -24,49 +24,8 @@ namespace SpaceShooter
             get { return _button_MainMenu; }
             set { _button_MainMenu = value; }
         }
-        private Button _button_VolumePlus;
-        public Button Button_VolumePlus
-        {
-            get { return _button_VolumePlus; }
-            set { _button_VolumePlus = value; }
-        }
-        private Button _button_VolumeMoins;
-        public Button Button_VolumeMoins
-        {
-            get { return _button_VolumeMoins; }
-            set { _button_VolumeMoins = value; }
-        }
-        private Button _button_Difficulty;
-        public Button Button_Difficulty
-        {
-            get { return _button_Difficulty; }
-            set { _button_Difficulty = value; }
-        }
-        private Animation _volumeBar;
-        public Animation VolumeBar
-        {
-            get { return _volumeBar; }
-            set { _volumeBar = value; }
-        }
-        private Animation _difficultyBar;
-        public Animation DifficultyBar
-        {
-            get { return _difficultyBar; }
-            set { _difficultyBar = value; }
-        }
-
-        private Sprite _soundTexture;
-        public Sprite SoundTexture
-        {
-            get { return _soundTexture; }
-            set { _soundTexture = value; }
-        }
-        private Sprite _musicTexture;
-        public Sprite MusicTexture
-        {
-            get { return _musicTexture; }
-            set { _musicTexture = value; }
-        }
+       
+       
         private Button _button_MusicOnOff;
         public Button Button_MusicOnOff
         {
@@ -79,8 +38,14 @@ namespace SpaceShooter
             get { return _button_SoundOnOff; }
             set { _button_SoundOnOff = value; }
         }
+        private Animation _difficultyBar;
+        public Animation DifficultyBar
+        {
+            get { return _difficultyBar; }
+            set { _difficultyBar = value; }
+        }
 
-        public GraphicMusicManager _musicComponent { get; set; }
+        public GraphicMusicVolumeManager _musicComponent { get; set; }
 
 
         bool oldMusicActive;
@@ -91,27 +56,17 @@ namespace SpaceShooter
         public SettingsMenu(Game game, Media media)
         {
             center = new Vector2(Settings._WindowWidth / 2, Settings._WindowHeight / 2);
-            _musicComponent = new GraphicMusicManager(game, new Vector2(center.X-100,center.Y-100));
-
+            _musicComponent = new GraphicMusicVolumeManager(game, new Vector2(center.X-100,center.Y-100));
             _button_MainMenu = new Button(game);
-            _button_VolumePlus = new Button(game);
-            _button_VolumeMoins = new Button(game);
-            _button_Difficulty = new Button(game);
+            //_button_Difficulty = new Button(game);
             _button_MusicOnOff = new Button(game);
             _button_SoundOnOff = new Button(game);
-            _musicTexture = new Sprite(game);
-            _soundTexture = new Sprite(game);
-            _volumeBar = new Animation(game, 2, 4, 1);
+          
             _difficultyBar = new Animation(game, 1, 2, 1);
             _media = media;
-
-
-
-            _volumeBar.Active = true;
-            _difficultyBar.Active = true;
-            _soundTexture.Active = true;
-            _musicTexture.Active = true;
-
+           // _difficultyBar.Active = true;
+           
+           
         }
 
         public void Initialize()
@@ -127,21 +82,17 @@ namespace SpaceShooter
              _button_Resume.LoadContent(content, "PauseMenu-Items/Resume");*/
             _backGround = content.Load<Texture2D>("SettingsMenu-Items/Background-Settings");
             _button_MainMenu.LoadContent(content, "PauseMenu-Items/MainMenu");
-            _button_VolumePlus.LoadContent(content, "SettingsMenu-Items/SoundPlus");
-            _volumeBar.LoadContent(content, "SettingsMenu-Items/SoundVolumeBar");
-            _button_VolumeMoins.LoadContent(content, "SettingsMenu-Items/SoundMoins");
+           
             _button_MusicOnOff.LoadContent(content, "SettingsMenu-Items/OnOff");
             _button_SoundOnOff.LoadContent(content, "SettingsMenu-Items/OnOff");
 
-            _soundTexture.LoadContent(content, "SettingsMenu-Items/SoundTexture");
-            _musicTexture.LoadContent(content, "SettingsMenu-Items/MusicTexture");
+            
+           
             /* _button_Difficulty.LoadContent(content, "kfkfkf");
              _difficultyBar.LoadContent(content, "kkgkgk");*/
 
 
-            _button_VolumeMoins.Texture.Position = new Vector2(center.X - (_button_VolumePlus.Texture.Width + 5), center.Y - 100);
-            _volumeBar.Position = new Vector2(center.X + 10, _button_VolumeMoins.Texture.Position.Y);
-            _button_VolumePlus.Texture.Position = new Vector2(_volumeBar.Position.X + _volumeBar.Width + 5, _button_VolumeMoins.Texture.Position.Y);
+           
 
             _button_MusicOnOff.Texture.Position = new Vector2(_button_VolumeMoins.Texture.Position.X + 10, _button_VolumeMoins.Texture.Position.Y + 200);
             _button_SoundOnOff.Texture.Position = new Vector2(_button_MusicOnOff.Texture.Position.X + _button_MusicOnOff.Texture.Width + _soundTexture.Texture.Width + 30, _button_MusicOnOff.Texture.Position.Y);
@@ -157,43 +108,14 @@ namespace SpaceShooter
         public void Update(GameTime gameTime, Settings settings)
         {
             _musicComponent.Update();
-            _button_VolumePlus.Update(gameTime);
-            _button_VolumeMoins.Update(gameTime);
+            Settings._VolumeMusic = _musicComponent.NewVolumeValue;
+
+           
             _button_MusicOnOff.UpdateSimple(gameTime);
             _button_SoundOnOff.UpdateSimple(gameTime);
             _button_MainMenu.Update(gameTime);
             // _button_Difficulty.Update(gameTime);
-            if (_button_VolumePlus.Clicked)
-            {
-                _volumeBar.UpdateOnceToRight(gameTime);
-                Settings._VolumeSound += 0.1f;
-                _button_VolumePlus.Clicked = false;
-                //one frame by one frame to right
-            }
-            if (_button_VolumeMoins.Clicked)
-            {
-                _volumeBar.UpdateOnceToLeft(gameTime);
-                Settings._VolumeSound -= 0.1f;
-                _button_VolumeMoins.Clicked = false;
-            }
-            if (_volumeBar.CurrentFrame == _volumeBar.TotalFrames - 1)
-            {
-                _button_VolumePlus.Texture.Active = false;
-                Settings._VolumeSound = 1;
-            }
-            else
-            {
-                _button_VolumePlus.Texture.Active = true;
-            }
-            if (_volumeBar.CurrentFrame == 0)
-            {
-                _button_VolumeMoins.Texture.Active = false;
-                Settings._VolumeSound = 0.2f;
-            }
-            else
-            {
-                _button_VolumeMoins.Texture.Active = true;
-            }
+           
 
 
             ManageMusicSound_OnOffState();
@@ -283,6 +205,8 @@ namespace SpaceShooter
                 _button_SoundOnOff.Clicked = false;
             }
         }
+
+       
     }
 }
 

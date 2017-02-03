@@ -45,7 +45,8 @@
     <Compile Include="Button.cs" />
     <Compile Include="EquipmentsMenu.cs" />
     <Compile Include="Game1.cs" />
-    <Compile Include="GraphicSettingsObjects\GraphicMusicManager.cs" />
+    <Compile Include="GraphicSettingsObjects\GraphicMusicVolumeManager.cs" />
+    <Compile Include="GraphicSettingsObjects\GraphicSoundVolumeManager.cs" />
     <Compile Include="Media.cs" />
     <Compile Include="PauseMenu.cs" />
     <Compile Include="Program.cs" />
