@@ -116,6 +116,7 @@ namespace SpaceShooter
             _boost = new Animation(game, 1, 5, 50);                 //change spritesheet
             _fireEffect = new Animation(game, 1, 4, 40);
             _fire = new Tir(game, -15);
+            _speed = new Vector2(10, 10);
             _media = media;
             _firesList = new List<Tir>();
             _textureShip.Active = true;
@@ -131,11 +132,11 @@ namespace SpaceShooter
         }
         public override void Initialize()
         {
-            if(_firesList.Count > 0)
+            /*if(_firesList.Count > 0)
             {
                 _firesList.Clear();
-            }
-            _speed = new Vector2(10, 10);
+            }*/
+           
             base.Initialize();
         }
 
@@ -170,7 +171,7 @@ namespace SpaceShooter
         {
             firesTimeSpent += gameTime.ElapsedGameTime.Milliseconds;
 
-            if (_active == true)
+            if (_active)
             {                       // rectangle update 
                 _rec = new Rectangle(
                 (int)_position.X,
@@ -178,6 +179,7 @@ namespace SpaceShooter
                 _textureShip.Width,
                 _textureShip.Height);
                 _textureShip.Position = _position;
+
                 Controls();
                 ConditionsTo_UpdateShipMovements(gameTime);
                 UpdateFires(game, boss);
@@ -210,8 +212,7 @@ namespace SpaceShooter
                     _active = false;
                 }
             }
-
-            if (_active == false)
+            else
             {
                 _media.PlayMusic(_explosionSound);
                 _explosion.Active = true;
@@ -219,6 +220,8 @@ namespace SpaceShooter
                 _explosion.Position = _position;
                 _fireActive = false;
             }
+
+         
         }
 
         public override void Draw(SpriteBatch spriteBatch)
@@ -349,7 +352,7 @@ namespace SpaceShooter
                 _fire.LoadContent(Content, "Sprites/fire");
                 _fire.Position = new Vector2((_rec.X + (_rec.Width / 2)) - _fire.Texture.Width / 2, +_rec.Y);
                 _firesList.Add(_fire);
-                _media.PlaySound(_fireSoundEffect);
+                Media.PlaySound(_fireSoundEffect);
                 firesTimeSpent = 0;
             }
             else

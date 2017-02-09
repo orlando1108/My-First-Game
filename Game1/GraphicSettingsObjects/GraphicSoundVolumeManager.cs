@@ -1,4 +1,5 @@
 ﻿using Microsoft.Xna.Framework;
+using Microsoft.Xna.Framework.Audio;
 using Microsoft.Xna.Framework.Content;
 using Microsoft.Xna.Framework.Graphics;
 using System;
@@ -35,16 +36,33 @@ namespace SpaceShooter
             get { return _soundTexture; }
             set { _soundTexture = value; }
         }
-
-        public GraphicSoundVolumeManager(Game game)
+        private Vector2 _position;
+        public Vector2 Position
         {
+            get { return _position; }
+            set { _position = value; }
+        }
+       
+        private SoundEffect _testSoundEffectVolume;
+        public SoundEffect TestSoundEffectVolume
+        {
+            get { return _testSoundEffectVolume; }
+            set { _testSoundEffectVolume = value; }
+        }
+
+
+        public GraphicSoundVolumeManager(Game game, Vector2 position)
+        {
+            _soundTexture = new Sprite(game);
             _button_VolumePlus = new Button(game);
             _button_VolumeMoins = new Button(game);
-            _soundTexture = new Sprite(game);
             _volumeBar = new Animation(game, 2, 4, 1);
 
             _soundTexture.Active = true;
             _volumeBar.Active = true;
+            _volumeBar.CurrentFrame = Convert_Volume_ToVolumeBarCurrentFrame();
+            _position = position;
+           
         }
 
         public void LoadContent(ContentManager content)
@@ -53,10 +71,12 @@ namespace SpaceShooter
             _volumeBar.LoadContent(content, "SettingsMenu-Items/SoundVolumeBar");
             _button_VolumeMoins.LoadContent(content, "SettingsMenu-Items/SoundMoins");
             _soundTexture.LoadContent(content, "SettingsMenu-Items/SoundTexture");
+            _testSoundEffectVolume = content.Load<SoundEffect>("Sounds-Musics/testSoundVolume");
 
-            _button_VolumeMoins.Texture.Position = new Vector2(center.X - (_button_VolumePlus.Texture.Width + 5), center.Y - 100);
-            _volumeBar.Position = new Vector2(center.X + 10, _button_VolumeMoins.Texture.Position.Y);
-            _button_VolumePlus.Texture.Position = new Vector2(_volumeBar.Position.X + _volumeBar.Width + 5, _button_VolumeMoins.Texture.Position.Y);
+            _soundTexture.Position = _position;
+            _button_VolumeMoins.Texture.Position = new Vector2(_soundTexture.Position.X + 250, _soundTexture.Position.Y);
+            _volumeBar.Position = new Vector2(_button_VolumeMoins.Texture.Position.X + _button_VolumeMoins.Texture.Width, _soundTexture.Position.Y);
+            _button_VolumePlus.Texture.Position = new Vector2(_volumeBar.Position.X + _volumeBar.Width, _soundTexture.Position.Y);
 
         }
 
@@ -68,20 +88,20 @@ namespace SpaceShooter
             if (_button_VolumePlus.Clicked)
             {
                 _volumeBar.UpdateOnceToRight(gameTime);
-                Settings._VolumeSound += 0.1f;
+                Settings._VolumeSound = Convert_VolumeBarCurrentFrame_ToVolume();
+                Media.PlaySound(_testSoundEffectVolume);
                 _button_VolumePlus.Clicked = false;
-                //one frame by one frame to right
             }
             if (_button_VolumeMoins.Clicked)
             {
                 _volumeBar.UpdateOnceToLeft(gameTime);
-                Settings._VolumeSound -= 0.1f;
+                Settings._VolumeSound = Convert_VolumeBarCurrentFrame_ToVolume();
+                Media.PlaySound(_testSoundEffectVolume);
                 _button_VolumeMoins.Clicked = false;
             }
             if (_volumeBar.CurrentFrame == _volumeBar.TotalFrames - 1)
             {
                 _button_VolumePlus.Texture.Active = false;
-                Settings._VolumeSound = 1;
             }
             else
             {
@@ -90,7 +110,6 @@ namespace SpaceShooter
             if (_volumeBar.CurrentFrame == 0)
             {
                 _button_VolumeMoins.Texture.Active = false;
-                Settings._VolumeSound = 0.2f;
             }
             else
             {
@@ -100,25 +119,27 @@ namespace SpaceShooter
 
         public void Draw(SpriteBatch spriteBatch)
         {
-             spriteBatch.Draw(_soundTexture.Texture,
-                              new Rectangle((int)_button_VolumeMoins.Texture.Position.X - (_soundTexture.Texture.Width + 5),
-                                             (int)_button_VolumeMoins.Texture.Position.Y + 7,
-                                             _soundTexture.Texture.Width - 25,
-                                             _soundTexture.Texture.Height - 15),
-                              Color.White);
+            _soundTexture.Draw(spriteBatch);
+            _button_VolumeMoins.Draw(spriteBatch);
+            _volumeBar.Draw(spriteBatch);
+            _button_VolumePlus.Draw(spriteBatch);
+        }
 
+        public float Convert_VolumeBarCurrentFrame_ToVolume()
+        {
+            float currentFramevalue = (_volumeBar.CurrentFrame + 1);
+            float newSoundVolume = (1f / (_volumeBar.TotalFrames)) * currentFramevalue;
 
-             
-             _button_VolumePlus.Draw(spriteBatch);
-             
-                              new Rectangle((int)_button_VolumeMoins.Texture.Position.X + (_button_MusicOnOff.Texture.Width + 20),
-                                            (int)_button_VolumeMoins.Texture.Position.Y + 200,
-                                             _soundTexture.Texture.Width - 25,
-                                             _soundTexture.Texture.Height - 15),
-                              Color.White);
-            // _button_VolumePlus.Draw(spriteBatch);
-             _volumeBar.Draw(spriteBatch);
-             _button_VolumeMoins.Draw(spriteBatch);
+            return newSoundVolume;
+        }
+
+        public int Convert_Volume_ToVolumeBarCurrentFrame()
+        {
+            float value = Settings._VolumeMusic;
+            float nbMaxFrames = _volumeBar.TotalFrames - 1;
+            float newCurrentFrame = (value * nbMaxFrames) / 1f;
+
+            return (int)newCurrentFrame;
         }
     }
 }

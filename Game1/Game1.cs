@@ -66,9 +66,10 @@ namespace SpaceShooter
         {
             /*  IsFixedTimeStep = false;
              graphics.SynchronizeWithVerticalRetrace = false;*/
-
+            TargetElapsedTime = new TimeSpan(0, 0, 0, 0, 15); // 33ms = 30fps
             graphics = new GraphicsDeviceManager(this);
             Content.RootDirectory = "Content";
+
             settings = new Settings(1200, 800, 1, 1, true, true);
             graphics.PreferredBackBufferHeight = Settings._WindowHeight;
             graphics.PreferredBackBufferWidth = Settings._WindowWidth;
@@ -94,10 +95,11 @@ namespace SpaceShooter
         {
             scrollBG1 = new Rectangle(0, 0, Settings._WindowWidth, Settings._WindowHeight);
             scrollBG2 = new Rectangle(0, - Settings._WindowHeight, Settings._WindowWidth, Settings._WindowHeight);
-            //vaisseau = new Vaisseau(this, media); // à revoir 
-            vaisseau.Initialize();
-            // boss = new Boss(this);
-            boss.Initialize();
+            media = new Media();
+            vaisseau = new Vaisseau(this, media); // à revoir 
+           // vaisseau.Initialize();
+            boss = new Boss(this, media);
+          //  boss.Initialize();
             newAsteroidSpeed = 2;
             timeToGenerateAsteroids = 500;
             scoreMeter = 20;
@@ -129,7 +131,7 @@ namespace SpaceShooter
             Score = Content.Load<SpriteFont>("SpriteFonts/SCORE");
             Level = Content.Load<SpriteFont>("SpriteFonts/LEVEL");
             Health = Content.Load<Texture2D>("Sprites/health");
-            BGinfos = Content.Load<Texture2D>("Sprites/backgroundINFOS");
+            BGinfos = Content.Load<Texture2D>("Sprites/infosBar");
             gameOver_Texture = Content.Load<Texture2D>("Sprites/GameOver");
             
             pauseMenu.LoadContent(Content);
@@ -165,14 +167,17 @@ namespace SpaceShooter
         /// <param name="gameTime">Provides a snapshot of timing values.</param>
         protected override void Update(GameTime gameTime)
         {
-            media.PlayGameMusics(_gameState);
             KeyboardState state = Keyboard.GetState();
+
+            if (vaisseau.Active && boss.Active)
+            {
+                media.PlayGameMusics(_gameState);
+            }
+            
             if (_gameState == GameStates.Loading)
             {
-                mainMenu.Update(gameTime, settings);
-              
-                //ExitGame(state);
-
+                mainMenu.Update(gameTime);
+                ExitGame(state);
             }
             if (_gameState == GameStates.Playing)
             {
@@ -211,23 +216,15 @@ namespace SpaceShooter
                 if (vaisseau.Active == true && vaisseau.Health == 0)
                 {
                     vaisseau.Active = false;
-                    
-                  /*  MediaPlayer.Play(explosionShip);
-                    MediaPlayer.Volume = 1.0f;
-                    MediaPlayer.IsRepeating = false;*/
-
                 }
                
-
                 if (vaisseau.Explosion.Removeable == true || boss.Explosion.Removeable == true)
                 {
                     Initialize();
                 }
                 vaisseau.Update(gameTime, this, boss);
-               
             }
-
-
+            
             if (_gameState == GameStates.Paused)
             {
                 // ResumeGame(gameTime);
@@ -250,7 +247,7 @@ namespace SpaceShooter
                 mainMenu.Draw(spriteBatch);
                 spriteBatch.End();
             }
-            if (_gameState == GameStates.Playing)
+            if (_gameState == GameStates.Playing || _gameState == GameStates.Paused)
             {
                 int pixelAlign = 25;
                 //graphics.GraphicsDevice.Clear(Color.AliceBlue);
@@ -282,13 +279,13 @@ namespace SpaceShooter
                     spriteBatch.Draw(gameOver_Texture, new Rectangle(0, 0, Settings._WindowWidth, Settings._WindowHeight - 40), Color.White * transparency);
                 }
 
-                spriteBatch.Draw(BGinfos, new Vector2(0, Settings._WindowHeight - 40), Color.White);
-                spriteBatch.DrawString(Score, "Score: " + points, new Vector2(Settings._WindowWidth - 100, Settings._WindowHeight - 30), Color.DarkBlue);
-                spriteBatch.DrawString(Level, "Level: " + level, new Vector2(10, Settings._WindowHeight - 30), Color.DarkMagenta);
+                spriteBatch.Draw(BGinfos, new Vector2(-30, Settings._WindowHeight - 40), Color.White);
+                spriteBatch.DrawString(Score, "Score: " + points, new Vector2(Settings._WindowWidth - 100, Settings._WindowHeight - 30), Color.MonoGameOrange);
+                spriteBatch.DrawString(Level, "Level: " + level, new Vector2(10, Settings._WindowHeight - 30), Color.LawnGreen);
 
                 for (int i = 0; i != vaisseau.Health; i++)
                 {
-                    spriteBatch.Draw(Health, new Vector2(100 + pixelAlign, Settings._WindowHeight - 35), Color.Beige);
+                    spriteBatch.Draw(Health, new Vector2(100 + pixelAlign, Settings._WindowHeight - 35), Color.PaleGoldenrod);
                     pixelAlign += 25;
                 }
 

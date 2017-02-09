@@ -45,7 +45,6 @@ C:\Users\Erwan\Documents\Visual Studio 2015\Projects\Game1\Game1\bin\DesktopGL\A
 C:\Users\Erwan\documents\visual studio 2015\Projects\Game1\Game1\bin\DesktopGL\AnyCPU\Debug\Content\SpriteSheets\AsteroidAnimation5.png
 C:\Users\Erwan\documents\visual studio 2015\Projects\Game1\Game1\bin\DesktopGL\AnyCPU\Debug\Content\Sprites\BossBullet.xnb
 C:\Users\Erwan\documents\visual studio 2015\Projects\Game1\Game1\bin\DesktopGL\AnyCPU\Debug\Content\SpriteSheets\AsteroidAnimation.png
-C:\Users\Erwan\documents\visual studio 2015\Projects\Game1\Game1\bin\DesktopGL\AnyCPU\Debug\Content\Sprites\backgroundINFOS.png
 C:\Users\Erwan\documents\visual studio 2015\Projects\Game1\Game1\bin\DesktopGL\AnyCPU\Debug\Content\SpriteSheets\BoostEffect1.png
 C:\Users\Erwan\documents\visual studio 2015\Projects\Game1\Game1\bin\DesktopGL\AnyCPU\Debug\Content\SpriteSheets\AsteroidExplosion2.png
 C:\Users\Erwan\documents\visual studio 2015\Projects\Game1\Game1\bin\DesktopGL\AnyCPU\Debug\Content\Sprites\BossTexture.png
@@ -97,3 +96,6 @@ C:\Users\Erwan\Documents\Visual Studio 2015\Projects\Game1\Game1\bin\DesktopGL\A
 C:\Users\Erwan\Documents\Visual Studio 2015\Projects\Game1\Game1\bin\DesktopGL\AnyCPU\Debug\Content\SettingsMenu-Items\SoundVolumeBar.png
 C:\Users\Erwan\Documents\Visual Studio 2015\Projects\Game1\Game1\bin\DesktopGL\AnyCPU\Debug\Content\SettingsMenu-Items\MusicVolumeContainer.png
 C:\Users\Erwan\Documents\Visual Studio 2015\Projects\Game1\Game1\bin\DesktopGL\AnyCPU\Debug\Content\SettingsMenu-Items\MusicVolumeSelector.png
+C:\Users\Erwan\Documents\Visual Studio 2015\Projects\Game1\Game1\bin\DesktopGL\AnyCPU\Debug\Content\Sounds-Musics\testSoundVolume.xnb
+C:\Users\Erwan\Documents\Visual Studio 2015\Projects\Game1\Game1\bin\DesktopGL\AnyCPU\Debug\Content\Sprites\infosBar.png
+C:\Users\Erwan\documents\visual studio 2015\Projects\Game1\Game1\bin\DesktopGL\AnyCPU\Debug\Content\Sounds-Musics\NewExplosion.xnb

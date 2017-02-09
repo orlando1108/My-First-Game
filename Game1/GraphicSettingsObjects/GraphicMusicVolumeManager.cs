@@ -48,16 +48,18 @@ namespace SpaceShooter
             set { _isChanged = value; }
         }
 
-        private float _newVolumeValue;
-        public float NewVolumeValue
+        private Vector2 _position;
+        public Vector2 Position
         {
-            get { return _newVolumeValue; }
-            set { _newVolumeValue = value; }
+            get { return _position; }
+            set { _position = value; }
         }
-        
+
+
         public GraphicMusicVolumeManager(Game game, Vector2 position)
         {
-            _musicTexture = new Sprite(game, position);
+            
+            _musicTexture = new Sprite(game);
             _containerTexture = new Sprite(game);
             _volumeBarTexture = new Sprite(game);
             _selectorTexture = new Sprite(game);
@@ -67,7 +69,7 @@ namespace SpaceShooter
             _volumeBarTexture.Active = true;
             _selectorTexture.Active = true;
             _isChanged = false;
-            _newVolumeValue = 0;
+            _position = position;
         }
 
         public void UnloadContent()
@@ -84,14 +86,15 @@ namespace SpaceShooter
             _volumeBarTexture.LoadContent(content, "SettingsMenu-Items/MusicVolumeBar");
             _selectorTexture.LoadContent(content, "SettingsMenu-Items/MusicVolumeSelector");
 
-            _containerTexture.Position = new Vector2(_musicTexture.Position.X + (_musicTexture.Width + 20), _musicTexture.Position.Y + (_musicTexture.Height / 4));
+            _musicTexture.Position = _position;
+            _containerTexture.Position = new Vector2(_musicTexture.Position.X + 250, _musicTexture.Position.Y + (_musicTexture.Height / 4));
             _volumeBarTexture.Position = new Vector2((_containerTexture.Position.X + _containerTexture.Width / 2) - (_volumeBarTexture.Width / 2), (_containerTexture.Position.Y + (_containerTexture.Height / 2) - (_volumeBarTexture.Height / 2)));
             _selectorTexture.Position = new Vector2((_volumeBarTexture.Position.X - (_selectorTexture.Width / 2) + Convert_Volume_ToSelectorPosition()), (_volumeBarTexture.Position.Y + (_volumeBarTexture.Height / 2)) - (_selectorTexture.Height / 2));
 
 
         }
 
-        public void Update()
+        public void Update(GameTime gameTime)
         {
             MouseState state = Mouse.GetState();
             bool contains = _selectorTexture.Rec.Contains(state.X, state.Y);
@@ -105,7 +108,7 @@ namespace SpaceShooter
             {
                 _selectorTexture.Position = new Vector2((state.X - (_selectorTexture.Width / 2)), _selectorTexture.Position.Y);
                 _selectorTexture.Update();
-                _newVolumeValue = Convert_SelectorPosition_ToVolume();
+                Settings._VolumeMusic = Convert_SelectorPosition_ToVolume();
 
             }
         }
@@ -133,8 +136,8 @@ namespace SpaceShooter
 
         public float Convert_SelectorPosition_ToVolume()
         {
-            float value = _selectorTexture.Position.X - _volumeBarTexture.Position.X;
-            float maxVolumeValue = 1;
+            float value = (_selectorTexture.Position.X - _volumeBarTexture.Position.X);
+            float maxVolumeValue = 1f;
             float newMusiqueVolume = (value * maxVolumeValue) / _volumeBarTexture.Width;
 
             return newMusiqueVolume;
@@ -144,7 +147,7 @@ namespace SpaceShooter
         {
             float value = Settings._VolumeMusic;
             float maxPosition = _volumeBarTexture.Width;
-            float newSelectorPosition = (value * maxPosition) / 1;
+            float newSelectorPosition = (value * maxPosition) / 1f;
 
             return newSelectorPosition;
         }

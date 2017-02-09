@@ -117,7 +117,6 @@ namespace SpaceShooter
         public Sprite(Game game, Vector2 position) : this(game)
         {
             _position = position;
-            
         }
         #endregion
 
@@ -136,8 +135,8 @@ namespace SpaceShooter
             _rec = new Rectangle(
                  (int)_position.X,
                  (int)_position.Y,
-                _texture.Width,
-                _texture.Height);
+                _width,
+                _height);
         }
 
         public virtual void UnloadContent()
@@ -149,17 +148,14 @@ namespace SpaceShooter
 
         public virtual void Update()
         {
-
             _rec = new Rectangle(
              (int)_position.X,
              (int)_position.Y,
-             _texture.Width,
-             _texture.Height);
+             _width,
+             _height);
 
              //add position update*/
-
-
-
+             
         }
 
         public virtual void Draw(SpriteBatch spriteBatch)

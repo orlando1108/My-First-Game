@@ -11,33 +11,10 @@ namespace SpaceShooter
 {
     class Media
     {
-        // SoundEffect fire;
-        //Song explosionShip_Music;
-        // Song playing_Music;
-        // Song loading_Music;
-        // Song paused_Music;
 
-        private SoundEffectInstance _soundEffectInstance;
-        public SoundEffectInstance SoundEffectInstance
-        {
-            get { return _soundEffectInstance; }
-            set { _soundEffectInstance = value; }
-        }
-        /*
-        private SoundEffect _fireship_Sound;
-        public SoundEffect FireShip_Sound
-        {
-            get { return _fireship_Sound; }
-            set { _fireship_Sound = value; }
-        }
-
-        private Song _explosionShip_Music;
-        public Song ExplosionShip_Music
-        {
-            get { return _explosionShip_Music; }
-            set { _explosionShip_Music = value; }
-        }*/
-
+        private static SoundEffectInstance _soundEffectInstance;
+        private bool _musicStarted;
+       
         private Song _playing_Music;
         public Song Playing_Music
         {
@@ -59,32 +36,30 @@ namespace SpaceShooter
             set { _paused_Music = value; }
         }
 
-        private float _volumeMusic;
-        public float VolumeMusic
+        private static float _volumeMusic
         {
-            get { return _volumeMusic; }
-            set { _volumeMusic = value; }
+            get { return Settings._VolumeMusic; }
+           
         }
 
-        private float _volumeSound;
-        public float VolumeSound
+        private static float _volumeSound
         {
-            get { return _volumeSound; }
-            set { _volumeSound = value; }
-        }
-        
-        private bool _musicActive;
-        public bool MusicActive
-        {
-            get { return _musicActive; }
-            set { _musicActive = value; }
+            get { return Settings._VolumeSound; }
+           
         }
 
-        private bool _soundActive;
-        public bool SoundActive
+
+        private static bool _musicActive
         {
-            get { return _soundActive; }
-            set { _soundActive = value; }
+            get { return Settings._MusicActive; }
+            
+        }
+
+
+        private static bool _soundActive
+        {
+            get { return Settings._SoundActive; }
+            
         }
 
 
@@ -92,17 +67,18 @@ namespace SpaceShooter
         //List<SoundEffect> soundsList;
         //bool sameMusic;
         Game1.GameStates oldGameState;
-        
+
         public Media()
         {
             //soundsList = new List<SoundEffect>();
             //this.sameMusic = false;
             oldGameState = Game1.GameStates.Paused;
             MediaPlayer.IsRepeating = true;
-            _volumeMusic = 1.0f;
+            _musicStarted = false;
+           /* _volumeMusic = 1.0f;
             _volumeSound = 1.0f;
-            this._musicActive = true;
-            this._soundActive = true;
+            _musicActive = true;
+            _soundActive = true;*/
         }
 
         public void LoadContent(ContentManager content)
@@ -118,24 +94,18 @@ namespace SpaceShooter
                 { Game1.GameStates.Paused, _paused_Music}
             };
         }
-        public void Update()
-        {
-            _volumeMusic = Settings._VolumeMusic;
-            _volumeSound = Settings._VolumeSound;
-            this._musicActive = Settings._MusicActive;
-            this._soundActive = Settings._SoundActive;
-        }
 
-        public  void PlayGameMusics(Game1.GameStates gameStates)
+
+        public void PlayGameMusics(Game1.GameStates gameStates)
         {
             if (_musicActive)
             {
-                if(oldGameState != gameStates || MediaPlayer.State == MediaState.Stopped)
+                //to allow update on music volume
+                MediaPlayer.Volume = _volumeMusic;
+                if (oldGameState != gameStates || MediaPlayer.State == MediaState.Stopped)
                 {
-                    MediaPlayer.Volume = _volumeMusic;
                     MediaPlayer.Play(GameMusics[gameStates]);
                 }
-
             }
             else
             {
@@ -144,27 +114,32 @@ namespace SpaceShooter
             oldGameState = gameStates;
         }
 
-        public void PlaySound(SoundEffect sound)
+        public static void PlaySound(SoundEffect sound)
         {
             if (_soundActive)
             {
                 _soundEffectInstance = sound.CreateInstance();
                 _soundEffectInstance.Volume = _volumeSound;
                 _soundEffectInstance.Play();
-             
+
             }
         }
         //for the moment its to play a music like a soundEffect
         public void PlayMusic(Song song)
         {
-            if (_soundActive)
+            if (_soundActive && !_musicStarted )
             {
                 //change it later
                 MediaPlayer.Volume = _volumeSound;
                 MediaPlayer.IsRepeating = false;
                 MediaPlayer.Play(song);
-               
+                _musicStarted = true;
+
             }
+          /*  if(MediaPlayer.State == MediaState.Stopped)
+            {
+                _musicStarted = false;
+            }*/
         }
 
         public void StopMusic()

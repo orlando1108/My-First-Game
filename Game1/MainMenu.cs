@@ -103,7 +103,7 @@ namespace SpaceShooter
 
         }
 
-        public void Update(GameTime gameTime, Settings settings)
+        public void Update(GameTime gameTime)
         {
             if (_mainMenuState == MainMenuStates.MainMenu)
             {
@@ -129,6 +129,7 @@ namespace SpaceShooter
                     _mainMenuState = MainMenuStates.Settings;
                     _button_Settings.Clicked = false;
                 }
+              
             }
             if(_mainMenuState == MainMenuStates.Equipment)
             {
@@ -141,7 +142,7 @@ namespace SpaceShooter
             }
             if(_mainMenuState == MainMenuStates.Settings)
             {
-                settingsMenu.Update(gameTime, settings);
+                settingsMenu.Update(gameTime);
                 if (settingsMenu.Button_MainMenu.Clicked)
                 {
                     _mainMenuState = MainMenuStates.MainMenu;

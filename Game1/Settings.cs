@@ -8,12 +8,12 @@ namespace SpaceShooter
 {
     class Settings
     {
-        public static float _VolumeMusic { get; set; }
-        public static float _VolumeSound { get; set; }
+        public static float _VolumeMusic { get; set; } = 1f;
+        public static float _VolumeSound { get; set; } = 1f;
         public static int _WindowWidth { get; set; }
         public static int _WindowHeight { get; set; }
-        public static bool _MusicActive { get; set; }
-        public static bool _SoundActive { get; set; }
+        public static bool _MusicActive { get; set; } = true;
+        public static bool _SoundActive { get; set; } = true;
 
         /*  private static float _volumeMusic;
           public static float VolumeMusic

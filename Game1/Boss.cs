@@ -127,6 +127,10 @@ namespace SpaceShooter
             _textureBoss = new Animation(game, 1, 1, 50);
             _explosion = new Animation(game, 9, 9, 50);
             _missile = new Tir(game, 4);
+            _speed = new Vector2(10, 10);
+            _firesList = new List<Tir>();
+            _missileList = new List<Tir>();
+
             _media = media;
             _missile.Active = false;
             _textureBoss.Active = true;
@@ -135,8 +139,7 @@ namespace SpaceShooter
             _fireActive = false;
             _touchRightScreenBorders = false;
             _touchLeftScreenBorders = true;
-            _firesList = new List<Tir>();
-            _missileList = new List<Tir>();
+           
         }
         public override void Initialize()
         {
@@ -144,7 +147,7 @@ namespace SpaceShooter
             {
                 _firesList.Clear();
             }
-            _speed = new Vector2(10, 10);
+            
             base.Initialize();
         }
 
@@ -329,9 +332,9 @@ namespace SpaceShooter
                 _fire = new Tir(game, 15);
                 _fire.LoadContent(Content, "Sprites/BossBullet");
                 _fire.Position = new Vector2((Rec.X + (Rec.Width / 2)) - Fire.Texture.Width / 2, (Rec.Y + Texture.Height) - Fire.Texture.Height);
-                _fire.Direction = BulletTracking(_fire.Position, ship.Rec.Center.ToVector2());
+                _fire.Direction = TrackCible(_fire.Position, ship.Rec.Center.ToVector2());
                 FiresList.Add(_fire);
-                _media.PlaySound(_fireSoundEffect);
+                Media.PlaySound(_fireSoundEffect);
                 firesTimeSpent = 0;
                 randomFiresTimeSpent = rand.Next(500, 800);
             }
@@ -379,12 +382,13 @@ namespace SpaceShooter
             {
                 if (_missile.Position.Y < ship.Position.Y + ship.Height)
                 {
-                    _missile.Direction = MissileTracking(_missile.Position, ship.Rec.Center.ToVector2());
+                    _missile.Direction = TrackCible(_missile.Position, ship.Rec.Center.ToVector2());
                     _missile._angleSpeed = GetAngleMissile_FromShipPosition(ship.Rec.Center.ToVector2());
                 }
                 if (_missile.Collision(ship, ship.TextureShip.SourceRec))
                 {
                     _missile.Active = false;
+                    ship.Active = false;
                     ship.Health = 0;
                 }
                 if(_missile.Position.X > Settings._WindowWidth || _missile.Position.Y > Settings._WindowHeight)
@@ -405,15 +409,7 @@ namespace SpaceShooter
             }
         
         // target tracking
-        private Vector2 BulletTracking(Vector2 start, Vector2 end)
-        {
-            float distance = Vector2.Distance(start, end);
-            Vector2 direction = Vector2.Normalize(end - start);
-            return direction;
-        }
-
-        // missile tracking
-        private Vector2 MissileTracking(Vector2 start, Vector2 end)
+        private Vector2 TrackCible(Vector2 start, Vector2 end)
         {
             float distance = Vector2.Distance(start, end);
             Vector2 direction = Vector2.Normalize(end - start);

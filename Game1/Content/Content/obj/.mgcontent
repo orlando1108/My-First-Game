@@ -17,10 +17,9 @@
     <File>C:/Users/Erwan/Documents/Visual Studio 2015/Projects/Game1/Game1/Content/Content/Songs/menuMusic.mp3</File>
     <File>C:/Users/Erwan/Documents/Visual Studio 2015/Projects/Game1/Game1/Content/Content/Fonts/GAME-TITLE.spritefont</File>
     <File>C:/Users/Erwan/Documents/Visual Studio 2015/Projects/Game1/Game1/Content/Content/Songs/SoundButton_MouseHover.wav</File>
-    <File>C:/Users/Erwan/Documents/Visual Studio 2015/Projects/Game1/Game1/Content/Content/casseBrique/ball.png</File>
-    <File>C:/Users/Erwan/Documents/Visual Studio 2015/Projects/Game1/Game1/Content/Content/casseBrique/BAR.png</File>
-    <File>C:/Users/Erwan/Documents/Visual Studio 2015/Projects/Game1/Game1/Content/Content/casseBrique/BRIQUE.png</File>
     <File>C:/Users/Erwan/Documents/Visual Studio 2015/Projects/Game1/Game1/Content/Content/Songs/pauseMenuMusic.mp3</File>
     <File>C:/Users/Erwan/Documents/Visual Studio 2015/Projects/Game1/Game1/Content/Content/Songs/Explosion.mp3</File>
+    <File>C:/Users/Erwan/Documents/Visual Studio 2015/Projects/Game1/Game1/Content/Content/Songs/testSoundVolume.wav</File>
+    <File>C:/Users/Erwan/Documents/Visual Studio 2015/Projects/Game1/Game1/Content/Content/NewExplosion.wav</File>
   </SourceFiles>
 </SourceFileCollection>

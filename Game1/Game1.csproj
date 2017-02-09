@@ -45,7 +45,9 @@
     <Compile Include="Button.cs" />
     <Compile Include="EquipmentsMenu.cs" />
     <Compile Include="Game1.cs" />
+    <Compile Include="GraphicSettingsObjects\GraphicMusicActiveManager.cs" />
     <Compile Include="GraphicSettingsObjects\GraphicMusicVolumeManager.cs" />
+    <Compile Include="GraphicSettingsObjects\GraphicSoundActiveManager.cs" />
     <Compile Include="GraphicSettingsObjects\GraphicSoundVolumeManager.cs" />
     <Compile Include="Media.cs" />
     <Compile Include="PauseMenu.cs" />
@@ -136,6 +138,9 @@
     <None Include="Content\Sounds-Musics\menuMusic.xnb">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
+    <None Include="Content\Sounds-Musics\NewExplosion.xnb">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
     <None Include="Content\Sounds-Musics\pauseMenuMusic.ogg">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
@@ -146,6 +151,9 @@
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
     <None Include="Content\Sounds-Musics\SoundButton_MouseHover.xnb">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Include="Content\Sounds-Musics\testSoundVolume.xnb">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
     <None Include="Content\SpriteFonts\GAME-TITLE.xnb">
@@ -264,9 +272,6 @@
     <Content Include="Content\SpriteSheets\test.png">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
-    <Content Include="Content\Sprites\backgroundINFOS.png">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
     <Content Include="Content\SpriteSheets\BoostEffect1.png">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
@@ -295,6 +300,9 @@
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
     <Content Include="Content\Sprites\HealthBoss.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Content\Sprites\infosBar.png">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
     <Content Include="Content\Sprites\missile1.png">
