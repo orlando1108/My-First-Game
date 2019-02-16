@@ -154,7 +154,7 @@ namespace SpaceShooter
         public void LoadContent(ContentManager content, String textureVaisseau, String textureExplosion, String textureFireEffect, String fireSoundEffect, String explosionSound, String textureBoost)
         {
            
-            _fireSoundEffect = Content.Load<SoundEffect>(fireSoundEffect);
+            _fireSoundEffect = content.Load<SoundEffect>(fireSoundEffect);
             _explosionSound = content.Load<Song>(explosionSound);
             _textureShip.LoadContent(content, textureVaisseau);
             _position = new Vector2((Settings._WindowWidth / 2) - (_textureShip.Width / (_textureShip.Cols * 2)),
@@ -167,7 +167,7 @@ namespace SpaceShooter
 
         }
 
-        public void Update(GameTime gameTime, Game game, Boss boss)
+        public void Update(GameTime gameTime, Game game, Boss boss, ContentManager content)
         {
             firesTimeSpent += gameTime.ElapsedGameTime.Milliseconds;
 
@@ -180,9 +180,9 @@ namespace SpaceShooter
                 _textureShip.Height);
                 _textureShip.Position = _position;
 
-                Controls();
-                ConditionsTo_UpdateShipMovements(gameTime);
-                UpdateFires(game, boss);
+                Controls(gameTime);
+                
+                UpdateFires(game, boss, content);
 
                 if (_boostActive == true)
                 {
@@ -254,37 +254,45 @@ namespace SpaceShooter
 
         }
 
-        public void Controls()
+        public void Controls(GameTime gameTime)
         {
             KeyboardState state = Keyboard.GetState();
-            if (state.IsKeyDown(Keys.Left) || state.IsKeyDown(Keys.Q))
+            if (!(state.IsKeyDown(Keys.Left) && state.IsKeyDown(Keys.Right)))
             {
-                if (_position.X >= 0)
-                    _position.X -= _speed.X;
-                _moveLeftActive = true;
-                _textureShip.Moving = true;
-
-            }
-            else
-            {
-                _moveLeftActive = false;
-                _textureShip.MoveToPoint = true;
-            }
-
-            if (state.IsKeyDown(Keys.Right) || state.IsKeyDown(Keys.D))
-            {
-                if (_position.X < (Settings._WindowWidth - _textureShip.Width))
+                if (state.IsKeyDown(Keys.Left) || state.IsKeyDown(Keys.Q))
                 {
-                    _position.X += _speed.X;
-                    _moveRightActive = true;
+                    if (_position.X >= 0)
+                        _position.X -= _speed.X;
                     _textureShip.Moving = true;
+                    _textureShip.UpdateOnceToLeft(gameTime);
+                }
+                else
+                {
+                    _moveLeftActive = false;
+                    _textureShip.MoveToPoint = true;
+                }
+
+                if (state.IsKeyDown(Keys.Right) || state.IsKeyDown(Keys.D))
+                {
+                    if (_position.X < (Settings._WindowWidth - _textureShip.Width))
+                    {
+                        _position.X += _speed.X;
+                        _textureShip.Moving = true;
+                        _textureShip.UpdateOnceToRight(gameTime);
+                    }
+                }
+                else
+                {
+                    _moveRightActive = false;
+                    _textureShip.MoveToPoint = true;
                 }
             }
-            else
+            if ((state.IsKeyDown(Keys.Left) && state.IsKeyDown(Keys.Right)) || (!state.IsKeyDown(Keys.Left) && !state.IsKeyDown(Keys.Right)))
             {
-                _moveRightActive = false;
                 _textureShip.MoveToPoint = true;
+                _textureShip.UpdateOnce_FromPoint_ToPoint(gameTime, _textureShip.TotalFrames / 2);
             }
+
             if (state.IsKeyDown(Keys.Up) || state.IsKeyDown(Keys.Z))
             {
                 if (_position.Y >= 0)
@@ -302,17 +310,10 @@ namespace SpaceShooter
                 if (_position.Y < (Settings._WindowHeight - (_textureShip.Height + 40)))// + 40 to prevent the draw of the ship over the bottom information zone 
                     _position.Y += _speed.Y;
             }
-            if (state.IsKeyDown(Keys.Left) && state.IsKeyDown(Keys.Right))
-            {
-                _moveLeftActive = false;
-                _moveRightActive = false;
-                _textureShip.MoveToPoint = true;
-            }
-
+          
             if (state.IsKeyDown(Keys.Space))
             {
                 _fireActive = true;
-
             }
             else
             {
@@ -321,36 +322,13 @@ namespace SpaceShooter
 
         }
 
-        private void ConditionsTo_UpdateShipMovements(GameTime gameTime)
-        {
-            // TODO ameliorer les booleens
-            if (_textureShip.Moving == true)
-            {       //from center of spritesheet to the left
-                if (_moveLeftActive == true)
-                {
-                    _textureShip.UpdateOnceToLeft(gameTime);
-                }
-                //from the left or from the right of the spritesheet to the center
-                if (_moveLeftActive == false && _moveRightActive == false && _textureShip.Moving == true)
-                {
-                    _textureShip.UpdateOnce_FromPoint_ToPoint(gameTime, _textureShip.TotalFrames / 2);
-                }
-                //from the center of the spritesheet to the right
-                if (_moveRightActive == true)
-                {
-                    _textureShip.UpdateOnceToRight(gameTime);
-                }
-            }
-
-        }
-
-        private void UpdateFires(Game game, Boss boss)
+        private void UpdateFires(Game game, Boss boss, ContentManager content)
         {
             if (Keyboard.GetState().IsKeyDown(Keys.Space) && firesTimeSpent > 200)
             {
                 _fire = new Tir(game, -15);
-                _fire.LoadContent(Content, "Sprites/fire");
-                _fire.Position = new Vector2((_rec.X + (_rec.Width / 2)) - _fire.Texture.Width / 2, +_rec.Y);
+                _fire.LoadContent(content, "Sprites/fire");
+                _fire.Position = new Vector2((_rec.X + (_rec.Width / 2)) - _fire.Texture.Width / 2, + _rec.Y);
                 _firesList.Add(_fire);
                 Media.PlaySound(_fireSoundEffect);
                 firesTimeSpent = 0;
@@ -376,7 +354,13 @@ namespace SpaceShooter
                     i -= 1;
                 }
             }
+
+            foreach(Sprite s in _firesList)
+            {
+                s.Speed = new Vector2(Speed.X, Speed.Y);
+            }
         }
 
     }
 }
+ 

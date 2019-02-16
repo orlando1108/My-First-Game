@@ -82,11 +82,11 @@ namespace SpaceShooter
         {
             if (aleaTexture % 2 == 0)
             {
-                 _textureAsteroid.LoadContent(Content, texture1);
+                 _textureAsteroid.LoadContent(content, texture1);
             }
             else
             {
-                _textureAsteroid.LoadContent(Content, texture2);
+                _textureAsteroid.LoadContent(content, texture2);
             }
 
             _texture = _textureAsteroid.Texture;

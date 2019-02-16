@@ -24,8 +24,8 @@ namespace SpaceShooter
         SpriteFont Level;
         
         long asteroidsTimeSpent;
-        long tirsTimeSpent;
-        long bossFiresTimeSpent;
+       // long tirsTimeSpent;
+      //  long bossFiresTimeSpent;
         int points;
         int level;
         int scoreMeter;
@@ -210,7 +210,7 @@ namespace SpaceShooter
                 }
                 else
                 {
-                    boss.Update(this, gameTime, vaisseau);
+                    boss.Update(this, gameTime, vaisseau, Content);
                 }
 
                 if (vaisseau.Active == true && vaisseau.Health == 0)
@@ -222,7 +222,7 @@ namespace SpaceShooter
                 {
                     Initialize();
                 }
-                vaisseau.Update(gameTime, this, boss);
+                vaisseau.Update(gameTime, this, boss, Content);
             }
             
             if (_gameState == GameStates.Paused)
@@ -259,7 +259,7 @@ namespace SpaceShooter
                 vaisseau.Draw(spriteBatch);
                 
 
-                if (level < 1)
+               if (level < 1)
                 {
                     for (int i = 0; i < ListeAsteroids.Count; i++)
                     {

@@ -83,9 +83,9 @@ namespace SpaceShooter
 
         public void LoadContent(ContentManager content)
         {
-            this._playing_Music = content.Load<Song>("Sounds-Musics/Redemption");
-            this._loading_Music = content.Load<Song>("Sounds-Musics/menuMusic");
-            this._paused_Music = content.Load<Song>("Sounds-Musics/pauseMenuMusic");
+           this._playing_Music = content.Load<Song>("Sounds-Musics/Redemption");
+           this._loading_Music = content.Load<Song>("Sounds-Musics/menuMusic");
+           this._paused_Music = content.Load<Song>("Sounds-Musics/pauseMenuMusic");
 
             GameMusics = new Dictionary<Game1.GameStates, Song>()
             {

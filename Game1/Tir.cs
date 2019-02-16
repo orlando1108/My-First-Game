@@ -46,7 +46,7 @@ namespace SpaceShooter
                   _texture.Width,
                   _texture.Height);
             
-                _position = new Vector2(_position.X, _position.Y + _speed.Y);
+                _position = new Vector2(_position.X, _position.Y - _speed.Y);
             
                 if (_active && _position.Y + _texture.Height <= 0)
                     _active = false;

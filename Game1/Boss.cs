@@ -7,6 +7,7 @@ using Microsoft.Xna.Framework.Input;
 using Microsoft.Xna.Framework.Media;
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -127,7 +128,7 @@ namespace SpaceShooter
             _textureBoss = new Animation(game, 1, 1, 50);
             _explosion = new Animation(game, 9, 9, 50);
             _missile = new Tir(game, 4);
-            _speed = new Vector2(10, 10);
+            _speed = new Vector2(7, 0);
             _firesList = new List<Tir>();
             _missileList = new List<Tir>();
 
@@ -168,12 +169,12 @@ namespace SpaceShooter
             TextureBoss.LoadContent(content, textureBoss);
             Texture = _textureBoss.Texture; // define the parent object texture for  collision method with parameter(sprite)
             _position = new Vector2((Settings._WindowWidth / 2) - (_texture.Width / 2), 0);
-            _missile.LoadContent(Content, "Sprites/missile1");
+            _missile.LoadContent(content, "Sprites/missile1");
 
             //_missile.Position = new Vector2(300, 300);
             Explosion.LoadContent(content, textureExplosion);
-            HealthTexture = Content.Load<Texture2D>(healthTexture);
-            _fireSoundEffect = Content.Load<SoundEffect>(fireSoundEffect);
+            HealthTexture = content.Load<Texture2D>(healthTexture);
+            _fireSoundEffect = content.Load<SoundEffect>(fireSoundEffect);
             _explosionSound = content.Load<Song>(explosionSound);
 
             _borderRight = Settings._WindowWidth - Texture.Width;
@@ -186,7 +187,7 @@ namespace SpaceShooter
             // _fireEffect.LoadContent(content, textureFireEffect);
         }
 
-        public void Update(Game game, GameTime gameTime, Vaisseau ship)
+        public void Update(Game game, GameTime gameTime, Vaisseau ship, ContentManager content)
         {
             firesTimeSpent += gameTime.ElapsedGameTime.Milliseconds;
             missileTimeSpent += gameTime.ElapsedGameTime.Milliseconds;
@@ -203,7 +204,7 @@ namespace SpaceShooter
 
                 if (ship.Active == true)
                 {
-                    UpdateFires(game, ship);
+                    UpdateFires(game,content, ship);
                     UpdateMissile(game, ship);
                 }
                 if (_health == 0)
@@ -259,13 +260,7 @@ namespace SpaceShooter
                     pixelAlign += 40;
                 }
                 
-               // foreach(Tir missile in _missileList)
-               // {
-              
                     _missile.DrawTir_WithAngle(spriteBatch);
-              //  }
-                    
-
             }
             if (_active == false)
             {
@@ -314,29 +309,30 @@ namespace SpaceShooter
             {
                 _touchRightScreenBorders = true;
                 _touchLeftScreenBorders = false;
-                _randomBorderRight = rand.Next(Settings._WindowWidth / 2, _borderRight); // substract texture width to ameliorate the random
+                _randomBorderLeft = GenerateRandomBorder(_borderLeft, Settings._WindowWidth / 2) ; // substract texture width to ameliorate the random
 
             }
             if (_position.X < _randomBorderLeft)
             {
                 _touchLeftScreenBorders = true;
                 _touchRightScreenBorders = false;
-                _randomBorderLeft = rand.Next(_borderLeft, Settings._WindowWidth / 2);// add texture width to ameliorate the random
+                _randomBorderRight = GenerateRandomBorder(Settings._WindowWidth / 2, _borderRight);
+                // add texture width to ameliorate the random
             }
         }
 
-        public void UpdateFires(Game game, Vaisseau ship)
+        public void UpdateFires(Game game, ContentManager content, Vaisseau ship)
         {
             if (firesTimeSpent > randomFiresTimeSpent)
             {
-                _fire = new Tir(game, 15);
-                _fire.LoadContent(Content, "Sprites/BossBullet");
+                _fire = new Tir(game, 10);
+                _fire.LoadContent(content, "Sprites/BossBullet");
                 _fire.Position = new Vector2((Rec.X + (Rec.Width / 2)) - Fire.Texture.Width / 2, (Rec.Y + Texture.Height) - Fire.Texture.Height);
                 _fire.Direction = TrackCible(_fire.Position, ship.Rec.Center.ToVector2());
                 FiresList.Add(_fire);
                 Media.PlaySound(_fireSoundEffect);
                 firesTimeSpent = 0;
-                randomFiresTimeSpent = rand.Next(500, 800);
+                randomFiresTimeSpent = RandomGenerateTimeSpent();
             }
 
             foreach (Tir t in FiresList)
@@ -423,5 +419,37 @@ namespace SpaceShooter
 
             return angle_radians;
         }
+
+        private int RandomGenerateTimeSpent()
+        {
+            int randomTimeSpent = 0;
+            int timeScope = rand.Next(1, 21);
+            if(timeScope % 2 == 0)
+            {
+                randomTimeSpent = rand.Next(100, 200);
+            }else
+            {
+                randomTimeSpent = rand.Next(500, 700);
+            }
+
+            return randomTimeSpent;
+        }
+        private int GenerateRandomBorder(int min, int max)
+        {
+            int randomBorder = 0;
+            int borderScope = rand.Next(1, 21);
+            if (borderScope % 2 == 0)
+            {
+                randomBorder = rand.Next(min,min +((max -min)/2));
+            }
+            else
+            {
+                randomBorder = rand.Next(min + ((max - min) / 2), max);
+            }
+            Trace.WriteLine(randomBorder);
+            return randomBorder;
+        }
+
     }
 }
+

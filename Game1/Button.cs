@@ -39,6 +39,13 @@ namespace SpaceShooter
             get { return _alreadyClicked; }
             set { _alreadyClicked = value; }
         }
+        private bool _selected;
+        public bool Selected
+        {
+            get { return _selected; }
+            set { _selected = value; }
+        }
+
 
         Media _media;
         private SoundEffect button_Soundeffect;
@@ -54,6 +61,7 @@ namespace SpaceShooter
             _clicked = false;
             _alreadyClicked = false;
             _media = new Media();
+            _selected = false;
         }
 
         public void Initialize()
@@ -78,53 +86,58 @@ namespace SpaceShooter
 
         public void Update(GameTime gameTime)
         {
-            if (_texture.Active == true)
+            if (_texture.Active)
             {
                 oldState = state;
                 state = Mouse.GetState();
                 bool contains = _texture.Rec.Contains(state.X, state.Y);
 
-                if (!contains)
+             /*   if (!_selected)
                 {
+                    Texture.UpdateOnceToLeft(gameTime);
                     soundEffectStarted = false;
-                    _texture.UpdateOnceToLeft(gameTime);
-                }
-                else
-                {
-                    if (!soundEffectStarted)
+                    */
+                    if (!contains && !_selected)
                     {
-                        Media.PlaySound(button_Soundeffect);
-                       // _soundEffectInstance.Volume = Settings._VolumeSound;
-                        //_soundEffectInstance.Play();
-                        soundEffectStarted = true;
-                    }
-                    if (state.LeftButton == ButtonState.Released && oldState.LeftButton == ButtonState.Released)
-                    {
-                        _texture.UpdateOnceToRight(gameTime);
-                        oldState = state;
-                    }
-                    else
-                    if (oldState.LeftButton == ButtonState.Released && state.LeftButton == ButtonState.Pressed)
-                    {
+                        soundEffectStarted = false;
                         _texture.UpdateOnceToLeft(gameTime);
-                        oldState = state;
                     }
-                    else
-                    if (oldState.LeftButton == ButtonState.Pressed && state.LeftButton == ButtonState.Pressed)
-                    {
-                        oldState = state;
-                    }
-                    else
-                    if (oldState.LeftButton == ButtonState.Pressed && state.LeftButton == ButtonState.Released)
+                    if(contains || _selected)
                     {
                         _texture.UpdateOnceToRight(gameTime);
-                        _clicked = true;
-                        oldState = state;
+                        if (!soundEffectStarted)
+                        {
+                            Media.PlaySound(button_Soundeffect);
+                            soundEffectStarted = true;
+                        }
+                        if (state.LeftButton == ButtonState.Released && oldState.LeftButton == ButtonState.Released)
+                        {
+
+                            oldState = state;
+                        }
+                        else
+                        if (oldState.LeftButton == ButtonState.Released && state.LeftButton == ButtonState.Pressed)
+                        {
+                            _texture.UpdateOnceToLeft(gameTime);
+                            oldState = state;
+                        }
+                        else
+                        if (oldState.LeftButton == ButtonState.Pressed && state.LeftButton == ButtonState.Pressed)
+                        {
+                            oldState = state;
+                        }
+                        else
+                        if (oldState.LeftButton == ButtonState.Pressed && state.LeftButton == ButtonState.Released)
+                        {
+                            _texture.UpdateOnceToRight(gameTime);
+                            _clicked = true;
+                            oldState = state;
+                        }
+
                     }
 
-
-                }
             }
+           
         }
 
         public void UpdateSimple(GameTime gameTime)
@@ -167,16 +180,16 @@ namespace SpaceShooter
                     {
 
                         nbClick += 1;
-                        if (_clicked == false)
+                        if (!_clicked)
                         {
                             _clicked = true;
                         }
-                        if (nbClick <= 1 && _clicked == true)
+                        if (nbClick <= 1 && _clicked)
                         {
                             _texture.UpdateOnceToRight(gameTime);
                         }
 
-                        if (nbClick > 1 && _clicked == true)
+                        if (nbClick > 1 && _clicked)
                         {
                             _texture.UpdateOnceToLeft(gameTime);
                             nbClick = 0;

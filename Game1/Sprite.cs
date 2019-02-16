@@ -10,7 +10,7 @@ namespace SpaceShooter
     class Sprite
     {
         //reference to the game class
-        private Game e_game;
+       // private Game e_game;
 
         protected Vector2 _newposition;
         protected Vector2 _position;
@@ -72,14 +72,14 @@ namespace SpaceShooter
             get { return _collided; }
             set { _collided = value; }
         }
-        public Game Game
+       /* public Game Game
         {
             get { return e_game; }
         }
         public ContentManager Content
         {
             get { return e_game.Content; }
-        }
+        }*/
         public Rectangle Rec
         {
             get { return _rec; }
@@ -110,7 +110,7 @@ namespace SpaceShooter
 
         public Sprite(Game game)
         {
-            e_game = game;
+           // e_game = game;
 
         }
 

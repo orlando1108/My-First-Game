@@ -41,13 +41,16 @@ namespace SpaceShooter
             get { return _button_Quit; }
             set { _button_Quit = value; }
         }
-        
-      
+
+      //  List<Button> buttonList;
         private SpriteFont gameTitle;
         private string text_GameTitle;
         private Texture2D backGround;
         private Vector2 center;
         static public bool MusicStarted = false;
+        int indexSelection;
+        KeyboardState state;
+        KeyboardState oldState;
         enum MainMenuStates
         {
             MainMenu,
@@ -58,24 +61,34 @@ namespace SpaceShooter
         MainMenuStates _mainMenuState { get; set; }
         EquipmentsMenu equipmentMenu;
         SettingsMenu settingsMenu;
-      
-        
+        Dictionary<int, Button> buttonsMap;
+
+
         public MainMenu(Game game, Media media)
         {
             center = new Vector2(Settings._WindowWidth / 2, Settings._WindowHeight / 2);
            
-            _button_Play = new Button(game);
+
             _button_Equipments = new Button(game);
             _button_Settings = new Button(game);
+            _button_Play = new Button(game);
             _button_Quit = new Button(game);
+
+            // buttonList = new List<Button>() { _button_Equipments, _button_Settings, _button_Play, _button_Quit };
+            buttonsMap  = new Dictionary<int, Button>()
+            {
+                { 1, _button_Equipments},
+                { 2, _button_Settings},
+                { 3, _button_Play},
+                { 4, _button_Quit}
+            };
             equipmentMenu = new EquipmentsMenu(game);
             settingsMenu = new SettingsMenu(game, media);
-           
-        ;
-
+            
             _mainMenuState = MainMenuStates.MainMenu;
-            text_GameTitle = "             GALACTOR\nThe best video game of all time !\n     Et ouais ma gueule !!!";
-            // _buttonResume.Moving = false;
+            text_GameTitle = "             GALACTOR\nThe best video game of all time !!!";
+            indexSelection = 0;
+            
         }
 
         public void Initialize()
@@ -95,11 +108,11 @@ namespace SpaceShooter
             settingsMenu.LoadContent(content);
 
             //set positions in order to their texture and the other buttons
-            _button_Equipments.Texture.Position = new Vector2(center.X -(_button_Equipments.Texture.Width/2), center.Y-100);
+            _button_Equipments.Texture.Position = new Vector2(center.X - (_button_Equipments.Texture.Width / 2), center.Y - 100);
             _button_Settings.Texture.Position = new Vector2(_button_Equipments.Texture.Position.X, _button_Equipments.Texture.Position.Y + 70);
             _button_Play.Texture.Position = new Vector2(_button_Settings.Texture.Position.X, _button_Settings.Texture.Position.Y + 70);
             _button_Quit.Texture.Position = new Vector2(_button_Play.Texture.Position.X, _button_Play.Texture.Position.Y + 120);
-           
+
 
         }
 
@@ -107,12 +120,13 @@ namespace SpaceShooter
         {
             if (_mainMenuState == MainMenuStates.MainMenu)
             {
-                
+
 
                 _button_Play.Update(gameTime);
                 _button_Settings.Update(gameTime);
                 _button_Equipments.Update(gameTime);
                 _button_Quit.Update(gameTime);
+                ManageButtons_PadSelection();
 
                 if (_button_Play.Clicked)
                 {
@@ -129,18 +143,18 @@ namespace SpaceShooter
                     _mainMenuState = MainMenuStates.Settings;
                     _button_Settings.Clicked = false;
                 }
-              
+
             }
-            if(_mainMenuState == MainMenuStates.Equipment)
+            if (_mainMenuState == MainMenuStates.Equipment)
             {
                 equipmentMenu.Update(gameTime);
                 if (equipmentMenu.Button_MainMenu.Clicked)
                 {
                     _mainMenuState = MainMenuStates.MainMenu;
                     equipmentMenu.Button_MainMenu.Clicked = false;
-                }  
+                }
             }
-            if(_mainMenuState == MainMenuStates.Settings)
+            if (_mainMenuState == MainMenuStates.Settings)
             {
                 settingsMenu.Update(gameTime);
                 if (settingsMenu.Button_MainMenu.Clicked)
@@ -158,48 +172,98 @@ namespace SpaceShooter
             if (_mainMenuState == MainMenuStates.MainMenu)
             {
                 spriteBatch.Draw(backGround, new Rectangle(0, 0, Settings._WindowWidth, Settings._WindowHeight), Color.White);
-                spriteBatch.DrawString(gameTitle, text_GameTitle, new Vector2(Settings._WindowWidth / 2 - 250, 50), Color.DarkSeaGreen);
+                spriteBatch.DrawString(gameTitle, text_GameTitle, new Vector2(Settings._WindowWidth / 2 - 250, 50), Color.Chocolate);
 
                 _button_Equipments.Draw(spriteBatch);
                 _button_Settings.Draw(spriteBatch);
                 _button_Play.Draw(spriteBatch);
                 _button_Quit.Draw(spriteBatch);
             }
-                
+
 
             if (_mainMenuState == MainMenuStates.Equipment)
             {
                 equipmentMenu.Draw(spriteBatch);
             }
-            if(_mainMenuState == MainMenuStates.Settings)
+            if (_mainMenuState == MainMenuStates.Settings)
             {
                 settingsMenu.Draw(spriteBatch);
+            }
+
+
+        }
+
+        private void ManageButtons_PadSelection()
+        {
+            oldState = state;
+            state = Keyboard.GetState();
+            
+            if (state.IsKeyDown(Keys.Down) && oldState != state){
+
+                if(indexSelection != 0)
+                {
+                    buttonsMap[indexSelection].Selected = false;
+                }
+                
+                ++indexSelection;
+               
+                if (indexSelection > buttonsMap.Count)
+                {
+                    indexSelection = 1;
+                }
+                buttonsMap[indexSelection].Selected = true;
+                oldState = state;
+
+            }
+            if(state.IsKeyDown(Keys.Up) && oldState != state)
+            {
+                if (indexSelection != 0)
+                {
+                    buttonsMap[indexSelection].Selected = false;
+                }
+
+                --indexSelection;
+
+                if (indexSelection <1)
+                {
+                    indexSelection = 4;
+                }
+                buttonsMap[indexSelection].Selected = true;
+                oldState = state;
+            }
+
+            if (indexSelection > 0)
+            {
+                if (buttonsMap[indexSelection].Selected && state.IsKeyDown(Keys.Enter))
+                {
+                    buttonsMap[indexSelection].Clicked = true;
+                }
             }
             
 
         }
-        
-       /* private void ResumeGame_ByKeyPress()
-        {
-            //GamePad.GetState(PlayerIndex.Two).Buttons.Back == ButtonState.Pressed
-            KeyboardState state = Keyboard.GetState();
 
-            if (!state.IsKeyDown(Keys.P))
-            {
-                oldState = state;
-            }
-            if (GamePad.GetState(PlayerIndex.One).Buttons.Back ==
-                ButtonState.Pressed || state.IsKeyDown(Keys.Escape))
-                Exit();
+        /* private void ResumeGame_ByKeyPress()
+         {
+             //GamePad.GetState(PlayerIndex.Two).Buttons.Back == ButtonState.Pressed
+             KeyboardState state = Keyboard.GetState();
 
-            if (oldState != state && state.IsKeyDown(Keys.P))
-            {
-                Game1._gameState = Game1.GameStates.Playing;
-                MediaPlayer.Stop();
-                MusicStarted = false;
-                oldState = state;
+             if (!state.IsKeyDown(Keys.P))
+             {
+                 oldState = state;
+             }
+             if (GamePad.GetState(PlayerIndex.One).Buttons.Back ==
+                 ButtonState.Pressed || state.IsKeyDown(Keys.Escape))
+                 Exit();
 
-            }
-        }*/
+             if (oldState != state && state.IsKeyDown(Keys.P))
+             {
+                 Game1._gameState = Game1.GameStates.Playing;
+                 MediaPlayer.Stop();
+                 MusicStarted = false;
+                 oldState = state;
+
+             }
+         }*/
     }
 }

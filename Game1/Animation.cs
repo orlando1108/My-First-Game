@@ -252,7 +252,7 @@ namespace SpaceShooter
             }
         }
 
-        public void Draw(SpriteBatch spriteBatch, float scale = 1)
+        public override void Draw(SpriteBatch spriteBatch)
         {
             _rec = new Rectangle(
                 (int)_position.X,
@@ -271,14 +271,9 @@ namespace SpaceShooter
                         column = _currentFrame % Cols;
                         _sourceRec = new Rectangle(_width * column, _height * row, _width, _height);
                     Rectangle destinationRec = new Rectangle((int)Position.X, (int)Position.Y, _width, _height);
-                       if(scale != 1)
-                    {
-                        spriteBatch.Draw(_texture, new Vector2(_position.X+_width,_position.Y+_height), _sourceRec, Color.White, 0, new Vector2(_position.X + _width, _position.Y + _height), scale, SpriteEffects.None, 0);
-                    }else
-                    {
-                        spriteBatch.Draw(_texture, destinationRec, _sourceRec, Color.White);
-                    }
-                        
+                      
+                    spriteBatch.Draw(_texture, destinationRec, _sourceRec, Color.White);
+                    
                 }
             }
             if(_moving == false)
